@@ -1,0 +1,30 @@
+.navbar {
+	background-color: #fff;
+	box-shadow: 0px 3px 6px #ADADAD !important;
+}
+
+.navbar-notif {
+	width: 20px;
+  	height: 20px;
+  	margin-top: -5px;
+  	margin-right: 5px;
+  	margin-left: 10px;
+  	margin-right: 15px;
+}
+
+.navbar-hr {
+	margin-top: -5px;
+  	margin-right: 0px;
+  	margin-left: 0px;
+  	margin-right: 15px;
+  	margin-bottom: -15px;
+}
+
+.navbar-user {
+	width: 20px;
+  	height: 20px;
+  	margin-top: -5px;
+  	margin-right: 0px;
+  	margin-left: 0px;
+  	margin-right: 15px;
+}

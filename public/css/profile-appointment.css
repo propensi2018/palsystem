@@ -1,0 +1,126 @@
+.profile-customer {
+	margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.nav-appt {
+	font-size: 22px;
+	color: #fff;
+}
+
+.nav-item a:hover {
+	color: #fff;
+}
+
+.nav-appt-active {
+	padding: 20px;
+	background-color: #287CC0;
+	color: #fff;
+	font-weight: bold;
+	border-top-left-radius: 15px;
+}
+
+.nav-appt-no-active {
+	padding: 20px;
+	background-color: #223448;
+	color: #9F9F9F;
+	font-weight: bold;
+}
+
+.card-customer {
+}
+
+.card-customer-title {
+	padding: 30px;
+	background-color: #287CC0;
+    color: #FFF;
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-top-right-radius: 15px;
+}
+
+.card-customer-title-name {
+	font-weight: bold;
+	font-size: 48px;
+}
+
+.card-customer-title-telp {
+	margin-top: 50px;
+	font-size: 20px;
+}
+
+.card-customer-body {
+	padding: 50px;
+	background-color: #fff;
+	-moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.card-appt {
+	padding: 30px;
+	background-color: #fff;
+    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.appt-form-name {
+	text-align: right;
+}
+
+
+@media(min-width:768px) {
+	.card-customer-title {
+		padding: 50px;
+		background-color: #287CC0;
+	    color: #FFF;
+	    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    border-top-right-radius: 15px;
+	}
+
+	.profile-customer {
+		margin-top: 30px;
+	    margin-left: 50px;
+	    margin-right: 50px;
+	}
+
+	.card-appt {
+		padding: 50px;
+		background-color: #fff;
+	    -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+	    border-top-right-radius: 15px;
+	    border-bottom-right-radius: 15px;
+	    border-bottom-left-radius: 15px;
+	}
+}
+/*.jumbotron{
+    background-color: #287CC0;
+    color: #FFF;
+}
+#nav-link active{
+
+    
+}
+#navbar-profile{
+    width: 300px;
+    background-color: #223448;
+}
+#nav-tulisan{
+    text-align: center;
+    color: #FFF;
+}
+#tab-1{
+background-color: #287CC0;
+
+}*/

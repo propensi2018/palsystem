@@ -1,0 +1,105 @@
+#div-judul{
+    padding: 20px;
+    background-color: #fff;
+}
+
+.list-card {
+    
+}
+
+#inner-no {
+    overflow: hidden;
+    padding: 50px;
+    text-align: center;
+    background-color: #fafafa;
+    -moz-box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+#inner {
+    overflow: hidden;
+    width: 2000px;
+    background-color: #fafafa;
+    -moz-box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.card-ct {
+    text-align: center;
+    width: 350px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+@media(min-width:768px) {
+    .card-ct {
+        float: left;
+    }
+}
+
+.card-ct-body {
+    background-color: #223448;
+    color: #fff;
+    padding: 15px;
+    margin-right: 30px;
+    margin-left: 30px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.card-body-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.card-body-title-name {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.card-body-title-telp {
+    font-size: 12px;
+    margin-top: -5px;
+}
+
+.card-body-status {
+    text-align: center;
+    padding-right: 2px;
+}
+
+.card-ct-footer {
+    background-color: #287CC0;
+    font-style: italic;
+    padding: 20px;
+    color: #fff;
+    height: 160px;
+    border-radius: 10px;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.list-customer {
+    padding-top: 20px;
+    background-color: #fff;
+}
+
+.ui-content {
+    padding-top: 10px;
+}
+
+.data-table {
+    margin-top: 10px;
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+
+.customer-form {
+    padding: 20px;
+    text-align: center;
+}

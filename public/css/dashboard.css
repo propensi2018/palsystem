@@ -1,0 +1,103 @@
+body {
+	background-color: #fafafa;
+}
+
+.batas {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.reminder-body a {
+    text-decoration: none !important;
+    color: #000;
+}
+
+.reminder-body a:hover {
+	color: #000;
+}
+
+.reminder-layout{
+	padding-top: 30px;
+}
+
+.reminder-form
+{
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+}
+
+.reminder-title {
+	background-color: #134D72;
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+	font-size: 22px;
+	padding: 20px;
+	margin-left: 20px;
+	margin-right: 20px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reminder-body {
+	background-color: #fff;
+	color: #000;
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reminder-title-sch-type-call {
+	color: #97CC04;
+	font-size: 22px;
+	font-style: italic;
+	font-weight: 900;
+}
+
+.reminder-title-sch-type-appt {
+	color: #FE4E00;
+	font-size: 22px;
+	font-style: italic;
+	font-weight: 900;
+}
+
+.reminder-body-customer {
+	text-align: right;
+}
+
+.reminder-body-customer-name {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.reminder-body-customer-telp {
+	font-size: 14px;
+}
+
+ul.demo {
+	list-style-type: none;
+	margin: 0px;
+	padding-left: 0px;
+}
+
+ul li {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.note-tooltip {
+	overflow: hidden;
+  	white-space: nowrap;
+  	text-overflow: ellipsis;
+}
+
+.no_act {
+	text-align: center;
+	margin: 0px;
+	padding: 20px;
+}
