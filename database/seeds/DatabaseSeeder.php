@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
           ProductClassesTableSeeder::class,
           ProductTypesTableSeeder::class,
           ManagerTableSeeder::class,
-          AddressesTableSeeder::class,
+          TelephonesTableSeeder::class,
     		]
     	);
     }

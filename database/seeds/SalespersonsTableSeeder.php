@@ -11,6 +11,6 @@ class SalespersonsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+
     }
 }

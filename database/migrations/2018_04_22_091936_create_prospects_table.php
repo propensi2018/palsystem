@@ -19,6 +19,8 @@ class CreateProspectsTable extends Migration
           $table->integer('address_id')->unsigned();
           $table->integer('customer_type_id')->unsigned();
           $table->integer('prospect_willingness_id')->unsigned();
+          $table->integer('cycle');
+          $table->string('email');
 
           $table->foreign('address_id')
           ->references('id')
