@@ -13,8 +13,17 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+      Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code');
+            $table->boolean('is_valid');
+            $table->integer('id_pl')->unsigned();
+
+            $table->foreign('id_pl')
+            ->references('id')
+            ->on('product_lists')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

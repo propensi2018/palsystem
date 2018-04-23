@@ -13,8 +13,14 @@ class CreateAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
+      Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('postal_code');
+            $table->string('province');
+            $table->string('street');
+            $table->string('city');
+            $table->string('kelurahan');
+            $table->string('district');
             $table->timestamps();
         });
     }

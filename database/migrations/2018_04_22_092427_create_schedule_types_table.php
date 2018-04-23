@@ -13,10 +13,19 @@ class CreateScheduleTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('schedule_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('schedule_types', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('appointment_id')->unsigned()->nullable();
+          $table->boolean('telp_flag');
+
+          $table->foreign('appointment_id')
+          ->references('id')
+          ->on('appointments')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+
+          $table->timestamps();
+      });
     }
 
     /**

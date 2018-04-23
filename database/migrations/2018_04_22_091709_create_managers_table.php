@@ -13,10 +13,20 @@ class CreateManagersTable extends Migration
      */
     public function up()
     {
-        Schema::create('managers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('managers', function (Blueprint $table) {
+        $table->integer('user_id')->unsigned()->unique();
+        $table->primary('user_id');
+        $table->integer('id_mgr');
+        $table->boolean('is_gh');
+
+        $table->foreign('user_id')
+        ->references('id')
+        ->on('users')
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
+
+        $table->timestamps();
+    });
     }
 
     /**

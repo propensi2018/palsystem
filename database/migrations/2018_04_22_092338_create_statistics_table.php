@@ -13,10 +13,21 @@ class CreateStatisticsTable extends Migration
      */
     public function up()
     {
-        Schema::create('statistics', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('statistics', function (Blueprint $table) {
+        $table->increments('id');
+        $table->longText('data');
+        $table->integer('target');
+        $table->timestamp('end_date');
+        $table->integer('id_types')->unsigned();
+
+        $table->foreign('id_types')
+        ->references('id_types')
+        ->on('statistic_types')
+        ->onUpdate('cascade')
+        ->onDelete('cascade');
+
+        $table->timestamps();
+    });
     }
 
     /**

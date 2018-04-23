@@ -13,8 +13,18 @@ class CreateRatingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ratings', function (Blueprint $table) {
-            $table->increments('id');
+      Schema::create('ratings', function (Blueprint $table) {
+            $table->integer('sales_user_id')->unsigned()->unique();
+            $table->primary('sales_user_id');
+            $table->date('date');
+            $table->integer('score');
+
+            $table->foreign('sales_user_id')
+            ->references('user_id')
+            ->on('salespersons')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

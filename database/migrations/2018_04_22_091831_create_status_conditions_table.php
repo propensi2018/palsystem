@@ -13,10 +13,22 @@ class CreateStatusConditionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('status_conditions', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('status_conditions', function (Blueprint $table) {
+        $table->increments('id');
+        $table->integer('status_id')->unsigned();
+        $table->boolean('is_deleted');
+
+
+        $table->foreign('status_id')
+          ->references('id')
+          ->on('statuses')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+
+          $table->timestamps();
+
+
+    });
     }
 
     /**

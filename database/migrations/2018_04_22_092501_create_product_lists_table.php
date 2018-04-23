@@ -13,10 +13,18 @@ class CreateProductListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_lists', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('product_lists', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('schedule_id')->unsigned();
+          $table->timestamps();
+
+          $table->foreign('schedule_id')
+          ->references('id')
+          ->on('schedules')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+
+      });
     }
 
     /**

@@ -14,6 +14,31 @@ class UpdateFk extends Migration
     public function up()
     {
         //
+        Schema::table('salespersons', function (Blueprint $table) {
+          $table->foreign('branch_level_id')
+          ->references('level_id')
+          ->on('branches')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+        });
+          Schema::rename('salespersons', 'salespeople');
+
+          Schema::table('schedules', function (Blueprint $table) {
+            $table->foreign('id_user_sp')
+            ->references('user_id')
+            ->on('salespeople')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+          });
+
+          Schema::table('customers', function (Blueprint $table) {
+            $table->foreign('id_user_sp')
+            ->references('user_id')
+            ->on('salespeople')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+          });
+
     }
 
     /**

@@ -13,10 +13,26 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('comments', function (Blueprint $table) {
+          $table->increments('id_user_commenter');
+          $table->timestamp('time');
+          $table->string('message');
+          $table->integer('user_id_sender')->unsigned();
+          $table->integer('statistic_id')->unsigned();
+
+          $table->foreign('user_id_sender')
+          ->references('id')
+          ->on('users')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+          $table->timestamps();
+
+          $table->foreign('statistic_id')
+          ->references('id')
+          ->on('statistics')
+          ->onUpdate('restrict')
+          ->onDelete('restrict');
+      });
     }
 
     /**

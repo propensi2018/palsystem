@@ -15,6 +15,8 @@ class CreateProspectWillingnessesTable extends Migration
     {
         Schema::create('prospect_willingnesses', function (Blueprint $table) {
             $table->increments('id');
+            $table -> string('name');
+            $table -> longText('desc');
             $table->timestamps();
         });
     }

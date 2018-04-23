@@ -13,8 +13,17 @@ class CreateSalespersonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('salespersons', function (Blueprint $table) {
-            $table->increments('id');
+      Schema::create('salespersons', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned()->unique();
+            $table->primary('user_id');
+            $table->integer('id_sp');
+            $table->integer('branch_level_id')->unsigned();
+
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

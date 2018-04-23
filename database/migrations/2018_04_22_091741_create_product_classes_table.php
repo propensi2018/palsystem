@@ -13,10 +13,12 @@ class CreateProductClassesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_classes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+      Schema::create('product_classes', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('name');
+          $table->string('desc');
+          $table->timestamps();
+      });
     }
 
     /**

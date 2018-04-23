@@ -13,10 +13,19 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('appointments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
+          Schema::create('appointments', function (Blueprint $table) {
+          $table->increments('id');
+          $table->boolean('is_a_deal')->nullable();
+          $table->integer('id_act_type')->unsigned()->nullable();
+
+          $table->foreign('id_act_type')
+          ->references('id')
+          ->on('activity_types')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+
+          $table->timestamps();
+      });
     }
 
     /**
