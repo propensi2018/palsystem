@@ -70,7 +70,7 @@ session_start();
                     <div class="card-ct-body">
                       @if($allProspectLoop['dataActivityType']!= null)
                         <div class="card-body-title">
-                          {{ $allProspectLoop['dataActivityType'][0]->name }}
+                          {{ $allProspectLoop['dataActivityType'][0]->name}}
                         </div>
                       @else
                         <br>
@@ -83,25 +83,24 @@ session_start();
                       <div class="row">
                         <div class="col-sm-12 col-md-12 col-md-offset-12 card-body-status">
                             
-                            @if($allProspectLoop['dataActivityType']!= null)
-                              @if($allProspectLoop['dataActivityType'][0]->id>2 )
-                                <span class='badge badge-danger'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
-                              @else
-                                <span class='badge badge-success'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
-                              @endif
+                            @if($allProspectLoop['dataTipeCustomer']!= null && $allProspectLoop['dataTipeWillingness']!=null)
+                              
+                            <span class='badge badge-danger'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
+                             <span class='badge badge-secondary'>{{ $allProspectLoop['dataTipeWillingness'][0]-> name}}</span>
+                              
                             @else
-                              <br>
+                              <span class='badge badge-danger'>Warm</span> 
+                               <span class='badge badge-secondary'>Conservative</span>
+                              
                             @endif
-                            @if(sizeof($allProspectLoop['dataTipeWillingness']) !=0 )
-                              <span class='badge badge-secondary'>{{ $allProspectLoop['dataTipeWillingness'][0]-> name}}</span>
-                            @else
-                              <br>
-                            @endif
+                            
                         </div>
                       </div>
                     </div> 
                     <div class="card-ct-footer">
-                        {{$allProspectLoop['dataProspectLengkap']-> notes }}
+                    
+                          {{$allProspectLoop['dataProspectLengkap']['notes'] }}
+                          
                     </div>
                   </a>
                 </div>

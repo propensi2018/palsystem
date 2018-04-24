@@ -4,8 +4,28 @@
 
 @section('contents')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-    var total_product = 0;
+<script type="text/javascript" src="../resources/assets/js/autoNumeric-next/src/AutoNumeric.js"></script>
+<script type="text/javascript">
+function addCommas(nStr)
+  {
+  	nStr += '';
+  	x = nStr.split('.');
+  	x1 = x[0];
+  	x2 = x.length > 1 ? '.' + x[1] : '';
+  	var rgx = /(\d+)(\d{3})/;
+  	while (rgx.test(x1)) {
+  		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  	}
+  	return x1 + x2;
+  }
+  $(document).ready(function(){
+    var amounts = $('#product_container').find('input');
+    amounts.change(function(){
+      var val = amounts.val();
+      // console.log(val);
+      amounts.val(addCommas(val));
+    });
+  });
 </script>
 <div class="profile-customer">
   <ul class="nav nav-tabs nav-appt">
@@ -19,6 +39,17 @@
   <div class="card-appt">
     <form class="form-horizontal" action="appointment/store" method='post'>
       {{ csrf_field() }}
+
+      <div class="form-group row">
+        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="planned_date"><h5>Planned Time* : </h5></label>
+        <p> {{$planned_date}} </p>
+      </div>
+
+      <div class="form-group row">
+        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="actual_time"><h5>Actual Time* : </h5></label>
+        <input required class="form-control col-sm-6 col-md-4 col-md-offset-12" name="actual_time" type="datetime-local" value="{{$today}}">
+      </div>
+
       <div class="form-group row">
         <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="appointment_type"><h5>Appointment : </h5></label>
         <select class="form-control col-sm-6 col-md-4 col-md-offset-12" name="appointment_type">
@@ -28,7 +59,7 @@
         </select>
       </div>
       <div id = "notes" class="form-group row">
-        <label for="notes" class="col-sm-6 col-md-4 col-md-offset-12 appt-form-name"><h5>Notes : </h5></label>
+        <label for="notes" class="col-sm-6 col-md-4 col-md-offset-12 appt-form-name"><h5>Notes* : </h5></label>
         <textarea type="text" class="form-control col-sm-6 col-md-4 col-md-offset-12" rows="5" id="notes" placeholder="Insert notes here..." name="notes"></textarea>
       </div>
 
@@ -46,7 +77,7 @@
       <div id="product_container">
         <div id="product0">
           <div id="divProductList" class="form-group row">
-            <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="product_list"><h5>Product List : </h5></label>
+            <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="product_list"><h5>Product* : </h5></label>
             <select id="product_type0" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="product_type0">
                <option required disabled selected value> -- select an option -- </option>
               @foreach($product_types as $product_type)
@@ -56,14 +87,14 @@
           </div>
 
           <div id="divAmount" class="form-group row">
-            <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="amount"><h5>Amount : </h5></label>
-            <input required id="amount0" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="amount0" type="tel" placeholder="" minlength="0" maxlength="10">
+            <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="amount"><h5>Amount* :</h5></label>
+            <h5>Rp</h5><input pattern="\$?\d+(\,\d{2})?$" oninvalid="this.setCustomValidity('Please enter valid amount')" required id="amount0" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="amount0" type="text" placeholder="" />
           </div>
         </div>
       </div>
 
       <div id="next_app" class="form-group row">
-        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="next_app"><h5>Next Appointment : </h5></label>
+        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="next_app"><h5>Next Appointment* : </h5></label>
 
         <input id="total_product" type="hidden" val="1">
 
@@ -78,10 +109,11 @@
         <div class="col-sm-12 col-md-4 col-md-offset-12">
           <input name="unique_code" type="hidden" value="345901">
           <input name="customer_id" type="hidden" value="{{$customer->id}}">
-          <input name="submit" class="btn btn-primary" type="submit" value="Submit Appointment">
+          <p>*) Required</p>
+          <input class="btn btn-primary" type="submit" value="Submit Appointment" onclick="show_alert()">
         </div>
       </div>
-      
+
   </div>
 </div>
 
@@ -114,6 +146,7 @@
     //alert(total_product);
     var added = $("#product0").clone();
     var newid = 'product' + total_product;
+    added.find('input').val("");
     added.attr('id', newid);
     // var test = added.find('#amount0').id();
     added.appendTo("#product_container");
