@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
 {
-    //
-  public function scheduleType()
+    public function scheduleType()
   {
-  return $this->hasOne(ScheduleType::class);
+     return $this->hasOne(ScheduleType::class);
   }
-
-  public function activityType()
-  {
-  return $this->belongsTo(ActivityType::class);
-  }
+    
+    public function activityType()
+    {
+    return $this->belongsTo(ActivityType::class);
+    }
 }

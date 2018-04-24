@@ -19,5 +19,4 @@ class ProductListAssoc extends Model
     {
         return $this->belongsTo(ProductType::class);
     }
-
 }

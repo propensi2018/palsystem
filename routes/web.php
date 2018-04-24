@@ -39,6 +39,7 @@ Route::get('/qt', 'AppointmentController@store')->middleware('auth');
 Route::get('/appointment/{user_id}','AppointmentController@create')->name('make_appointment')->middleware('auth');
 Route::post('/appointment/store','AppointmentController@store')->middleware('auth');
 Route::get('/appointment/{user_id}','AppointmentController@create')->middleware('auth');
+Route::get('/test/{id}','UserController@test');
 
 
 
@@ -77,7 +78,3 @@ Route::get('/pemesanan','PemesananController@show_all')->middleware('auth');
 Route::get('/pemesanan/create','PemesananController@create')->middleware('auth');
 Route::get('/formpemesanan','PemesananController@index')->middleware('auth');
 Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniqueCode')->name('unique_code')->middleware('auth');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

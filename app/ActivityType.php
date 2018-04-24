@@ -11,4 +11,5 @@ class ActivityType extends Model
     {
          $this->hasOne(Appointment::class);
     }
+   
 }

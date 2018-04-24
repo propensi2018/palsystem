@@ -64,11 +64,34 @@ class AktivitasPanggilanController extends Controller
 
         $id =Auth::id();
         $customery=Customer::where('is_act', false)->get();
-        $joinProspect = DB::table('prospects')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->distinct()->get();
+        $joinProspect = DB::table('prospects')
+        ->join('schedules','id_customer','=','customer_id')
+        ->where('id_user_sp' , $id)
+       ->orderBy('schedules.updated_at','desc')->get();
+        
+         
         $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
+  
+        $joinProspectCustomer = DB::table('prospects')
+            ->select('customer_id','appointments.id_act_type','activity_types.name','prospects.notes')
+            ->join('schedules','id_customer','=','customer_id')
+            ->join('schedule_types' , 'schedule_types.id','=','schedules.schedule_type_id')
+             ->join('appointments','appointments.id','=','schedule_types.appointment_id')
+            ->join('activity_types' , 'appointments.id_act_type','=','activity_types.id')
+            ->where([
+                ['id_user_sp' , $id],
+                ['is_done',0]
+            ])
+           ->orderBy('time','ascending')->get();
         $allSchedule = Schedule::where('id_user_sp', $id)->get();
         $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");
+         
+     
+//         $appointmentCustomer =  Appointment::where('id' , $allScheduleCustomer[$i]->appointment_id)->get()->first()
+       // $appointmentCustomer =  DB::table('appointments')->leftJoin('schedule_types','id','=','schedule_type_id')->where('id',$allScheduleustomer[$i]->appointment_id)->get()->first();
+//               array_push($allAppointment , DB::table('appointments')->leftJoin('schedule_types','appointment_id','=','appointments.id')->where('appointments.id',$allScheduleCustomer[$i]->appointment_id)->get()->first());
+         
         $today1 = date('Y-m-d');
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
@@ -92,17 +115,29 @@ class AktivitasPanggilanController extends Controller
             for($i=0;$i<$jumlah;$i++)
             {
                 array_push($allProspect , $joinProspectId[$i]);
-                array_push($allProspectNotes , Schedule::where('id_customer' , $allProspect[$i] ->customer_id)->get()->first());
-                array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]->id_customer)->get()->first());
+              
+                array_push($allProspectNotes , Schedule::where([['id_customer' , $allProspect[$i] ->customer_id],['is_done',1]])->orderBy('created_at','desc')->get()->first());
+                array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first());
+                
                 array_push($allCustomer , Customer::where('id' , $allProspect[$i]->customer_id)->get());
-                array_push($allScheduleCustomer , ScheduleType::where('id' , $joinProspect[$i]->schedule_type_id)->get()->first());
-                array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]->appointment_id)->get()->first());
-                array_push($allCustomerType , CustomerType::where('id' , $allProspectData[$i]->customer_type_id)->get());
-                array_push($allCustomerWillingness ,ProspectWillingness::where('id',$allProspectData[$i]->prospect_willingness_id) ->get());
+                
+                array_push($allScheduleCustomer , ScheduleType::where('id' , $allProspectNotes[$i]['schedule_type_id'])->get()->first());
+
+             // array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]->appointment_id)->get()->first());
+              array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]['appointment_id'])->get()->first());
+                  
+               
                 if($allAppointment[$i]!=null){
-                    array_push($allActivityType , ActivityType::where('id' , $allAppointment[$i]->id_act_type)->get());
+                     array_push($allCustomerType , CustomerType::where('id' , $allProspectData[$i]['customer_type_id'])->get());
+                array_push($allCustomerWillingness ,ProspectWillingness::where('id',$allProspectData[$i]['prospect_willingness_id']) ->get());
+                    //array_push($allActivityType , $joinProspectCustomer[$i]);
+                    array_push($allActivityType , ActivityType::where('id',$allAppointment[$i]->id_act_type)->get());
                 }
                 else{
+                    array_push($allCustomerWillingness ,0);
+                    //array_push($allActivityType , $joinProspectCustomer[$i]);
+                    array_push($allCustomerType , 0);
+//                   array_push($allActivityType,ActivityType::where('id' , 1)->get());
                    array_push($allActivityType,ActivityType::where('id' , 1)->get());
                 }
            $temp[] = array('dataProspect' => $allProspect[$i],
@@ -115,12 +150,13 @@ class AktivitasPanggilanController extends Controller
                             'dataActivityType' => $allActivityType[$i],
                            'dataTipeCustomer' => $allCustomerType[$i],
                             'dataTipeWillingness' => $allCustomerWillingness[$i]);
+            
 
             }
 
 //         
-         return view('list_customers',compact('customery','temp','today'));
-    //  return compact('allScheduleCustomer');
+return view('list_customers',compact('customery','temp','today','joinProspectCustomer','allActivityType'));
+//         return compact('temp');
 
     }
 

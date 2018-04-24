@@ -35,26 +35,34 @@ class AppointmentController extends Controller
      */
     public function create($customer_id)
     {
+
       if (Auth::user() -> is_sp == 0) {
         abort(403, 'Unauthorized action.');
       }
 
-        //RETRIEVING TODAY'S DATE
-        date_default_timezone_set("Asia/Bangkok");
-        $today1 = date('Y-m-d');
-        $today2 = date('H:i');
-        $today = $today1.'T'.$today2;
+      $customer = Customer::find($customer_id);
+      $planned_date = $customer -> retrieve_last_schedule(Auth::id()) -> time;
 
-        $block = [
-          'customer_id' => $customer_id,
-          'customer' => Customer::findOrFail($customer_id),
-          'willingnesses' => ProspectWillingness::all(),
-          'activity_types' => ActivityType::all(),
-          'product_types' => ProductType::all(),
-          'today' => $today,
+      //RETRIEVING TODAY'S DATE
+      date_default_timezone_set("Asia/Bangkok");
+      $today1 = date('Y-m-d');
+      $today2 = date('H:i');
+      $today = $today1.'T'.$today2;
+
+      // $planned_date = '2017-07-01';
+      $planned_date = date('F d, Y H:i', strtotime($planned_date));
+
+      $block = [
+        'planned_date' => $planned_date,
+        'customer_id' => $customer_id,
+        'customer' => Customer::findOrFail($customer_id),
+        'willingnesses' => ProspectWillingness::all(),
+        'activity_types' => ActivityType::all(),
+        'product_types' => ProductType::all(),
+        'today' => $today,
       ];
-        #return $block;
-        return view('form_appointment2', $block);
+      #return $block;
+      return view('form_appointment2', $block);
     }
 
     /**
@@ -65,7 +73,7 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-
+      // return 'dubas';
         // GETTING FORM VALUES
         date_default_timezone_set("Asia/Bangkok");
         //getting current date and time
@@ -89,21 +97,26 @@ class AppointmentController extends Controller
         $next_schedule_date = request('next_app');
 
         // getting product amount
-        $amount = request('amount');
-
+        $amount = request('amount0');
+        // $amount = (int) str_replace(',','',$amount);
+        // return  $amount;
+        // return [$amount * 1000];
         //GETTING PREVIOUS ENTRIES
-        $all_entry = DB::table('schedules')
-            ->join('schedule_types', 'schedule_types.id', '=', 'schedules.schedule_type_id')
-            ->where('id_user_sp', $id_user_sp)
-            ->where('id_customer', $id_customer)
-            ->where('is_done',0)
-            ->where('telp_flag',1)
-            ->select('schedules.id as schedule_id','id_customer')
-            ->get()->first();
+        $customer = Customer::find($id_customer);
+        $all_entry = $customer -> retrieve_last_schedule($id_user_sp);
+        // $all_entry = DB::table('schedules')
+        //     ->join('schedule_types', 'schedule_types.id', '=', 'schedules.schedule_type_id')
+        //     ->where('id_user_sp', $id_user_sp)
+        //     ->where('id_customer', $id_customer)
+        //     ->where('is_done',0)
+        //     ->where('telp_flag',1)
+        //     ->select('schedules.id as schedule_id','id_customer')
+        //     ->get()->first();
 
-            // return [$all_entry];
 
-          // return ::find($id_customer) -> customer_type_id;
+        // return [$all_entry];
+        //
+        // return ::find($id_customer) -> customer_type_id;
 
 
         //CREATING NEXT APPOINTMENT
@@ -140,7 +153,7 @@ class AppointmentController extends Controller
         }
         // return [$next_schedule, $all_entry];
 
-        //UPDATING CURRENT appointmENT
+        //UPDATING CURRENT APPOINTMENT
         $schedule = "";
         if($all_entry == null) {
           return 'err';
@@ -185,7 +198,7 @@ class AppointmentController extends Controller
           $schedule_type -> appointment() -> associate($appointment);
           $schedule_type -> save();
 
-            $schedule->save(); 
+            $schedule->save();
         }
 
         //HANDLING THE PRODUCT SIDE
@@ -202,6 +215,7 @@ class AppointmentController extends Controller
           }
           $product_type = request('product_type' . $i);
           $amount = request('amount' . $i);
+          $amount = (int) str_replace(',','',$amount);
 
           $product_list_assoc = new ProductListAssoc;
           $product_list_assoc -> id_ptype = $product_type;
@@ -219,7 +233,7 @@ class AppointmentController extends Controller
           $customer -> save();
         } else {
           $customer -> customer_type_id = 1;
-          $customer -> save();                  
+          $customer -> save();
         }
 
         // return 'there';

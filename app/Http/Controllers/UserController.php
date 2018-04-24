@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Customer;
 
 class UserController extends Controller
 {
 
+    public function test($id){
+      $customer = Customer::find($id);
+      return [$customer-> retrieve_list_of_product ()];
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -45,7 +50,7 @@ class UserController extends Controller
         $user -> save();
 
         return 'successful';
-           
+
     }
 
     /**

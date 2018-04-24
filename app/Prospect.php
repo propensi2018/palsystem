@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prospect extends Model
 {
-    //
     protected $primaryKey = 'customer_id';
     //Prospect dimiliki oleh customer
     public function customer()
