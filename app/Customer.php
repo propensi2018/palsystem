@@ -8,6 +8,7 @@ class Customer extends Model
 {
     //user customer bisa digolongkan kedalam prospect list
 
+    //retrieve last currently appointed schedule to customer
     public function retrieve_last_schedule($id_user_sp) {
       return DB::table('schedules')
           ->join('schedule_types', 'schedule_types.id', '=', 'schedules.schedule_type_id')
@@ -20,6 +21,7 @@ class Customer extends Model
           ->get()->first();
     }
 
+    // retreive all product history of a customer
     public function retrieve_list_of_product() {
       $all_product = DB::table('schedules')
       -> join ('product_lists', 'schedules.id', '=', 'product_lists.schedule_id')
