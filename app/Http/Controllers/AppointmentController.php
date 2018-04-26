@@ -35,13 +35,32 @@ class AppointmentController extends Controller
      */
     public function create($customer_id)
     {
-
+      //VERIFYING SALESPERSONNESS
       if (Auth::user() -> is_sp == 0) {
         abort(403, 'Unauthorized action.');
       }
 
+      // RETRIEVING LAST SCHEDULE
       $customer = Customer::find($customer_id);
-      $planned_date = $customer -> retrieve_last_schedule(Auth::id()) -> time;
+      $last_schedule = $customer -> retrieve_last_schedule(Auth::id());
+      $planned_date = $last_schedule -> time;
+
+      //DETERMINING WHAT TYPE APPOINTMENT IS AVAILABLE
+      $last_meeting = Schedule::findOrFail($last_schedule -> schedule_id);
+      // return [$last_meeting -> previousSchedule -> scheduleType -> appointment -> id_act_type];
+      $last_appt_type = $last_meeting -> last_appointment_type();
+      // return $last_appt_type;
+
+      //CONFIGURE THIS!!!!
+      //
+      $activity_type = "";
+      if ($last_appt_type == 1 || $last_appt_type == 0 || $last_appt_type == null) {
+        $activity_type = ActivityType::find([1,2]);
+      } else if ($last_appt_type == 2) {
+        $activity_type = ActivityType::find([2,3]);
+      // } else if ($last_appt_type == 0) {
+      //   abort(404, 'there\'s no previous schedule, are you sure that this person has made an appointment before?');
+      }
 
       //RETRIEVING TODAY'S DATE
       date_default_timezone_set("Asia/Bangkok");
@@ -57,7 +76,7 @@ class AppointmentController extends Controller
         'customer_id' => $customer_id,
         'customer' => Customer::findOrFail($customer_id),
         'willingnesses' => ProspectWillingness::all(),
-        'activity_types' => ActivityType::all(),
+        'activity_types' => $activity_type,
         'product_types' => ProductType::all(),
         'today' => $today,
       ];
@@ -73,7 +92,6 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-      // return 'dubas';
         // GETTING FORM VALUES
         date_default_timezone_set("Asia/Bangkok");
         //getting current date and time
@@ -82,25 +100,21 @@ class AppointmentController extends Controller
         $today = $today1.'T'.$today2;
 
         //getting salesperson id
-        $id_user_sp = Auth::id(); // TODO change this once authenticated
-
+        $id_user_sp = Auth::id();
         //getting activity type id
         $id_activity_type = request('appointment_type');
-
         //getting notes
         $notes = request('notes');
-
         //getting customer id
         $id_customer = (int)request('customer_id');
-
         //getting next schedule date
         $next_schedule_date = request('next_app');
-
-        // getting product amount
-        $amount = request('amount0');
         // $amount = (int) str_replace(',','',$amount);
         // return  $amount;
         // return [$amount * 1000];
+        // is a deal is zero by default
+        $is_a_deal = 0;
+
         //GETTING PREVIOUS ENTRIES
         $customer = Customer::find($id_customer);
         $all_entry = $customer -> retrieve_last_schedule($id_user_sp);
@@ -113,29 +127,24 @@ class AppointmentController extends Controller
         //     ->select('schedules.id as schedule_id','id_customer')
         //     ->get()->first();
 
-
-        // return [$all_entry];
-        //
-        // return ::find($id_customer) -> customer_type_id;
-
-
         //CREATING NEXT APPOINTMENT
-        // $next_appointment = new Appointment();
-        $is_a_deal = 0;
-        // $next_schedule = "";
-        if ($id_activity_type == 4) {
-          $is_a_deal = 1;
-        }
+        //deprecated code
+        // if ($id_activity_type == 4) {
+        //   $is_a_deal = 1;
+        // }
+
         $next_schedule = "";
-        if ($next_schedule_date != null) { //HANDLING WHETHER A SCHEDULE HAS NEXT APPOINTMENT
+        //handles two cases : HANDLING WHETHER A SCHEDULE HAS NEXT APPOINTMENT
+        // - if appointment is presentation, has customer declined the offer
+        // - if appointment is commit
+        if ($next_schedule_date != null) {
           // $next_appointment -> is_a_deal = $is_a_deal;
           // $next_appointment -> id_act_type = 1;
 
           $next_schedule_type = new ScheduleType();
           $next_schedule_type -> telp_flag = 1;
-
+          // return 'something';
           $next_schedule_type -> save();
-          // $next_schedule_type -> appointment() -> associate($next_appointment);
 
 
           $next_schedule = new Schedule;
@@ -145,9 +154,7 @@ class AppointmentController extends Controller
           $next_schedule -> id_customer = $id_customer;
           $next_schedule -> id_user_sp = $id_user_sp;
           $next_schedule -> notes = $notes;
-
           // return [$next_schedule];
-
           $next_schedule -> save();
 
         }
@@ -181,7 +188,6 @@ class AppointmentController extends Controller
           $schedule -> save();
 
         } else {
-
           $schedule = Schedule::findOrFail($all_entry -> schedule_id);
           $schedule -> is_done = 1;
           if($next_schedule_date != null)
@@ -189,40 +195,44 @@ class AppointmentController extends Controller
 
           $appointment = new Appointment;
           $appointment -> id_act_type = $id_activity_type;
-          $appointment -> is_a_deal = $is_a_deal;
-          // $schedule -> scheduleType -> appointment() -> associate($appointment);
-          $appointment -> id_act_type = $id_activity_type;
           $appointment -> save();
 
           $schedule_type = $schedule -> scheduleType;
           $schedule_type -> appointment() -> associate($appointment);
           $schedule_type -> save();
 
-            $schedule->save();
+          $schedule->save();
         }
 
         //HANDLING THE PRODUCT SIDE
-        $product_list = new ProductList;
-        $product_list -> schedule() -> associate($schedule);
-        $product_list -> save();
-        $id = $product_list -> id;
-        $i = 0;
 
-        $flag = true;
-        while($flag){
-          if (request('product_type' .$i) == null) {
-            break;
+        if ($id_activity_type == 2){
+
+          $product_list = new ProductList;
+          $product_list -> schedule() -> associate($schedule);
+          $product_list -> save();
+          $id = $product_list -> id;
+          $i = 0;
+
+          $flag = true;
+          while($flag){
+            if (request('product_type' .$i) == null) {
+              break;
+            }
+            $product_type = request('product_type' . $i);
+            $amount = request('amount' . $i);
+            $amount = (int) str_replace(',','',$amount);
+
+            $product_list_assoc = new ProductListAssoc;
+            $product_list_assoc -> id_ptype = $product_type;
+            $product_list_assoc -> amount = $amount;
+            $product_list_assoc -> productList() -> associate($product_list);
+            $product_list_assoc -> save();
+            $i++;
           }
-          $product_type = request('product_type' . $i);
-          $amount = request('amount' . $i);
-          $amount = (int) str_replace(',','',$amount);
-
-          $product_list_assoc = new ProductListAssoc;
-          $product_list_assoc -> id_ptype = $product_type;
-          $product_list_assoc -> amount = $amount;
-          $product_list_assoc -> productList() -> associate($product_list);
-          $product_list_assoc -> save();
-          $i++;
+        } else if ($id_activity_type == 3) {
+          $product_list = $schedule -> previousSchedule -> productList;
+          $product_list -> schedule -> associate($schedule);
         }
 
 
@@ -239,7 +249,7 @@ class AppointmentController extends Controller
         // return 'there';
 
         //ROUTING TO UNIQUE CODE
-        if ($is_a_deal == 1){
+        if ($id_activity_type == 3){
           return redirect()->route('unique_code', ['id_pl' => $id, 'id_customer' => $id_customer]);
         }
         return redirect()->route('profile-prospect', ['id' => $id_customer]);

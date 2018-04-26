@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Schedule;
 
 use Illuminate\Http\Request;
 use App\User;
@@ -10,8 +11,11 @@ class UserController extends Controller
 {
 
     public function test($id){
-      $customer = Customer::find($id);
-      return [$customer-> retrieve_list_of_product ()];
+      $schedule = Schedule::find($id);
+      // return [$schedule];
+      return [$schedule -> last_appointment_type()];
+      // $customer = Customer::find($id);
+      // return [$customer-> retrieve_list_of_product ()];
     }
     /**
      * Display a listing of the resource.

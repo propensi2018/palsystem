@@ -19,7 +19,8 @@ class CreateProspectsTable extends Migration
           $table->integer('address_id')->unsigned();
           $table->integer('customer_type_id')->unsigned();
           $table->integer('prospect_willingness_id')->unsigned();
-          $table->integer('cycle');
+          $table->integer('cycle'); //buat existing customer, retrieve yang cycle nya > 1
+          // tiap kali deal cycle ++ , tiap mau bikin schedule, cycle ngrefer ke sini
           $table->string('email');
 
           $table->foreign('address_id')

@@ -4,7 +4,6 @@
 
 @section('contents')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="../resources/assets/js/autoNumeric-next/src/AutoNumeric.js"></script>
 <script type="text/javascript">
 function addCommas(nStr)
   {
@@ -58,6 +57,7 @@ function addCommas(nStr)
           @endforeach
         </select>
       </div>
+
       <div id = "notes" class="form-group row">
         <label for="notes" class="col-sm-6 col-md-4 col-md-offset-12 appt-form-name"><h5>Notes* : </h5></label>
         <textarea type="text" class="form-control col-sm-6 col-md-4 col-md-offset-12" rows="5" id="notes" placeholder="Insert notes here..." name="notes"></textarea>
@@ -65,16 +65,16 @@ function addCommas(nStr)
 
       <br>
 
-      <div class="form-group row">
-        <div class="col-md-4 col-md-offset-12">
+      <div id="product_container" style = 'display: none'>
+        <div class="form-group row">
+          <div class="col-md-4 col-md-offset-12">
+          </div>
+          <div class="col-sm-12 col-md-8 col-md-offset-12">
+            <button id ='adder' type='button' class="btn btn-secondary">Add More Product</button>
+            <button id ='deleter' type='button' style = 'display: none' class="btn btn-danger">Delete More Product</button>
+          </div>
         </div>
-        <div class="col-sm-12 col-md-8 col-md-offset-12">
-          <button id ='adder' type='button' class="btn btn-secondary">Add More Product</button>
-          <button id ='deleter' type='button' style = 'display: none' class="btn btn-danger">Delete More Product</button>
-        </div>
-      </div>
 
-      <div id="product_container">
         <div id="product0">
           <div id="divProductList" class="form-group row">
             <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="product_list"><h5>Product* : </h5></label>
@@ -93,6 +93,14 @@ function addCommas(nStr)
         </div>
       </div>
 
+      <div id="failure-container" class="form-group row">
+        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="appointment_type"><h5>Response : </h5></label>
+        <select id="failure"  class="form-control col-sm-6 col-md-4 col-md-offset-12" name="failure">
+          <option selected value='1'>Customer wants to make another appointment</option>
+          <option value='0'>Customer declined the offering</option>
+        </select>
+      </div>
+
       <div id="next_app" class="form-group row">
         <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="next_app"><h5>Next Appointment* : </h5></label>
 
@@ -101,8 +109,8 @@ function addCommas(nStr)
         <input required class="form-control col-sm-6 col-md-4 col-md-offset-12" min={{$today}} name="next_app" type="datetime-local" placeholder="example : 01/01/2001 00:00">
       </div>
 
-      <br>
 
+      <br>
       <div class="form-group row">
         <div class="col-md-4 col-md-offset-12">
         </div>
@@ -120,22 +128,6 @@ function addCommas(nStr)
 
 <script>
   var product_types = @json($product_types);
-
-  // function refresh(){
-  //   var product_types_selected = [];
-  //   var i = 0;
-  //   while (i < total_product){
-  //     console.log([i, total_product]);
-  //     var val = $('#product_type' + i).val();
-  //     product_types_selected.push(val);
-  //     // console.log(val);
-  //     i++;
-  //     console.log(product_types_selected);
-  //   }
-  //   product_types_selected.forEach(function(item) {
-  //     $('#product_type' + 0).find('.' + item).remove();
-  //   });
-  // }
 
   $('#adder').click(function(){
     total_product += 1;
@@ -171,16 +163,50 @@ function addCommas(nStr)
     }
   });
   // $('select').change(refresh());
+
+  $('#failure').change(
+    function () {
+      if ($('#failure').val() == 0) {
+        $('#next_app').hide();
+        $('#next_app').removeAttr();
+      } else {
+        $('#next_app').show();
+        $('#next_app').attr('required', '');
+      }
+    }
+  );
+
   $('div select[name=appointment_type]').change(function(){
-    if ($('div select[name=appointment_type]').val() == '4'){
+    if ($('div select[name=appointment_type]').val() == '3'){
       $('#next_app').find('input').removeAttr('required');
       $('#next_app').hide();
-      $('#notes').hide();
-    } else if ($('div select[name=appointment_type]').val() == '1' || $('div select[name=appointment_type]').val() == '2' || $('div select[name=appointment_type]').val() == '3'){
+      // $('#notes').hide();
+      $('#failure-container').hide();
+
+      $('#product_container').find('input').removeAttr('required');
+      $('#product_container').find('select').removeAttr('required');
+      $('#product_container').hide();
+
+    } else if ($('div select[name=appointment_type]' ).val() == '1' ){
       $('#next_app').find('input').attr('required', '');
       $('#next_app').show();
-      $('#notes').show();
-  }});
+      $('#failure-container').show();
+
+      $('#product_container').find('input').removeAttr('required');
+      $('#product_container').find('select').removeAttr('required');
+      $('#product_container').hide();
+    } else {
+      $('#next_app').find('input').attr('required', '');
+      $('#next_app').show();
+      $('#failure-container').hide();
+
+      $('#product_container').find('input').attr('required', '');
+      $('#product_container').find('select').attr('required', '');
+      $('#product_container').show();
+
+    }
+
+  });
 
 </script>
 

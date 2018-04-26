@@ -27,12 +27,5 @@ class ActivityTypesTableSeeder extends Seeder
       'name'=>'Commit',
       'desc' => ''
       ] );
-      ActivityType::create( [
-      'id'=>4,
-      'name'=>'Deal',
-      'desc' => ''
-
-      ] );
-
     }
 }
