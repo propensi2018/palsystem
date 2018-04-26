@@ -9,7 +9,7 @@
         <p id="pUC">Kode : {{$transaction['code']}} </p>
         <input type="hidden" value='{{$id_customer}}'>
 
-        <input id="iUC" type="button" class="btn" value="Return" onclick="window.location.href='/B2_PAL/pal/public/customer/{{$id_customer}}'" />
+        <input id="iUC" type="button" class="btn" value="Return" onclick="window.location.href='../public/customer/{{$id_customer}}'" />
     </form>
 </div>
 
