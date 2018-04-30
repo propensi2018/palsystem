@@ -67,6 +67,36 @@ class PemesananController extends Controller
             $exist = "Unique Code Doesn't Exist";
         } else {
             $exist = "Unique Code Exist";
+            $uniqueCode = $transaction['code'];
+            $productSolds = DB::table('transactions')
+                    ->join('product_list_assocs','transactions.id_pl', '=', 'product_list_assocs.product_list_id')
+                    ->join('product_types','product_list_assocs.id_ptype', '=', 'product_types.id')
+                    ->where('transactions.code', $uniqueCode)
+                    ->select('transactions.code','product_types.desc','product_list_assocs.amount')
+                    ->get();
+            return response()->json($productSolds);
+
+            DB::table('transactions')
+                ->where('code', $uniqueCode)
+                ->update(['is_valid' => 1]);
+
+            //$id_pl = DB::table('transactions')->where('code', $uniqueCode)->value('id_pl');
+            //$schedule_id = DB::table('product_lists')->where('id', $id_pl)->value('schedule_id');
+            //$schedule_type_id = DB::table('schedules')->where('id', $schedule_id)->value('schedule_type_id');
+            //$appointment_id = DB::table('schedule_types')->where('id', $schedule_type_id)->value('appointment_id');
+
+            $appointment_id = DB::table('transactions')
+                ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+                ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
+                ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
+                ->where('transactions.code', $uniqueCode)
+                ->value('appointment_id');
+
+            DB::table('appointments')
+                ->where('id', $appointment_id)
+                ->update(['is_a_deal' => 1]);
+
+
         }
         return response()->json($exist);
     }
