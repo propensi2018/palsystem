@@ -16,36 +16,19 @@
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="500"></canvas>
+                  <canvas id="myChart" width="400" height="200"></canvas>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(document.getElementById("myChart"), {
   type: 'line',
   data: {
-    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-    datasets: [{
-        data: [86,114,106,106,107,111,133,221,783,2478],
-        label: "Africa",
-        borderColor: "#3e95cd",
-        fill: 'origin'
-      }, {
-        data: [282,350,411,502,635,809,947,1402,3700,5267],
-        label: "Asia",
-        borderColor: "#8e5ea2",
-        fill: 1
-      }, {
-        data: [168,170,178,190,203,276,408,547,675,734],
-        label: "Europe",
-        borderColor: "#3cba9f",
-        fill: 2,
-        Boundary : 'start'
-      },
-    ]
+    labels: @json($labels),
+    datasets: @json($data)
   },
   options: {
     title: {
       display: true,
-      text: 'World population per region (in millions)'
+      text: 'Product'
     }
   }
 });</script>
