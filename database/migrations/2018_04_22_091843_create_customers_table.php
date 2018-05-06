@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
       Schema::create('customers', function (Blueprint $table) {
           $table->increments('id');
-          // $table->string('telp_no');
+          // $table->string('telp_no'); 
           $table->string('name');
           $table->integer('id_status_condition')->unsigned()->nullable();
           $table->boolean('is_act');
