@@ -69,13 +69,14 @@ session_start();
                   <a id="card-klik" href="{{ URL::to('../public/customer/' . $allProspectLoop['dataCustomer'][0]->id)}}">
                     <div class="card-ct-body">
                       @if($allProspectLoop['dataActivityType']!= null)
-                        <div class="card-body-title">
+                        <div style="color: green" class="card-body-title">
                           {{ $allProspectLoop['dataActivityType'][0]->name}}
                         </div>
                       @else
                         <br>
                       @endif
                       <div>
+                          
                         <span class="card-body-title-name">{{$allProspectLoop['dataCustomer'][0]-> name}}</span><br>
                         <span class="card-body-title-telp">{{$allProspectLoop['dataCustomer'][0]-> telp_no}}</span>
 
@@ -84,12 +85,15 @@ session_start();
                         <div class="col-sm-12 col-md-12 col-md-offset-12 card-body-status">
                             
                             @if($allProspectLoop['dataTipeCustomer']!= null && $allProspectLoop['dataTipeWillingness']!=null)
-                              
+                            @if($allProspectLoop['dataTipeCustomer'][0]-> name == 'Hot')
                             <span class='badge badge-danger'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
+                            @else
+                            <span class='badge badge-success'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
+                            @endif
                              <span class='badge badge-secondary'>{{ $allProspectLoop['dataTipeWillingness'][0]-> name}}</span>
                               
                             @else
-                              <span class='badge badge-danger'>Warm</span> 
+                              <span class='badge badge-success'>Warm</span> 
                                <span class='badge badge-secondary'>Conservative</span>
                               
                             @endif

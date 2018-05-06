@@ -78,8 +78,6 @@ class AktivitasPanggilanController extends Controller
         ->join('schedules','id_customer','=','customer_id')
         ->where('id_user_sp' , $id)
        ->orderBy('schedules.updated_at','desc')->get();
-        
-         
         $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
   
         $joinProspectCustomer = DB::table('prospects')
@@ -96,11 +94,9 @@ class AktivitasPanggilanController extends Controller
         $allSchedule = Schedule::where('id_user_sp', $id)->get();
         $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");
-         
         $today1 = date('Y-m-d');
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
-
         $jumlah = sizeof($joinProspectId);
         $tempSchedule = array();
         $allScheduleCustomer = array();
@@ -116,38 +112,26 @@ class AktivitasPanggilanController extends Controller
         $allProspectNotes = array();
         $allAppointmentTes = array();
         $allProspectData = array();
-
-
             for($i=0;$i<$jumlah;$i++)
             {
                 array_push($allProspect , $joinProspectId[$i]);
-              
                 array_push($allProspectNotes , Schedule::where([['id_customer' , $allProspect[$i] ->customer_id],['is_done',1]])->orderBy('created_at','desc')->get()->first());
-                array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first());
-                
+             
+                array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first()); 
                 array_push($allCustomer , Customer::where('id' , $allProspect[$i]->customer_id)->get());
-                
                 array_push($allScheduleCustomer , ScheduleType::where('id' , $allProspectNotes[$i]['schedule_type_id'])->get()->first());
-
-             // array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]->appointment_id)->get()->first());
-              array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]['appointment_id'])->get()->first());
-                  
-               
+                array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]['appointment_id'])->get()->first());
                 if($allAppointment[$i]!=null){
-                     array_push($allCustomerType , CustomerType::where('id' , $allProspectData[$i]['customer_type_id'])->get());
-                array_push($allCustomerWillingness ,ProspectWillingness::where('id',$allProspectData[$i]['prospect_willingness_id']) ->get());
-                    //array_push($allActivityType , $joinProspectCustomer[$i]);
+                    array_push($allCustomerType , CustomerType::where('id' , $allProspectData[$i]['customer_type_id'])->get());
+                    array_push($allCustomerWillingness ,ProspectWillingness::where('id',$allProspectData[$i]['prospect_willingness_id']) ->get());
                     array_push($allActivityType , ActivityType::where('id',$allAppointment[$i]->id_act_type)->get());
                 }
                 else{
                     array_push($allCustomerWillingness ,0);
-                    //array_push($allActivityType , $joinProspectCustomer[$i]);
                     array_push($allCustomerType , 0);
-//                   array_push($allActivityType,ActivityType::where('id' , 1)->get());
-                   array_push($allActivityType,ActivityType::where('id' , 1)->get());
+                    array_push($allActivityType,ActivityType::where('id' , 1)->get());
                 }
            $temp[] = array('dataProspect' => $allProspect[$i],
-                            
                             'dataProspectNotes' => $allProspectNotes[$i],
                             'dataCustomer' => $allCustomer[$i],
                             'dataProspectLengkap' =>$allProspectData[$i],
@@ -159,8 +143,6 @@ class AktivitasPanggilanController extends Controller
             
 
             }
-
-//         
 return view('list_customers',compact('customery','temp','today','joinProspectCustomer','allActivityType', 'exCust'));
 //         return compact('temp');
 
@@ -342,28 +324,35 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
     {
 
 
-        $newAddress = new Address;
-
-        $newAddress->province = request('provinsi');
-        $newAddress->city = request('kota');
-        $newAddress->kelurahan = request('kelurahan');
-        $newAddress->district = request('kecamatan');
-        $newAddress->postal_code = request('kodePos');
-        $newAddress->street = request('namaJalan');
-        $newAddress->save();
-
-        // $sizeAddress = sizeof(Address::select('id')->get());
-        $newProspect = new Prospect;
+       $newProspect = new Prospect;
         $newProspect->prospect_willingness_id = 3;
         $newProspect->customer_type_id = 1;
         $newProspect->customer_id = request('id_customer');
         $newProspect->notes = request('notes');
-        // $newProspect->address_id =  $sizeAddress + 1;
-        $newProspect -> address() -> associate($newAddress);
+        $newProspect->email = request('email');
         $newProspect->save();
 
+        $i=0;
+        $flag = true;   
+        while($flag){
+          if (request('provinsi' .$i) == null) {
+            break;
+          }
+        $newAddress = new Address;
+        $newAddress->province = request('provinsi'.$i);
+        $newAddress->city = request('kota'.$i);
+        $newAddress->kelurahan = request('kelurahan'.$i);
+        $newAddress->district = request('kecamatan'.$i);
+        $newAddress->postal_code = request('kodePos'.$i);
+        $newAddress->street = request('namaJalan'.$i);
+       
+        $newAddress->prospect_customer_id = request('id_customer');
+        $newAddress->save();
+        $i++;
+        } 
         Customer::where('id', request('id_customer')) ->update(['is_act'=>true]);
         return redirect()->route('list_customers');
+
 
     }
     
