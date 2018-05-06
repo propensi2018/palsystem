@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Customer;
@@ -13,6 +14,7 @@ use App\CustomerType;
 use App\ActivityType;
 use App\Appointment;
 use App\Address;
+use App\Telephone;
 use Illuminate\Support\Facades\DB;
 
 class AktivitasPanggilanController extends Controller
@@ -61,9 +63,17 @@ class AktivitasPanggilanController extends Controller
 
      public function show_all()
     {
-
         $id =Auth::id();
-        $customery=Customer::where('is_act', false)->get();
+
+        $customery=Customer::where([['is_act', false], ['pic_sp_id', $id]])->get();
+
+        $exCust=DB::table('prospects')->join('customers', 'prospects.customer_id', '=', 'customers.id')->where([['pic_sp_id', $id],['cycle', '>=', '1']])->get();
+      
+        foreach($customery as $individuals) {
+            $individuals -> telephones = array();
+            $individuals -> telephones = Telephone::select('telp_no')->where('customer_id', $individuals->id)->get();
+        }
+        
         $joinProspect = DB::table('prospects')
         ->join('schedules','id_customer','=','customer_id')
         ->where('id_user_sp' , $id)
@@ -87,14 +97,10 @@ class AktivitasPanggilanController extends Controller
         $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");
          
-     
-//         $appointmentCustomer =  Appointment::where('id' , $allScheduleCustomer[$i]->appointment_id)->get()->first()
-       // $appointmentCustomer =  DB::table('appointments')->leftJoin('schedule_types','id','=','schedule_type_id')->where('id',$allScheduleustomer[$i]->appointment_id)->get()->first();
-//               array_push($allAppointment , DB::table('appointments')->leftJoin('schedule_types','appointment_id','=','appointments.id')->where('appointments.id',$allScheduleCustomer[$i]->appointment_id)->get()->first());
-         
         $today1 = date('Y-m-d');
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
+
         $jumlah = sizeof($joinProspectId);
         $tempSchedule = array();
         $allScheduleCustomer = array();
@@ -155,7 +161,7 @@ class AktivitasPanggilanController extends Controller
             }
 
 //         
-return view('list_customers',compact('customery','temp','today','joinProspectCustomer','allActivityType'));
+return view('list_customers',compact('customery','temp','today','joinProspectCustomer','allActivityType', 'exCust'));
 //         return compact('temp');
 
     }
@@ -197,16 +203,49 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         Prospect::where('customer_id', $id)->delete();
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        // abort(403, 'test');
+
+        // $validator = Validator::make($request->all(), [
+        //     'telp_no_0' => 'required|unique:telephones,telp_no']);
+
+        // if ($validator->fails()) {
+        //     return redirect('list_customers')->withErrors($validator)->withInput();
+        // }
+
+        // $validatedData = $request->validate(['telp_no_0' => 'required|unique:telephones,telp_no']);
+        $j = 0;
+        $validator = array();
+        $flag1 = true;
+        while($flag1) {
+            if (request('telp_no_'. $j)==null)
+                break;
+            $validator += ['telp_no_' . $j => 'required|unique:telephones,telp_no'];
+            $j++;
+        }
+
+        $validate = $request -> validate($validator);
+
         $newCust = new Customer;
-
-        $newCust->name = request('name');
-        $newCust->telp_no = request('telp_no');
-
+        $newCust->pic_sp_id = Auth::user()->id;
         $newCust->is_act = 0;
-
+        $newCust->name = request('name');
         $newCust->save();
+        $i = 0;
+
+        $flag = true;
+        while($flag) {
+            if ($a = (request('telp_no_'. $i)==null))
+                break;
+            $newCust->telp_no = request('telp_no_'. $i);
+            $telp = new Telephone;
+            $telp -> telp_no = request('telp_no_'. $i);
+            $telp -> customer() -> associate($newCust);
+            $telp->save();
+            $i++;
+        
+        }
         return redirect()->route('list_customers');
     }
 
@@ -327,4 +366,79 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         return redirect()->route('list_customers');
 
     }
+    
+    public function store_csv(Request $req){
+        $tmpName = $req->file('file_csv')->getPathName();
+        // dd($req);
+        $csvAsArray = array_map('str_getcsv', file($tmpName));
+        // dd($csvAsArray);
+
+        foreach ($csvAsArray as $value) {
+            //$validatedData = $request->validate([$value[1] => 'required|unique:telephones,telp_no']);
+
+            $newCust = new Customer;
+
+            $newCust->name = $value[0];
+            $newCust->is_act = 0;
+            $newCust->pic_sp_id = Auth::user()->id;
+            $newCust->save();
+
+            $newTelp = new Telephone;
+
+            $newTelp->telp_no = $value[1];
+            $newTelp-> Customer() -> associate($newCust);
+            $newTelp->save();
+        }
+        return redirect()->route('list_customers');
+    }
+
+    public function store_response_ex_cust() {
+        if (request ('customer_type') == "Pending") {
+            $strApp = new Appointment();        
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+
+            $strScTp = new ScheduleType;
+            $strScTp->telp_flag = 0;
+            $strScTp->save();
+
+            $strSch = new Schedule;
+            $strSch->is_done = 0;
+            $strSch->time = request('time');
+            $strSch->notes = request('notes');
+            $strSch -> scheduleType() -> associate($strScTp);
+            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
+            $strSch->id_customer = request('id_customer');
+            $strSch->id_user_sp = $id;
+            $strSch->save();
+
+            Customer::where('id', request('id_customer')) ->update(['is_act'=>true]);
+            return redirect()->route('list_customers');
+        }
+
+        else {
+            $strApp = new Appointment();        
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+            
+            $strScTp = new ScheduleType;
+            $strScTp->telp_flag = 1;
+            $strScTp->save();
+
+            $strSch = new Schedule;
+            $strSch->is_done = 1;
+            $strSch->notes = request('notes');
+            $strSch -> scheduleType() -> associate($strScTp);
+//            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
+            $strSch->id_customer = request('id_customer');
+            $strSch->id_user_sp = $id;
+            $strSch->save();
+
+            Customer::where('id', request('id_customer')) ->update(['is_act'=>true]);
+            return redirect()->route('list_customers');
+        }
+    }
 }
+

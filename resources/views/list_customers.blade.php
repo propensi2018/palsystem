@@ -146,6 +146,16 @@ select {
 <!-- Maktal Punya -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
 
+<script>
+    var total_number = 0;
+</script>
+
+@if ($errors->any())
+  <div class="alert alert-danger">
+    telp no has been taken
+  </div>
+@endif
+
 <div class="list-customer">
   <div class="container">
 
@@ -155,6 +165,15 @@ select {
       <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#myModal">
         <span> New Customer</span>
       </button>
+
+      <!-- upload csv -->
+      <form method="POST" action="customer/store_csv" enctype="multipart/form-data">
+        {{csrf_field()}}
+        <input type="file" name="file_csv"></input>
+        
+      <input type="submit" name="submit" class="btn btn-primary float-right"></input>
+      </form>
+
     </div>
 
     <div class="modal fade" id="myModal">
@@ -169,16 +188,31 @@ select {
             </div>
 
             <div class="modal-body">
-              <h6>Customer Name:</h6>
+              <h6>Customer Name<span><font color="red">* </font></span>:</h6>
               <input type="text" class="form-control" name="name" id="name" placeholder="Customer Name" oninvalid="this.setCustomValidity('Please Enter Name')" oninput="setCustomValidity('')" required>
               </input><br>
 
-              <h6>Phone Number:</h6>
-                  <input type="tel" class="form-control" name="telp_no" id="telp_no" placeholder="Phone Number" oninvalid="this.setCustomValidity('Please enter valid phone number')" oninput="setCustomValidity('')" minlength="9" maxlength="13" pattern="^[0-9\+\(\)]*$" required>
-                    <span class="validity">
-                    </span>
-                  </input>
+              <div class="form-group row">
+                <div class="col-md-4 col-md-offset-12">
+                </div>
+                <div class="col-sm-6 col-md-6 col-md-offset-12">
+                  <button id ='adders' type='button' class="btn btn-secondary">Add More Phone Number</button>
+                  <button id ='deleters' type='button' style = 'display: none' class="btn btn-danger">Delete More Product</button>
+                </div>
+              </div>
+
+              <div id="number_container">
+                <div id="number0">
+                  <h6>Phone Number<span><font color="red">* </font></span>:</h6>
+                    <input type="tel" class="form-control" name="telp_no_0" id="telp_no_0" placeholder="Phone Number" oninvalid="this.setCustomValidity('Please enter valid phone number')" oninput="setCustomValidity('')" minlength="9" maxlength="13" pattern="^[0-9\+\(\)]*$" required>
+                      <span class="validity">
+                      </span>
+                    </input>
+                </div>
+              </div>
             </div>
+
+            <input id="total_number" name="total_number" type="hidden" val="1">
 
             <div class="modal-footer">
               <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
@@ -207,7 +241,10 @@ select {
               {{$customerz->name}}
             </td>
             <td>
-              {{$customerz->telp_no}}
+              @foreach($customerz ->telephones as $telephone)
+              <p><!-- {{$loop->iteration}} : --> {{$telephone->telp_no}}</p>
+              @endforeach
+              <!-- {{$customerz->telp_no}} -->
             </td>
             <td>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerz->id}}">Fill Response</button>
@@ -233,21 +270,25 @@ select {
                           }]);
                         </script>
 
-                        <h6>Date:</h6>
-                        <input type="hidden" name="id_customer" value="{{$customerz -> id}}">
-                        <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" ><br>
+                        <div class="row">
+                          <div class="col-sm-6 col-md-6 col-md-offset-12">
+                            <h6>Customer Responses<span><font color="red">* </font></span>:</h6>
+                            <select id="customer_type" class="custom-select" name="customer_type">
+                              <option value="Prospect">Prospect</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Reject">Reject</option>
+                            </select>
+                          </div>
 
+                          <div class="col-sm-6 col-md-6 col-md-offset-12">
+                            <h6>Date<span><font color="red">* </font></span>:</h6>
+                            <input type="hidden" name="id_customer" value="{{$customerz -> id}}">
+                            <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
+                          </div>
+                        </div>
+                        <br>
                         <h6>Notes:</h6>
                         <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea><br>
-
-                        <div>
-                          <h6>Customer Responses:</h6>
-                          <select id="customer_type" class="custom-select col-8 col-sm-9" name="customer_type">
-                            <option value="Reject">Reject</option>
-                            <option value="Prospect">Prospect</option>
-                            <option value="Pending">Pending</option>
-                          </select>
-                        </div>
                       </div>
 
                       <div class="modal-footer">
@@ -268,24 +309,86 @@ select {
   </div>
 </div>
 
+<div class="list-customer">
+  <div class="container">
+     <!-- Existing Customer Table -->
+      <h2 style="text-align: center"><b>EXISTING CUSTOMERS</b></h2>
+      <div data-role="page" ng-app="dateInputExample" class="data-table">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Last Deal</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @foreach ($exCust as $exCustView)
+            <tr>
+              <td>
+                {{$exCustView->name}}
+              </td>
+              <td>
+                {{$exCustView->updated_at}}
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+
 <script type="text/javascript">
-  $("#example").bsFormAlerts({"id": "example"});
+   $('#adders').click(function(){
+    total_number += 1;
+    $('#total_number').val(total_number + 1);
+    if (total_number == 1) {
+      $('#deleters').show();
+    }
 
-  $.fn.bsFormAlerts.defaults = {
-  alertid: "bs-form-alert",
-  outer_query: "div.control-group",
-  css_prefix: "",
-  error_css: "error"
-  };
-
-  $(document).trigger("set-alert-id-example", {
-  "message": "Please enter at least 3 characters",
-  "priority": "error"
+    var added = $("#number0").clone();
+    var addid = 'number' + total_number;
+    added.attr('id', addid);
+    added.find('input').val("");
+    added.appendTo("#number_container");
+    $('#' + addid).find('input')
+      .attr('name','telp_no_' + total_number)
+      .attr('id','telp_no_' + total_number);
   });
+  $('#deleters').click(function(){
+    //alert(total_product);
+    $('#number' + total_number).remove();
+    total_number -= 1;
+    $('#total_number').val(total_number + 1);
+    // refresh();
+    if (total_number <= 0) {
+      $('#deleters').hide();
+    }
+  }); 
 
-  $(document).trigger("clear-alert-id.example");
+  // $("#example").bsFormAlerts({"id": "example"});
 
-  $(document).trigger("clear-alert-id");
+  // $.fn.bsFormAlerts.defaults = {
+  // alertid: "bs-form-alert",
+  // outer_query: "div.control-group",
+  // css_prefix: "",
+  // error_css: "error"
+  // };
+
+  // $(document).trigger("set-alert-id-example", {
+  // "message": "Please enter at least 3 characters",
+  // "priority": "error"
+  // });
+
+  // $(document).trigger("clear-alert-id.example");
+
+  // $(document).trigger("clear-alert-id");
+
+  // Adding more phone number
+
+ 
 </script>
 
 @endsection
