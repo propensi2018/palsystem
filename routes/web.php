@@ -79,4 +79,8 @@ Route::get('/pemesanan/create','PemesananController@create')->middleware('auth')
 Route::get('/formpemesanan','PemesananController@index')->middleware('auth');
 Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniqueCode')->name('unique_code')->middleware('auth');
 
+
+// --MENAMPILKAN DATA TRANSAKSI (PIC : MAKTALSAKRIADHI)--
+Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
+
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
