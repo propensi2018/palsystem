@@ -47,9 +47,14 @@ body {
 .reminder-body {
 	background-color: #fff;
 	color: #000;
-	padding: 20px;
 	border-radius: 5px;
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reminder-body-list {
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-bottom: 30px;
 }
 
 .reminder-title-sch-type-call {
@@ -101,3 +106,47 @@ ul li {
 	margin: 0px;
 	padding: 20px;
 }
+
+.clockStyle {
+	padding-top: 20px;
+	margin: 0px;
+	font-size: 20px;
+	text-align: center;
+}
+
+/* Style Calendar */
+
+.calendar-style {
+
+}
+
+.calendar-style-table {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 12px;
+}
+
+.calendar-style-table th {
+	padding-right: 5px;
+	padding-left: 5px;
+	height: 40px;
+	font-weight: 700;
+}
+
+.calendar-style-table td {
+	height: 40px;
+}
+
+.today {
+	background-color: #EFEFEF;
+	color: #fff;
+}
+
+.calendar-style-table th:nth-of-type(1),td:nth-of-type(1){
+	color: red;
+}
+
+.calendar-style-table th:nth-of-type(7),td:nth-of-type(7){
+	color: red;
+}	

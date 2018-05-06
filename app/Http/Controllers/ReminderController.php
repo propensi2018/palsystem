@@ -39,6 +39,7 @@ class ReminderController extends Controller
         $scheduleIsDone = array();
         $schedules = array();
         $customer = array();
+        $sched_cal = array();
 
         for ($i=0; $i < sizeof($allSchedule) ; $i++) { 
             if ($allSchedule[$i] -> is_done == 0) {
@@ -47,6 +48,7 @@ class ReminderController extends Controller
 
                 $clock = explode(' ', $allSchedule[$i] ->time);
                 $date = $clock[0];
+                $sched_cal[] = array('act' => $date);
                 $hour = explode(':', $clock[1]);
                 $minute = explode(':', $clock[1]);
                 $times = $hour[0] . ':' . $minute[1];
@@ -67,7 +69,7 @@ class ReminderController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
 
-        return view('dashboard', compact('schedules','today'));
+        return view('dashboard', compact('schedules','today', 'sched_cal'));
     }
 
     /**
