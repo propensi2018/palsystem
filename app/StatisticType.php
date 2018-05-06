@@ -7,16 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class StatisticType extends Model
 {
 
-  // to do create attribute and documentation for what is that
-  // public function evaluatee() {
-  //   if($this -> type === 1) {
-  //     return salesperson();
-  //   } else if ($this -> type === 2) {
-  //     return level();
-  //   } else {
-  //     return productType();
-  //   }
-  // }
 
   //RETURN object the statistic is evaluating
   public function evaluatee() {
@@ -33,22 +23,28 @@ class StatisticType extends Model
       }
     }
   }
-
-
-  protected function salesperson()
-  {
+  public function id_evaluatee() {
+    $returner = $this -> id_user_sp;
+    if($returner != null) {
+      return [$returner, 'salespeople'];
+    } else {
+      $returner = $this -> id_level;
+      if($returner != null)) {
+        return [$returner, 'levels'];
+      } else {
+        $returner = $this -> id_product;
+        return [$returner, 'product_types'];
+      }
+    }
+  }
+  protected function salesperson(){
       return $this->belongsTo(Salesperson::class);
   }
-  protected function level()
-  {
+  protected function level(){
       return $this->belongsTo(Level::class);
   }
-  protected function productType()
-  {
+  protected function productType(){
       return $this->belongsTo(ProductType::class);
   }
-  // public function productList()
-  // {
-  //     return $this->hasOne(ProductList::class);
-  // }
+
 }

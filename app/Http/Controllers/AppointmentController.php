@@ -57,7 +57,7 @@ class AppointmentController extends Controller
       if ($last_appt_type == 1 || $last_appt_type == 0 || $last_appt_type == null) {
         $activity_type = ActivityType::find([1,2]);
       } else if ($last_appt_type == 2) {
-        $activity_type = ActivityType::find([2,3]);
+        $activity_type = ActivityType::find([3]);
       // } else if ($last_appt_type == 0) {
       //   abort(404, 'there\'s no previous schedule, are you sure that this person has made an appointment before?');
       }
@@ -149,6 +149,7 @@ class AppointmentController extends Controller
 
           $next_schedule = new Schedule;
           $next_schedule -> is_done = 0;
+          $next_schedule -> cycle = Prospect::find($id_customer)->cycle;
           $next_schedule -> time = $next_schedule_date;
           $next_schedule -> scheduleType() -> associate($next_schedule_type);
           $next_schedule -> id_customer = $id_customer;
@@ -231,6 +232,8 @@ class AppointmentController extends Controller
             $i++;
           }
         } else if ($id_activity_type == 3) {
+          $prospect = Prospect::find($id_customer);
+          $prospect -> cycle = $prospect -> cycle + 1;
           $product_list = $schedule -> previousSchedule -> productList;
           $product_list -> schedule -> associate($schedule);
         }

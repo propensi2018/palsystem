@@ -15,4 +15,9 @@ class ProductType extends Model
     {
         return $this->hasMany(ProductListAssoc::class);
     }
+
+    public function statisticType() {
+      return $this->hasOne(StatisticType::class, 'id_product');
+    }
+
 }

@@ -50,8 +50,9 @@ function addCommas(nStr)
       </div>
 
       <div class="form-group row">
-        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="appointment_type"><h5>Appointment : </h5></label>
-        <select class="form-control col-sm-6 col-md-4 col-md-offset-12" name="appointment_type">
+        <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="appointment_type"><h5>Appointment* : </h5></label>
+        <select required class="form-control col-sm-6 col-md-4 col-md-offset-12" name="appointment_type">
+          <option disabled selected>--Select one--</option>
           @foreach($activity_types as $activity_type)
             <option value='{{$activity_type->id}}'>{{$activity_type->name}}</option>
           @endforeach

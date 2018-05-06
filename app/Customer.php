@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+
     //user customer bisa digolongkan kedalam prospect list
 
     //retrieve last currently appointed schedule to customer

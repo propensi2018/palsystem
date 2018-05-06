@@ -6,14 +6,17 @@ use App\Schedule;
 use Illuminate\Http\Request;
 use App\User;
 use App\Customer;
+use App\Statistic;
 
 class UserController extends Controller
 {
 
     public function test($id){
-      $schedule = Schedule::find($id);
-      // return [$schedule];
-      return [$schedule -> last_appointment_type()];
+      $s = new Statistic;
+      return $s -> calculateYear(1,2);
+      // $schedule = Schedule::find($id);
+      // // return [$schedule];
+      // return [$schedule -> last_appointment_type()];
       // $customer = Customer::find($id);
       // return [$customer-> retrieve_list_of_product ()];
     }

@@ -20,6 +20,7 @@ class CreateSchedulesTable extends Migration
           $table->string('response')->nullable();
           $table->string('notes')->nullable();
 
+          $table -> integer('cycle');
           $table->integer('schedule_type_id')->unsigned()->nullable();
           $table->integer('id_customer')->unsigned()->nullable();
           $table->integer('id_user_sp')->unsigned()->nullable();

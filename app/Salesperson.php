@@ -10,8 +10,14 @@ class Salesperson extends Model
     {
       return $this->belongsTo(User::class);
     }
+
     public function branch()
     {
       return $this->belongsTo(Branch::class);
     }
+
+    public function statisticType() {
+      return $this->hasOne(StatisticType::class, 'id_user_sp');
+    }
+
 }

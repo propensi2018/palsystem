@@ -11,7 +11,12 @@ class ProductList extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
+
     public function productListAssoc(){
         return $this->hasMany(ProductListAssoc::class);
+    }
+
+    public function transaction() {
+      return $this->hasOne(Transaction::class);
     }
 }
