@@ -61,7 +61,7 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a href="#"><img class="sidebar-icon" src="{{ url('image/profile.svg') }}" alt="icon name">PROFILE</a>
+                    <a href="{{ url('/history') }}"><img class="sidebar-icon" src="{{ url('image/profile.svg') }}" alt="icon name">PROFILE</a>
                 </li>
             </ul>
         </div>
