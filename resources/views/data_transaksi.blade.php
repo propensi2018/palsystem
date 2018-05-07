@@ -6,8 +6,6 @@ session_start();
 @section('title', 'Customer')
 @section('contents')
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
-
 <div class="data_transaksi">
   <div class="container">
 
@@ -22,24 +20,35 @@ session_start();
             <th>Customer's Name</th>
             <th>Costumer's Address</th>
             <th>Product(s)</th>
-            <th>Nominal</th>
+            <th>Amount</th>
           </tr>
         </thead>
 
         <tbody>
+          @foreach ($TransData as $data)
           <tr>
             <td>
+              1
             </td>
             <td>
+              {{$data -> name}}
             </td>
             <td>
+              {{$data -> city}}
+            </td>
+            <td>
+              {{$data -> desc}}
+            </td>
+            <td>
+              {{$data -> amount}}
             </td>
           </tr>
+          @endforeach
         </tbody>
 
       </table>
     </div>
-
   </div>
 </div>
+
 @endsection

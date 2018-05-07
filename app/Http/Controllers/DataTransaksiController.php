@@ -57,11 +57,11 @@ class DataTransaksiController extends Controller
      */
     public function show()
     {
-        $id =Auth::id();
+        $id =Auth::id();                                                                                                          
 
-        $TransData=DB::table('transactions')->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')->join('customers', 'schedules.id_customer', '=', 'customers.id')->where('transactions.is_valid', '=', '1')->get();
-        return $TransData;
-        return view('data_transaksi',compact('TransData'));
+        $TransData=DB::table('transactions')->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')->join('customers', 'schedules.id_customer', '=', 'customers.id')->join('prospects', 'customers.id','=','prospects.customer_id')->join('addresses', 'prospects.address_id','=','addresses.id')->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')->where('transactions.is_valid', '=', '1')->get();
+        //return $TransData;
+        return view('data_transaksi', ['TransData' => $TransData]);
     }
 
     /**
