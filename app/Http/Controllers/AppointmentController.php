@@ -206,7 +206,7 @@ class AppointmentController extends Controller
         }
 
         //HANDLING THE PRODUCT SIDE
-
+        $id = "";
         if ($id_activity_type == 2){
 
           $product_list = new ProductList;
@@ -235,7 +235,8 @@ class AppointmentController extends Controller
           $prospect = Prospect::find($id_customer);
           $prospect -> cycle = $prospect -> cycle + 1;
           $product_list = $schedule -> previousSchedule -> productList;
-          $product_list -> schedule -> associate($schedule);
+          $product_list -> schedule() -> associate($schedule);
+          $id = $product_list -> id;
         }
 
 

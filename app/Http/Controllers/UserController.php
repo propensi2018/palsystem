@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function test($id){
       $s = new Statistic;
-      return $s -> calculateYear(1,2);
+      return [$s -> product_data()];
       // $schedule = Schedule::find($id);
       // // return [$schedule];
       // return [$schedule -> last_appointment_type()];
@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return 'index';
+        return '/dashboard';
     }
 
     /**

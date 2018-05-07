@@ -19,7 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="{{ url('css/sidebars.css') }}" rel="stylesheet">
     <link href="{{ url('css/navbars.css') }}" rel="stylesheet">
-    <link href="{{ url('css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url('css/dashboardsss.css') }}" rel="stylesheet">
     <link href="{{ url('css/messages.css') }}" rel="stylesheet">
     <link href="{{ url('css/achsani.css') }}" rel="stylesheet">
     <link href="{{ url('css/customers_prospects.css') }}" rel="stylesheet">
@@ -61,7 +61,7 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a href="#"><img class="sidebar-icon" src="{{ url('image/profile.svg') }}" alt="icon name">PROFILE</a>
+                    <a href="{{ url('/history') }}"><img class="sidebar-icon" src="{{ url('image/profile.svg') }}" alt="icon name">PROFILE</a>
                 </li>
             </ul>
         </div>

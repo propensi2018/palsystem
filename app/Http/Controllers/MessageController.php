@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\MessageReceived;
 use App\Message;
 use App\Salesperson;
+use App\Branch;
+use App\Region;
+use App\Manager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\File;
 use DateTime;
+
 
 
 class MessageController extends Controller
@@ -43,7 +50,7 @@ class MessageController extends Controller
      */
 
 
-    public function store()
+    public function store(Request $request)
     {
       $newMessage = new Message;
       $newMessage->user_id_sender = request('idSender');
@@ -51,6 +58,29 @@ class MessageController extends Controller
       $newMessage->subject = request('subjectMsg');
       $newMessage->time = new DateTime();
       $newMessage->is_read = 0;
+      // return $request -> file('upload') ->store('uploads');
+      // $file = $request->file('file')->store('upload');
+        // $uploadedFile = $request->file('file');
+        // $path = $uploadedFile->storePubliclyAs('upload','public');
+        // $file = File::create([
+        //   'title' => $request->title ?? $uploadedFile->getClientOriginalName(),'filename'=>$path
+        // ]);
+
+
+      // if(request('file') != null){
+
+          // return $request ->file('file') -> getClientSize();
+          // // return  $request -> file('file') -> getClientSize();
+          // $filename = $request->file->getClientOriginalName();
+          // $filesize = $request->file->getClientSize();
+          //
+          // $request->file->storeAs('public/upload',$filename);
+          // $file = new File;
+          // $file->name = $filename;
+          // $file->size = $filesize;
+          // $file->save();
+      // }
+
       $newMessage->save();
       // $newMessage->id_msg = request('idMsg'); Auto increment?
 
@@ -93,7 +123,7 @@ class MessageController extends Controller
             return view('message',compact('textMessage','userSender','userReceiver'));
       }
         else {
-          return "gabisa lho";
+          return "forbidden";
         }
 
 
@@ -115,7 +145,7 @@ class MessageController extends Controller
         if (Auth::id() ==  $userIdReceiver[0]->sender_id_receiver) {
             return view('message2',compact('textMessage','userReceiver'));
         } else {
-            return "gabisa lho";
+            return "forbidden";
         }
 
 
@@ -124,7 +154,20 @@ class MessageController extends Controller
     }
 
 
-
+    // public function showRead(){
+    //   $id = Auth::id();
+    //   $temp=array();
+    //   for ($i=0; $i<sizeof(Message::all());$i++) {
+    //     array_push($temp,((MessageReceived::select('id_msg')->where('user_id_receiver',$id)->get())[$i]->id_msg));
+    //   }
+    //
+    //
+    //   $message = Message::where('id_msg',$msgRcv)->count();
+    //
+    //   return temp;
+    //
+    //
+    // }
 
     public function showInbox()
     {
@@ -133,22 +176,71 @@ class MessageController extends Controller
 
               $id = Auth::id();
               $user = User::find($id);
+              $role = $user->is_sp;
+              //get sales list as receiver
               $is_salesperson = $user -> Salesperson;
-              $branch = $is_salesperson[0]->branch_level_id;
-              $selectedSp = Salesperson::where('branch_level_id',$branch)->get();
-              $jml = sizeof($selectedSp);
-              $tempSp = array();
+              $is_manager = $user -> Manager;
               $nameSp = array();
               $a=array();
 
-              $is_manager = $user -> Manager;
-              if ($is_salesperson == null)
+
+
+              if ($role == 0)
               {
-                  return 'dia adalah manager';
-                  // $userReceiverList = Manager::select('name');
+                $is_bm = Branch::find($id);
+                $is_rg = Region:: find($id);
+
+                // branch manager
+                if($is_bm !== null){
+                //sales person
+                $branch_id= $is_bm->level_id;
+                $selectedSp = Salesperson::where('branch_level_id',$branch_id)->get();
+                $jml = sizeof($selectedSp);
+
+                for($i=0; $i<$jml-1; $i++){
+                  $a = Salesperson::select('user_id')->where('branch_level_id',$selectedSp[$i]->branch_level_id)->get();
+                }
+                foreach($a as $b)
+                  array_push($nameSp, $b->user->name);
+
+
+                }
+
+                // regional manager
+                elseif($is_rg !== null){
+                //branch manager
+                $regional_id = $is_rg->level_id;
+                $selectedBranchManager = Branch::where('region_level_id',$regional_id)->get();
+                // $jmlSp = sizeof(Salesperson::All());
+                $jmlBr = sizeof($selectedBranchManager);
+
+                for($i=0; $i<$jmlBr; $i++){
+                  array_push($a, Manager::where('user_id',$selectedBranchManager[$i]->mgr_user_id)->get());
+
+                }
+                for($i=0; $i<$jmlBr; $i++){
+                  for($j=0; $j<$jmlBr; $j++){
+
+                  array_push($a , Salesperson::where('branch_level_id',$selectedBranchManager[$j]->level_id)->get());
+                  }
+                }
+
+
+
+                foreach($a as $c)
+                  foreach($c as $b)
+                  array_push($nameSp, $b->user->name);
+                }
+
+                //group head
+                else{
+                  return "gh bro";
+                }
               }
-              else
-              {
+              else{
+                $branch_id = $is_salesperson[0]->branch_level_id;
+                $selectedSp = Salesperson::where('branch_level_id',$branch_id)->get();
+                $jml = sizeof($selectedSp);
 
                 for($i=0; $i<$jml-1; $i++){
 
@@ -170,16 +262,8 @@ class MessageController extends Controller
                   $messageInbox[] =  array('senderName' => $tempSndrId[$i],'textMessage'=> $tempMsg[$i] );
               }
 
-              return view('MessageInbox',compact('messageInbox','id','tempSp','nameSp'));
+              return view('MessageInbox',compact('messageInbox','id','nameSp'));
           }
-
-
-
-
-
-
-        // return compact('messageInbox','id','tempSp','nameSp');
-
 
 
 

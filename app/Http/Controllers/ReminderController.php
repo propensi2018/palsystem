@@ -10,6 +10,7 @@ use App\Schedule;
 use App\ScheduleType;
 use App\Prospect;
 use App\Address;
+use App\Statistic;
 use App\Appointment;
 
 class ReminderController extends Controller
@@ -39,14 +40,16 @@ class ReminderController extends Controller
         $scheduleIsDone = array();
         $schedules = array();
         $customer = array();
+        $sched_cal = array();
 
-        for ($i=0; $i < sizeof($allSchedule) ; $i++) { 
+        for ($i=0; $i < sizeof($allSchedule) ; $i++) {
             if ($allSchedule[$i] -> is_done == 0) {
                 $getCustomer = Customer::where('id', $allSchedule[$i] -> id_customer) -> get();
                 $getActivity = ScheduleType::where('id', $allSchedule[$i] -> schedule_type_id) -> get();
 
                 $clock = explode(' ', $allSchedule[$i] ->time);
                 $date = $clock[0];
+                $sched_cal[] = array('act' => $date);
                 $hour = explode(':', $clock[1]);
                 $minute = explode(':', $clock[1]);
                 $times = $hour[0] . ':' . $minute[1];
@@ -67,7 +70,12 @@ class ReminderController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
 
-        return view('dashboard', compact('schedules','today'));
+        //HANDLING STATISTICS (author : Farhan Np)
+        $statistics = new Statistic;
+        $data = $statistics->product_data();
+        $labels = $statistics->returnLabels();
+
+        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal'));
     }
 
     /**
@@ -140,7 +148,7 @@ class ReminderController extends Controller
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();
-            
+
             Schedule::where('id', request('id'))->update(['is_done' => true]);
             return redirect()->route('main');
         }

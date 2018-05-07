@@ -39,6 +39,12 @@ class UpdateFk extends Migration
             ->onDelete('cascade');
           });
 
+          Schema::table('customers', function($table)
+          {
+              $table->renameColumn('id_user_sp', 'pic_sp_id');
+          });
+
+
     }
 
     /**

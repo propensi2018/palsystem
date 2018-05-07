@@ -69,6 +69,9 @@ Route::get('show/messageSent','MessageController@showSent')->middleware('auth');
 Route::get('show/message/{id}','MessageController@showMessage')->middleware('auth');
 Route::get('show/message2/{id}','MessageController@showMessage2')->middleware('auth');
 
+// --MELIHAT RATING (PIC : ICHSANDY RIZKI)--
+Route::get('/dummyReward','RewardController@compareSalesperson')->middleware('auth');
+
 
 
 
