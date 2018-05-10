@@ -60,18 +60,14 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        
-        
         $customerData = Customer::find($id);
         $prospect = Prospect::where('customer_id', $id) -> get();
         $addressProspect = Address::where('prospect_customer_id' , $id)->get();
-        
         $prospectNotes = $prospect[0]->notes;
         $prospectWillingnessId = $prospect[0] ->prospect_willingness_id;
         $pw = ProspectWillingness::find($prospectWillingnessId);
         $prospectAddressId = $prospect[0] -> address_id;
         $prospectAddress= Address::find($prospectAddressId);
-      
         $customerTypeId = $prospect[0] -> customer_type_id;
         $customerType = CustomerType::find($customerTypeId);
         $customerSchedule = Schedule::where('id_customer',$id)->get();
@@ -92,9 +88,9 @@ class CustomerController extends Controller
         }
         }
         else{
-           $allSchedule = Schedule::where('schedules.id_customer' , $id)->get();
+            $allSchedule = Schedule::where('schedules.id_customer' , $id)->get();
             $scheduleTypeId  = ScheduleType::where('id',$allSchedule[0]->schedule_type_id)->get();
-        $scheduleAppointmentId = Appointment::where('id',$scheduleTypeId[0]->appointment_id)->get();  
+            $scheduleAppointmentId = Appointment::where('id',$scheduleTypeId[0]->appointment_id)->get();  
             
         }
         $productListId = $customerSchedule[0]-> id;

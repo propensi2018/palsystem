@@ -15,9 +15,9 @@ class CreateTelephonesTable extends Migration
     {
         Schema::create('telephones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('no_telp');
+            $table->string('telp_no');
             $table->integer('customer_id')->unsigned();
-            $table->string('desc');
+            $table->string('descr');
             $table->timestamps();
 
             $table -> foreign('customer_id')

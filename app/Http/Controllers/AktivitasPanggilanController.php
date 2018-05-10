@@ -39,7 +39,7 @@ class AktivitasPanggilanController extends Controller
         if (Auth::user() -> is_sp == 0) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         return view('list_customers');
     }
 
@@ -68,18 +68,19 @@ class AktivitasPanggilanController extends Controller
         $customery=Customer::where([['is_act', false], ['pic_sp_id', $id]])->get();
 
         $exCust=DB::table('prospects')->join('customers', 'prospects.customer_id', '=', 'customers.id')->where([['pic_sp_id', $id],['cycle', '>=', '1']])->get();
-      
-        foreach($customery as $individuals) {
+
+        foreach($customery as $individuals) { 
             $individuals -> telephones = array();
             $individuals -> telephones = Telephone::select('telp_no')->where('customer_id', $individuals->id)->get();
         }
-        
-        $joinProspect = DB::table('prospects')
-        ->join('schedules','id_customer','=','customer_id')
-        ->where('id_user_sp' , $id)
-       ->orderBy('schedules.updated_at','desc')->get();
-        $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
+         $joinProspect = DB::table('prospects')
+            ->join('schedules','id_customer','=','customer_id')
+            ->where('id_user_sp' , $id)
+           ->orderBy('schedules.updated_at','desc')->get();
+         
+            $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
   
+
         $joinProspectCustomer = DB::table('prospects')
             ->select('customer_id','appointments.id_act_type','activity_types.name','prospects.notes')
             ->join('schedules','id_customer','=','customer_id')
@@ -116,8 +117,10 @@ class AktivitasPanggilanController extends Controller
             {
                 array_push($allProspect , $joinProspectId[$i]);
                 array_push($allProspectNotes , Schedule::where([['id_customer' , $allProspect[$i] ->customer_id],['is_done',1]])->orderBy('created_at','desc')->get()->first());
-             
-                array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first()); 
+                
+            //    array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first()); 
+                array_push($allProspectData ,Prospect::where('customer_id' , $allProspect[$i] ->customer_id)->get()->first()); 
+            
                 array_push($allCustomer , Customer::where('id' , $allProspect[$i]->customer_id)->get());
                 array_push($allScheduleCustomer , ScheduleType::where('id' , $allProspectNotes[$i]['schedule_type_id'])->get()->first());
                 array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]['appointment_id'])->get()->first());
@@ -141,7 +144,7 @@ class AktivitasPanggilanController extends Controller
                            'dataTipeCustomer' => $allCustomerType[$i],
                             'dataTipeWillingness' => $allCustomerWillingness[$i]);
             
-
+                        
             }
 return view('list_customers',compact('customery','temp','today','joinProspectCustomer','allActivityType', 'exCust'));
 //         return compact('temp');
@@ -226,7 +229,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $telp -> customer() -> associate($newCust);
             $telp->save();
             $i++;
-        
+
         }
         return redirect()->route('list_customers');
     }
@@ -268,12 +271,12 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch->save();
 
             // $notes = Schedule::select('notes')->where('id', sizeof(Schedule::select('id')->get()));
-             
+
             return view('form_prospect',compact('strSch'));
         }
 
         else if (request ('customer_type') == "Pending") {
-            $strApp = new Appointment();        
+            $strApp = new Appointment();
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
@@ -297,11 +300,11 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         }
 
         else {
-            $strApp = new Appointment();        
+            $strApp = new Appointment();
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
-            
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
@@ -355,7 +358,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
 
 
     }
-    
+
     public function store_csv(Request $req){
         $tmpName = $req->file('file_csv')->getPathName();
         // dd($req);
@@ -383,7 +386,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
 
     public function store_response_ex_cust() {
         if (request ('customer_type') == "Pending") {
-            $strApp = new Appointment();        
+            $strApp = new Appointment();
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
@@ -407,11 +410,11 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         }
 
         else {
-            $strApp = new Appointment();        
+            $strApp = new Appointment();
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
-            
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
@@ -430,4 +433,3 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         }
     }
 }
-
