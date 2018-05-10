@@ -7,7 +7,7 @@
 <?php
 // Set your timezone!!
 date_default_timezone_set('Asia/Jakarta');
- 
+
 // Get prev & next month
 if (isset($_GET['ym'])) {
     $ym = $_GET['ym'];
@@ -15,41 +15,41 @@ if (isset($_GET['ym'])) {
     // This month
     $ym = date('Y-m');
 }
- 
+
 // Check format
 $timestamp = strtotime($ym . '-01');
 if ($timestamp === false) {
     $timestamp = time();
 }
- 
+
 // Today
 $today = date('Y-m-j', time());
- 
+
 // For H3 title
 $html_title = date('M j, Y', time());
- 
+
 // Create prev & next month link     mktime(hour,minute,second,month,day,year)
 $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
 $next = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
- 
+
 // Number of days in the month
 $day_count = date('t', $timestamp);
- 
+
 // 0:Sun 1:Mon 2:Tue ...
 $str = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
- 
- 
+
+
 // Create Calendar!!
 $weeks = array();
 $week = '';
- 
+
 // Add empty cell
 $week .= str_repeat('<td></td>', $str);
- 
+
 for ( $day = 1; $day <= $day_count; $day++, $str++) {
-     
+
     $date = $ym.'-'.$day;
-    
+
     if ($today == $date) {
         $week .= '<td class="today">'.$day;
     } elseif (sizeof($sched_cal) > 0) {
@@ -77,24 +77,24 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         $week .= '<td>'.$day;
     }
     $week .= '</td>';
-     
+
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
-         
+
         if($day == $day_count) {
             // Add empty cell
             $week .= str_repeat('<td></td>', 6 - ($str % 7));
         }
-         
+
         $weeks[] = '<tr>'.$week.'</tr>';
-         
+
         // Prepare for new week
         $week = '';
-         
+
     }
- 
+
 }
- 
+
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
@@ -145,7 +145,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
                         <a href="dashboard<?php echo $prev; ?>">&lt;</a>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
-                        <?php echo $html_title; ?> 
+                        <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
                         <a href="?ym=<?php echo $next; ?>">&gt;</a>
@@ -168,7 +168,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
                         <?php
                             foreach ($weeks as $week) {
                                 echo $week;
-                            }   
+                            }
                         ?>
                       </tbody>
                     </table>
@@ -316,7 +316,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   </div>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
         </div>
 

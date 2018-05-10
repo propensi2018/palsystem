@@ -94,12 +94,18 @@ class RiwayatController extends Controller
     {
         $id =Auth::id();
         $salesperson_history = DB::table('schedules')
-                ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
-                ->join('customers', 'schedules.id_customer', '=', 'customers.id')
-                ->where('schedules.id_user_sp', $id)
-                ->select('customers.name','schedule_types.telp_flag','schedules.time')
-                ->get();
+            ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
+            ->join('customers', 'schedules.id_customer', '=', 'customers.id')
+            ->where('schedules.id_user_sp', $id)
+            ->select('schedules.created_at','schedule_types.telp_flag','customers.name')
+            ->get();
 
-        return view('riwayat', ['salesperson_history' => $salesperson_history]);
+        $salesperson = DB::table('salespeople')
+            ->join('users', 'salespeople.user_id', '=', 'users.id')
+            ->where('users.id', $id)
+            ->select('salespeople.id_sp', 'users.name')
+            ->first();
+
+        return view('riwayat', ['salesperson_history' => $salesperson_history, 'salesperson' => $salesperson]);
     }
 }

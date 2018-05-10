@@ -11,16 +11,35 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-    public function test(){
-         $id = Auth::id();
-         $user  = User::find($id);
-        date_default_timezone_set("Asia/Bangkok");
-        $m = date('m');
-          $y = date('y');
-       $statistic = new Statistic;
-        $bubu = $statistic -> statisticSalesperson($m,$y,$id);
-        
-      return [$bubu];
+
+//    public function test(){
+//         $id = Auth::id();
+//         $user  = User::find($id);
+//        date_default_timezone_set("Asia/Bangkok");
+//        $m = date('m');
+//          $y = date('y');
+//       $statistic = new Statistic;
+//        $bubu = $statistic -> statisticSalesperson($m,$y,$id);
+//        
+//      return [$bubu];
+
+    public function test($id){
+
+    $user = User::find($id);
+
+
+      
+
+
+
+      $s = new Statistic;
+      return [$s -> product_data()];
+      // $schedule = Schedule::find($id);
+      // // return [$schedule];
+      // return [$schedule -> last_appointment_type()];
+      // $customer = Customer::find($id);
+      // return [$customer-> retrieve_list_of_product ()];
+
     }
     /**
      * Display a listing of the resource.
