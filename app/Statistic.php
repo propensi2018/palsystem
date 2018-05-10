@@ -105,4 +105,73 @@ class Statistic extends Model
 
   }
 
+public function statisticSalesperson($month, $year,$id)
+    {
+        
+    $statistik = DB::table('product_lists')
+        ->select('amount')
+        ->join('schedules','schedule_id','=','schedules.id')
+        ->join('transactions','id_pl','=','product_lists.id')
+        ->join('product_list_assocs','product_list_id','=','product_lists.id')
+        ->where('schedules.id_user_sp' , $id)
+        ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
+        ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
+        ->get();
+       
+        return $statistik -> sum('amount');
+    }
+public function statisticSalespersonAll($month, $year,$id)
+    {
+        
+    $statistik = DB::table('product_lists')
+        ->select('amount')
+        ->join('schedules','schedule_id','=','schedules.id')
+        ->join('transactions','id_pl','=','product_lists.id')
+        ->join('product_list_assocs','product_list_id','=','product_lists.id')
+        ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
+        ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
+        ->get();
+    
+       
+        return $statistik -> sum('amount');
+    }
+    
+ protected function sales_set_data($id, $color) {
+        date_default_timezone_set("Asia/Bangkok");
+        $y = date('y');
+        $labels = $this -> returnLabels();
+        $dataset = new Dataset;
+        $dataset -> label =  User::find($id) -> name;
+        $dataset -> borderColor = $color;
+        $data = array();
+        $current = 0;
+        $i = 1;
+        foreach ($labels as $label) {
+            $current += $this -> statisticSalesperson ($i, $y,$id);
+            array_push($data, $current);
+            $i++;
+            }
+            $dataset -> data = $data;
+
+        return $dataset;
+          }
+public function sales_data($id) {
+        $salesperson = User::find($id);
+        $salespersonAll = User::all()->where('is_sp' , 1);
+        if($salesperson->is_sp == 1)
+        { 
+        $returner = array();    
+        array_push($returner, $this -> sales_set_data($id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
+        }
+        else
+        {
+            $returner = array();
+                foreach ($salespersonAll as $all_sales) {
+                array_push($returner, $this -> sales_set_data($all_sales ->id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
+    }
+            
+        }
+        return $returner;
+  }
+
 }

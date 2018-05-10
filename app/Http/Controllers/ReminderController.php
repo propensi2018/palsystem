@@ -74,8 +74,13 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-
-        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal'));
+        
+        //handling statistik salesperson
+        $dataSales = $statistics-> sales_data($id);
+      
+        
+        
+        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal','dataSales'));
     }
 
     /**

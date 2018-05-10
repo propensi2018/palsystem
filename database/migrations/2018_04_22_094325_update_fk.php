@@ -32,7 +32,7 @@ class UpdateFk extends Migration
           });
 
           Schema::table('customers', function (Blueprint $table) {
-            $table->foreign('id_user_sp')
+            $table->foreign('pic_sp_id')
             ->references('user_id')
             ->on('salespeople')
             ->onUpdate('cascade')
