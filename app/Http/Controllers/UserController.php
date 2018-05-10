@@ -12,6 +12,14 @@ class UserController extends Controller
 {
 
     public function test($id){
+
+    $user = User::find($id);
+
+    return [$user->role()];
+      
+
+
+
       $s = new Statistic;
       return [$s -> product_data()];
       // $schedule = Schedule::find($id);
