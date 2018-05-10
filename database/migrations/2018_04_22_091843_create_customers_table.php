@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
           $table->string('name');
           $table->integer('id_status_condition')->unsigned()->nullable();
           $table->boolean('is_act');
-          $table->integer('pic_sp_id')->unsigned()->nullable();
+          $table->integer('id_user_sp')->unsigned()->nullable();
 
           $table->foreign('id_status_condition')
           ->references('id')
