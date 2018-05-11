@@ -61,7 +61,12 @@ class User extends Authenticatable
     }
 
     /*
+    author : farhannp
     return the type of role the user is
+    $user = Auth:user();
+    $role = $user->role();
+    possible type :
+    [salesperson, branch_manager, regional_manager, group_head]
     */
     public function role () {
       $tester = DB::table('salespeople')
