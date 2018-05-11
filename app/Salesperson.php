@@ -19,6 +19,9 @@ class Salesperson extends Model
     public function statisticType() {
       return $this->hasOne(StatisticType::class, 'id_user_sp');
     }
+    public function Rating() {
+      return $this->hasOne(Rating::class, 'sales_user_id');
+    }
 
     /*
     return the amount of product the salesperson
