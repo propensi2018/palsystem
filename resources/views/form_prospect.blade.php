@@ -10,17 +10,17 @@
 <button data-toggle="collapse" data-target="#form">Collapsible</button>
     <form id="form" method="POST" action="prospect/StoreProspect"> {{ csrf_field() }}
    <div id="address_container">
-  
+
       <div class="form-group">
         <label>Email :</label>
-        <input class="form-control" type="text" name="email" id="email">  
-    </div>  
+        <input class="form-control" type="text" name="email" id="email">
+    </div>
 <div id="address0">
-    
+
     <div class="form-group">
         <label>Province :</label>
         <input name="provinsi0" type="text" class="form-control" id="provinsi0" aria-describedby="emailHelp" placeholder="Enter the province"  minlength='1' oninvalid="this.setCustomValidity('Please Insert This Field Before You Submit')" oninput="setCustomValidity('')" required>
-      
+
     </div>
     <div class="form-group">
       <label>City :</label>
@@ -42,19 +42,20 @@
       <label>Street Name :</label>
       <input name="namaJalan0" type="textarea" class="form-control" id="namaJalan0" placeholder="Enter the street name" minlength='1' oninvalid="this.setCustomValidity('Please Insert This Field Before You Submit')" oninput="setCustomValidity('')" required>
     </div>
-    
-         
-   
-    
+
+
+
+
 </div>
-      
+
     </div>
          <button id ='adder' type='button' class="btn btn-secondary">Add More Address</button>
           <button id ='deleter' type='button' style = 'display: none' class="btn btn-danger">Delete More Address</button>
         <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
-      <input type="hidden" id="total_address" value="1">
+        <input type="hidden" id="total_address" value="1">
+        <!-- <input type="hidden" id="schedule_id" value="{{$strSch -> id}}"> -->
      <input type="hidden" name='id_customer' value="{{ $strSch -> id_customer }}">
-    <input type="hidden" name='notes' value="{{ $strSch -> notes }}">   
+    <input type="hidden" name='notes' value="{{ $strSch -> notes }}">
 
           </form>
 </div>

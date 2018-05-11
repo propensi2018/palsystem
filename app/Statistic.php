@@ -7,7 +7,10 @@ use Illuminate\Support\Facades\DB;
 
 class Statistic extends Model
 {
-
+  /*
+  return product data for the current year
+  author : farhannp
+  */
   public function product_data() {
     $all_ptype = ProductType::all();
     $returner = array();
@@ -18,6 +21,7 @@ class Statistic extends Model
   }
 
   /*
+  author : farhannp
   return the amount of product sold in the month and date
   sample return
   {
@@ -49,6 +53,9 @@ class Statistic extends Model
     return $dataset;
   }
 
+  /*
+  calucate the amount of product given year month and porduct // IDEA: 
+  */
   public function calculateProduct($month, $year, $product_type_id) {
     $amounts = DB::table('transactions')
     ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
@@ -107,7 +114,7 @@ class Statistic extends Model
 
 public function statisticSalesperson($month, $year,$id)
     {
-        
+
     $statistik = DB::table('product_lists')
         ->select('amount')
         ->join('schedules','schedule_id','=','schedules.id')
@@ -117,12 +124,12 @@ public function statisticSalesperson($month, $year,$id)
         ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
         ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
         ->get();
-       
+
         return $statistik -> sum('amount');
     }
 public function statisticSalespersonAll($month, $year,$id)
     {
-        
+
     $statistik = DB::table('product_lists')
         ->select('amount')
         ->join('schedules','schedule_id','=','schedules.id')
@@ -131,11 +138,11 @@ public function statisticSalespersonAll($month, $year,$id)
         ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
         ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
         ->get();
-    
-       
+
+
         return $statistik -> sum('amount');
     }
-    
+
  protected function sales_set_data($id, $color) {
         date_default_timezone_set("Asia/Bangkok");
         $y = date('y');
@@ -159,8 +166,8 @@ public function sales_data($id) {
         $salesperson = User::find($id);
         $salespersonAll = User::all()->where('is_sp' , 1);
         if($salesperson->is_sp == 1)
-        { 
-        $returner = array();    
+        {
+        $returner = array();
         array_push($returner, $this -> sales_set_data($id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
         }
         else
@@ -169,7 +176,7 @@ public function sales_data($id) {
                 foreach ($salespersonAll as $all_sales) {
                 array_push($returner, $this -> sales_set_data($all_sales ->id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
     }
-            
+
         }
         return $returner;
   }

@@ -42,6 +42,9 @@ class User extends Authenticatable
     {
       return $this->hasMany(Salesperson::class);
     }
+    public function Rating() {
+      return $this->hasOne(Rating::class, 'sales_user_id');
+    }
 
     public function role_complex () {
       $tester = DB::table('salespeople')
@@ -61,7 +64,12 @@ class User extends Authenticatable
     }
 
     /*
+    author : farhannp
     return the type of role the user is
+    $user = Auth:user();
+    $role = $user->role();
+    possible type :
+    [salesperson, branch_manager, regional_manager, group_head]
     */
     public function role () {
       $tester = DB::table('salespeople')
