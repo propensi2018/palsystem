@@ -64,7 +64,7 @@ class Statistic extends Model
     ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
     ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
     ->select('amount')->get();
-    // return $amounts;
+ 
     return $amounts -> sum('amount');
   }
 
