@@ -20,15 +20,20 @@ session_start();
             <th>Customer's Name</th>
             <th>Costumer's Address</th>
             <th>Product(s)</th>
+            <th>Telephone</th>
             <th>Amount</th>
           </tr>
         </thead>
+
+        @php
+          $i=1
+        @endphp
 
         <tbody>
           @foreach ($TransData as $data)
           <tr>
             <td>
-              1
+              {{$i++}}
             </td>
             <td>
               {{$data -> name}}
@@ -40,13 +45,20 @@ session_start();
               {{$data -> desc}}
             </td>
             <td>
-              {{$data -> amount}}
+              @foreach (
+              $data -> telephones as $telp)
+              {{$telp -> telp_no}}
+              @endforeach
+            </td>
+            <td>
+              {{number_format($data -> amount,0,'','.')}}
             </td>
           </tr>
           @endforeach
         </tbody>
 
       </table>
+    <a href="dataTransaksi/print_PDF">print</a>
     </div>
   </div>
 </div>
