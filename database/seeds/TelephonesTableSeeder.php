@@ -13,9 +13,9 @@ class TelephonesTableSeeder extends Seeder
     {
         for ($i = 1; $i <= 25; $i++) {
           DB::table('telephones')->insert([
-             'no_telp' => str_random(10),
-             'desc' => str_random(15),
-             'id_customer' => $i,
+             'telp_no' => str_random(10),
+             'descr' => str_random(15),
+             'customer_id' => $i,
          ]);
         }
     }

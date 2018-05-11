@@ -59,8 +59,28 @@ class DataTransaksiController extends Controller
     {
         $id =Auth::id();
 
-        $TransData=DB::table('transactions')->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')->join('customers', 'schedules.id_customer', '=', 'customers.id')->where('transactions.is_valid', '=', '1')->get();
-        return $TransData;
+        $TransData=DB::table('transactions')
+        ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+        ->join('product_list_assocs', 'product_list_assocs.product_list_id', '=', 'product_lists.id')
+        ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
+        ->join('customers', 'schedules.id_customer', '=', 'customers.id')
+        // ->join('telephones', 'custome    rs.id', '=', 'telephones.customer_id') ditambahin
+        ->where('transactions.is_valid', '=', '1')->get();
+
+        // $returner = array();
+        // $index = 0;
+        // $indexObject = "";
+        // foreach($transData as $singleData) {
+        //   if ($singleData -> id == $index) {
+        //     $indexObject -> id_ptype = $indexObject -> id_ptype . "," $singleData -> id_ptype;
+        //   }
+        //   array_push($returner, $singleData);
+        //   $index = $singleData -> id;
+        //   $indexObject = $singleData;
+        // }
+        //
+        // return $returner;
+        //
         return view('data_transaksi',compact('TransData'));
     }
 

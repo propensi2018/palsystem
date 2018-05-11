@@ -231,6 +231,7 @@ class AppointmentController extends Controller
             $product_list_assoc -> save();
             $i++;
           }
+
         } else if ($id_activity_type == 3) {
           $prospect = Prospect::find($id_customer);
           $prospect -> cycle = $prospect -> cycle + 1;
