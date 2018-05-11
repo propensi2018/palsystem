@@ -20,4 +20,12 @@ class Salesperson extends Model
       return $this->hasOne(StatisticType::class, 'id_user_sp');
     }
 
+    /*
+    return the amount of product the salesperson
+    iz kerjain iz
+    */
+    public function calculateAmount($month, $year) {
+      //implement
+    }
+
 }

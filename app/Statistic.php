@@ -30,6 +30,8 @@ class Statistic extends Model
       borderColor: "#3e95cd",
       fill: '-1'
     }
+    $statistic = New Statistic;
+    // $statistic -> calculateProduct(6,2018,3);
   */
   protected function product_data_set($product_id, $color) {
     date_default_timezone_set("Asia/Bangkok");
@@ -54,7 +56,7 @@ class Statistic extends Model
   }
 
   /*
-  calucate the amount of product given year month and porduct // IDEA: 
+  calucate the amount of product given year month and porduct // IDEA:
   */
   public function calculateProduct($month, $year, $product_type_id) {
     $amounts = DB::table('transactions')
