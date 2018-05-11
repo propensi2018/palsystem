@@ -28,7 +28,7 @@ class RewardController extends Controller
     $input = '7'; //best performance Salesperson user id
 
     //add reward
-    if($date == '07-05'){
+    if($date == '11-05'){
         $currentYear = date("y");
 
         if(sizeof(Rating::All()) !== 0){

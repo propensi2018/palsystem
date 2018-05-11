@@ -54,7 +54,7 @@ class Statistic extends Model
   }
 
   /*
-  calucate the amount of product given year month and porduct // IDEA: 
+  calucate the amount of product given year month and porduct // IDEA:
   */
   public function calculateProduct($month, $year, $product_type_id) {
     $amounts = DB::table('transactions')
@@ -180,5 +180,6 @@ public function sales_data($id) {
         }
         return $returner;
   }
+
 
 }
