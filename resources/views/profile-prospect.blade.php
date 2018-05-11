@@ -101,7 +101,8 @@
                                 <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][$i]->created_at}} </p>
                                 @endif
                              @endfor
-                            @endforeach       
+                            @endforeach 
+            <p>{{$scheduleDeal[0]->id}}</p>
         </div>
     </div>
 </div>
