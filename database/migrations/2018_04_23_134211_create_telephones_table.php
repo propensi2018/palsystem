@@ -17,7 +17,7 @@ class CreateTelephonesTable extends Migration
             $table->increments('id');
             $table->string('telp_no');
             $table->integer('customer_id')->unsigned();
-            $table->string('descr');
+            $table->string('descr')->nullable();
             $table->timestamps();
 
             $table->foreign('customer_id')
