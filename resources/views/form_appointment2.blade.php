@@ -129,7 +129,7 @@ function addCommas(nStr)
 
 <script>
   var product_types = @json($product_types);
-
+  var total_product = 0;
   $('#adder').click(function(){
     total_product += 1;
     $('#total_product').val(total_product + 1);

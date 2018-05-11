@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -40,5 +41,55 @@ class User extends Authenticatable
     public function salesperson()
     {
       return $this->hasMany(Salesperson::class);
+    }
+
+    public function role_complex () {
+      $tester = DB::table('salespeople')
+      ->where('salespeople.user_id',$this->id)
+      ->get();
+      $tester2 = DB::table('managers')
+      ->where('managers.user_id', $this->id)
+      ->get();
+      return $tester2;
+      if ($tester->isEmpty()) {
+        // return 'abap';
+        return $tester;
+      } else {
+        // return 'apap';
+        return $tester2;
+      }
+    }
+
+    /*
+    author : farhannp
+    return the type of role the user is
+    $user = Auth:user();
+    $role = $user->role();
+    possible type :
+    [salesperson, branch_manager, regional_manager, group_head]
+    */
+    public function role () {
+      $tester = DB::table('salespeople')
+      ->where('salespeople.user_id',$this->id)
+      ->get();
+      $tester2 = DB::table('managers')
+      ->where('managers.user_id', $this->id)
+      ->get();
+      return $tester2;
+      if ($tester->isEmpty()) {
+        // return 'abap';
+        return 'salesperson';
+      } else {
+        if ($tester2 -> is_gh == 1) {
+          return 'group_head';
+        }
+        $tester3 = DB::table('regions')
+        ->where('regions.mgr_user_id', $this->id)
+        ->get();
+        if (!$tester->isEmpty()) {
+          return 'regional_manager';
+        }
+        return 'branch_manager';
+      }
     }
 }

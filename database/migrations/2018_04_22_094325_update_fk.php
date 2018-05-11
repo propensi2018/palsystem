@@ -31,17 +31,29 @@ class UpdateFk extends Migration
             ->onDelete('cascade');
           });
 
+          Schema::table('customers', function($table)
+          {
+            $table->renameColumn('id_user_sp', 'pic_sp_id');
+          });
+
           Schema::table('customers', function (Blueprint $table) {
-            $table->foreign('id_user_sp')
+            $table->foreign('pic_sp_id')
             ->references('user_id')
             ->on('salespeople')
             ->onUpdate('cascade')
             ->onDelete('cascade');
           });
 
-          Schema::table('customers', function($table)
+
+          Schema::table('addresses', function($table)
           {
-              $table->renameColumn('id_user_sp', 'pic_sp_id');
+              $table->integer('prospect_customer_id')->unsigned()->nullable();
+
+              $table -> foreign('prospect_customer_id')
+              ->references('customer_id')
+              ->on('prospects')
+              ->onUpdate('cascade')
+              ->onDelete('cascade');
           });
 
 

@@ -10,6 +10,30 @@ session_start();
   <div class="container">
 
     <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
+  <div class="row" style="float: right;">
+    <div class="dropdown">
+      <select type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <option value="1">January</option>
+        <option value="2">February</a>
+        <option value="3">March</a>
+        <option value="4">April</a>
+        <option value="5">May</a>
+        <option value="6">June</a>
+        <option value="7">July</a>
+        <option value="8">August</a>
+        <option value="9">September</a>
+        <option value="10">October</a>
+        <option value="11">November</a>
+        <option value="12">December</a>
+      </select>
+    </div>
+
+    <div class="dropdown">
+      <select type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        <option value="2018">2018</option>
+      </select>
+    </div>
+  </div>
 
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -47,7 +71,10 @@ session_start();
             <td>
               @foreach (
               $data -> telephones as $telp)
-              {{$telp -> telp_no}}
+                @if (!$loop->first)
+                  ,
+                @endif
+                  {{$telp -> telp_no}} 
               @endforeach
             </td>
             <td>

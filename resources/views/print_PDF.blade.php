@@ -69,6 +69,7 @@
             <th>Customer's Name</th>
             <th>Costumer's Address</th>
             <th>Product(s)</th>
+            <th>Telephone</th>
             <th>Amount</th>
           </tr>
         </thead>
@@ -93,9 +94,15 @@
               {{$data -> desc}}
             </td>
             <td>
-              {{$data -> telp_no}}
+              @foreach (
+              $data -> telephones as $telp)
+                @if (!$loop->first)
+                  ,
+                @endif
+                  {{$telp -> telp_no}} 
+              @endforeach
             </td>
-            <td id="amount-css">
+            <td>
               {{number_format($data -> amount,0,'','.')}}
             </td>
           </tr>
