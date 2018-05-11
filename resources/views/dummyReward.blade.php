@@ -5,8 +5,10 @@
 
 
 
-@foreach ($nameSp as $nameUser)
-  {{$nameUser}}
-@endforeach
+@for ($i = 0; $i < $amountRating ; $i++)
+    <a>*</a>
+@endfor
+
+
 
 @endsection

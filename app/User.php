@@ -41,4 +41,7 @@ class User extends Authenticatable
     {
       return $this->hasMany(Salesperson::class);
     }
+    public function Rating() {
+      return $this->hasOne(Rating::class, 'sales_user_id');
+    }
 }
