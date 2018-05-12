@@ -85,5 +85,6 @@ Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniq
 
 // --MENAMPILKAN DATA TRANSAKSI (PIC : MAKTALSAKRIADHI)--
 Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
+Route::get('/dataTransaksi/print_PDF','DataTransaksiController@printPDF')->middleware('auth');
 
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
