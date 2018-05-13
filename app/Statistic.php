@@ -66,7 +66,22 @@ class Statistic extends Model
     ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
     ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
     ->select('amount')->get();
- 
+
+    return $amounts -> sum('amount');
+  }
+
+  /*
+  calucate the amount of product given year month and porduct // IDEA:
+  */
+  public function calculateProduct($year, $product_type_id) {
+    $amounts = DB::table('transactions')
+    ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+    ->join('product_list_assocs', 'product_lists.id', '=', 'product_list_assocs.product_list_id')
+    ->where('product_list_assocs.id_ptype', '=', $product_type_id)
+    ->where('product_list_assocs.created_at', '>=', $year . "-" . "01" . "-1 00:00:00")
+    ->where('product_list_assocs.created_at', '<', $year + 1 . "-" . "01" . "-1 00:00:00")
+    ->select('amount')->get();
+
     return $amounts -> sum('amount');
   }
 
