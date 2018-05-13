@@ -35,6 +35,10 @@ class ReminderController extends Controller
     {
         // $customers = Schedule::find($id)->Customer;
         $id = Auth::id();
+        $user = Auth::user();
+
+        $role = $user -> role();
+
         $allSchedule = Schedule::where('id_user_sp', $id) -> get();
 
         $scheduleIsDone = array();
@@ -70,29 +74,16 @@ class ReminderController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
 
-<<<<<<< HEAD
-
-        return view('dashboard', compact('schedules','today', 'sched_cal'));
-
-=======
->>>>>>> 393bafd1cc337e47fa6eedb76f690071be1de95c
         //HANDLING STATISTICS (author : Farhan Np)
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-<<<<<<< HEAD
-
-        return view('dashboard', compact('labels', 'data', 'schedules', 'today'));
-
-=======
-        
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
-      
-        
-        
-        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal','dataSales'));
->>>>>>> 393bafd1cc337e47fa6eedb76f690071be1de95c
+
+        // return $role;
+
+        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal','dataSales', 'role'));
     }
 
     /**
