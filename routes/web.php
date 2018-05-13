@@ -59,7 +59,7 @@ Route::get('/customer/{id}','CustomerController@show')->name('profile-prospect')
 Route::post('/prospect/StoreProspect','AktivitasPanggilanController@storeProspect')->middleware('auth');
 Route::get('/prospect/form','AktivitasPanggilanController@show')->middleware('auth');
 Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_customers')->middleware('auth');
-
+Route::post('/customer/storeCsv','AktivitasPanggilanController@storeCsv');
 
 // --PENGELOLAAN PESAN (PIC : ICHSANDY RIZKI)--
 
