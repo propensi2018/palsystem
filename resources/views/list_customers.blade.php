@@ -155,8 +155,13 @@ select {
 </script>
 
 @if ($errors->any())
+<!--   @foreach($errors->all() as $error)
+    <div class="alert alert-danger">
+    {{$error}}
+  </div>
+  @endforeach -->
   <div class="alert alert-danger">
-    telp no has been taken
+    The file must be a file of type: csv.
   </div>
 @endif
 
@@ -171,7 +176,7 @@ select {
       </button>
 
       <!-- upload csv -->
-      <form method="POST" action="customer/store_csv" enctype="multipart/form-data">
+      <form method="POST" action="customer/storeCsv" enctype="multipart/form-data">
         {{csrf_field()}}
         <input type="file" name="file_csv"></input>
         
@@ -331,7 +336,7 @@ select {
             @foreach ($exCust as $exCustView)
             <tr>
               <td>
-                {{$exCustView->name}}
+                  <a href="{{ URL::to('../../palsystem/public/customer/' . $exCustView->customer_id)}}">{{$exCustView->name}}</a>
               </td>
               <td>
                 {{$exCustView->updated_at}}

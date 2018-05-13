@@ -60,7 +60,7 @@
                     <th>Subject</th>
                     <th>Time</th>
                   </tr>
-              </thead>
+              </thead> 
               <tbody>
                 @for($i=sizeof($messageInbox)-1; $i>0; $i--)
                 @if($messageInbox[$i]['textMessage'][0]-> is_read == 0)

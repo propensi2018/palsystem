@@ -22,9 +22,59 @@
                 
               @if($scheduleAppointmentId[0]->is_a_deal == 0)
                             
-                                @else
-                                   <button>Re-Approach</button>
-                                @endif
+                @else
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerData->id}}">Re-Approach</button>
+
+                   <div class="modal fade" id="myModal{{$customerData->id}}">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+
+                    <form method="post" action="customer/storeResponse" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
+
+                      <div class="modal-header">
+                        <h4 class="modal-title">Customer Response:</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                      </div>
+
+                      <div class="modal-body" ng-app="dateInputExample">
+                        <script>
+                          angular.module('dateInputExample', []) .controller('DateController', ['$scope', function($scope) {
+                            $scope.example = {
+                            value: new Date(2015, 3, 22), currentDate: new Date()
+                            };
+                          }]);
+                        </script>
+
+                        <div class="row">
+                          <div class="col-sm-6 col-md-6 col-md-offset-12">
+                            <h6>Customer Responses<span><font color="red">* </font></span>:</h6>
+                            <select id="customer_type" class="custom-select" name="customer_type">
+                              <option value="Pending">Pending</option>
+                              <option value="Reject">Reject</option>
+                            </select>
+                          </div>
+
+                          <div class="col-sm-6 col-md-6 col-md-offset-12">
+                            <h6>Date<span><font color="red">* </font></span>:</h6>
+                            <input type="hidden" name="id_customer" value="{{$customerData -> id}}">
+                            <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
+                          </div>
+                        </div>
+                        <br>
+                        <h6>Notes:</h6>
+                        <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea><br>
+                      </div>
+
+                      <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+                @endif
           
              @if($customerType->name === 'Hot')
                     <span class='badge badge-danger'>{{$customerType->name}}</span>
