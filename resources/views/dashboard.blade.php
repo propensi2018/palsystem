@@ -7,7 +7,7 @@
 <?php
 // Set your timezone!!
 date_default_timezone_set('Asia/Jakarta');
- 
+
 // Get prev & next month
 if (isset($_GET['ym'])) {
     $ym = $_GET['ym'];
@@ -15,41 +15,41 @@ if (isset($_GET['ym'])) {
     // This month
     $ym = date('Y-m');
 }
- 
+
 // Check format
 $timestamp = strtotime($ym . '-01');
 if ($timestamp === false) {
     $timestamp = time();
 }
- 
+
 // Today
 $today = date('Y-m-j', time());
- 
+
 // For H3 title
 $html_title = date('M j, Y', time());
- 
+
 // Create prev & next month link     mktime(hour,minute,second,month,day,year)
 $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
 $next = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
- 
+
 // Number of days in the month
 $day_count = date('t', $timestamp);
- 
+
 // 0:Sun 1:Mon 2:Tue ...
 $str = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
- 
- 
+
+
 // Create Calendar!!
 $weeks = array();
 $week = '';
- 
+
 // Add empty cell
 $week .= str_repeat('<td></td>', $str);
- 
+
 for ( $day = 1; $day <= $day_count; $day++, $str++) {
-     
+
     $date = $ym.'-'.$day;
-    
+
     if ($today == $date) {
         $week .= '<td class="today">'.$day;
     } elseif (sizeof($sched_cal) > 0) {
@@ -77,40 +77,59 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         $week .= '<td>'.$day;
     }
     $week .= '</td>';
-     
+
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
-         
+
         if($day == $day_count) {
             // Add empty cell
             $week .= str_repeat('<td></td>', 6 - ($str % 7));
         }
-         
+
         $weeks[] = '<tr>'.$week.'</tr>';
-         
+
         // Prepare for new week
         $week = '';
-         
+
     }
- 
+
 }
- 
+
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
-
+        @if(@role == 'sp')
         <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Statistik Produk
                   </div>
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
+<<<<<<< HEAD
 
+=======
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($data)
+    
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Product'
+    }
+  }
+});</script>
+>>>>>>> 393bafd1cc337e47fa6eedb76f690071be1de95c
                 </div>
               </div>
             </div>
@@ -130,7 +149,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <a href="dashboard<?php echo $prev; ?>">&lt;</a>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
-                        <?php echo $html_title; ?> 
+                        <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
                         <a href="?ym=<?php echo $next; ?>">&gt;</a>
@@ -153,7 +172,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php
                             foreach ($weeks as $week) {
                                 echo $week;
-                            }   
+                            }
                         ?>
                       </tbody>
                     </table>
@@ -170,20 +189,28 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Announcement
+                    Statistik Salesperson
                   </div>
                 </div>
-                <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                </div>
+                  <div class="row reminder-body">
+                <canvas id="chartSalesperson" height="100" width="200"></canvas>
+                  </div>
+                <script>
+var ctx = document.getElementById("chartSalesperson").getContext('2d');
+var myChart = new Chart(document.getElementById("chartSalesperson"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($dataSales)
+  },
+
+  options: {
+    title: {
+      display: true,
+      text: 'Salesperson'
+    }
+  }
+});</script>
               </div>
             </div>
           </div>
@@ -293,9 +320,253 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        @endif
+
+        @if(@role == 'bm')
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
             </div>       
           </div>
         </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Rating
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          @endif
+
+
+          @if(@role == 'rm')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
+
+          @if(@role == 'gh')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          @endif
 
         <script>
         $(document).ready(function(){
