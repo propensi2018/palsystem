@@ -35,6 +35,7 @@ class ReminderController extends Controller
     {
         // $customers = Schedule::find($id)->Customer;
         $id = Auth::id();
+        $role = Auth::user() -> role();
         $allSchedule = Schedule::where('id_user_sp', $id) -> get();
 
         $scheduleIsDone = array();
@@ -77,8 +78,8 @@ class ReminderController extends Controller
 
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
-        
-        return view('dashboard', compact('labels', 'data', 'schedules', 'today', 'sched_cal','dataSales'));
+
+        return view('dashboard', compact('role', 'labels', 'data', 'schedules', 'today', 'sched_cal','dataSales'));
     }
 
     /**
