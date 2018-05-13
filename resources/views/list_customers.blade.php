@@ -334,9 +334,9 @@ select {
 
           <tbody>
             @foreach ($exCust as $exCustView)
-            <tr class='clickable-row' data-href="{{ URL::to('../public/palsystem/customer/' . $exCustView->customer_id)}}">
+            <tr>
               <td>
-                  <a href="{{ URL::to('../palsystem/public/customer/' . $exCustView->customer_id)}}">{{$exCustView->name}}</a>
+                  <a href="{{ URL::to('../../palsystem/public/customer/' . $exCustView->customer_id)}}">{{$exCustView->name}}</a>
               </td>
               <td>
                 {{$exCustView->updated_at}}
