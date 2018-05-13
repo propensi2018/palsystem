@@ -50,6 +50,8 @@
                 <li>
                     <a href="{{ url('/dashboard') }}"><img class="sidebar-icon" src="{{ url('image/dashboard.svg') }}" alt="icon name">DASHBOARD</a>
                 </li>
+
+                @if($role == 'sp')
                 <li class="active">
                     <a href="{{ url('/customer') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">CUSTOMER</a>
                 </li>
@@ -63,6 +65,28 @@
                 <li class="">
                     <a href="{{ url('/history') }}"><img class="sidebar-icon" src="{{ url('image/profile.svg') }}" alt="icon name">PROFILE</a>
                 </li>
+                @endif
+
+                @if($role == 'bm')
+                <li >
+                    <a href="{{ url('/####') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
+                </li>
+                <li class="">
+                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                </li>
+                @endif
+
+                 @if($role == 'rm')
+                <li class="">
+                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                </li>
+                @endif
+
+                 @if($role == 'gh')
+                <li class="">
+                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                </li>
+                @endif
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

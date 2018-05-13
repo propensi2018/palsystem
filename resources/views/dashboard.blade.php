@@ -98,7 +98,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
-
+        @if(@role == 'sp')
         <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -110,6 +110,9 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
+<<<<<<< HEAD
+
+=======
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(document.getElementById("myChart"), {
@@ -126,6 +129,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
     }
   }
 });</script>
+>>>>>>> 393bafd1cc337e47fa6eedb76f690071be1de95c
                 </div>
               </div>
             </div>
@@ -319,6 +323,250 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
             </div>
           </div>
         </div>
+        @endif
+
+        @if(@role == 'bm')
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Rating
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          @endif
+
+
+          @if(@role == 'rm')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
+
+          @if(@role == 'gh')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>       
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          @endif
 
         <script>
         $(document).ready(function(){
