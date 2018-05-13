@@ -23,4 +23,12 @@ class Salesperson extends Model
       return $this->hasOne(Rating::class, 'sales_user_id');
     }
 
+    /*
+    return the amount of product the salesperson
+    iz kerjain iz
+    */
+    public function calculateAmount($month, $year) {
+      //implement
+    }
+
 }

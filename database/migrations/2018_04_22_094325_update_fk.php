@@ -47,7 +47,7 @@ class UpdateFk extends Migration
 
           Schema::table('addresses', function($table)
           {
-              $table->integer('prospect_customer_id')->unsigned()->nullable();
+              $table->integer('prospect_customer_id')->unsigned()->nullable() ;
 
               $table -> foreign('prospect_customer_id')
               ->references('customer_id')

@@ -78,8 +78,8 @@ class User extends Authenticatable
       $tester2 = DB::table('managers')
       ->where('managers.user_id', $this->id)
       ->get();
-      return $tester2;
-      if ($tester->isEmpty()) {
+      // return $tester2;
+      if (!$tester->isEmpty()) {
         // return 'abap';
         return 'salesperson';
       } else {
