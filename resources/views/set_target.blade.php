@@ -7,7 +7,7 @@
 <div class="profile-customer">
   <ul class="nav nav-tabs nav-appt">
         <li id="tab-1" class="nav-item">
-            <a id="nav-tulisan" class="nav-link nav-appt-no-active" href="{{ URL::to('../public/customer/' . $customer_id)}}">CUSTOMER DATA</a>
+            <!-- <a id="nav-tulisan" class="nav-link nav-appt-no-active" href="{{ URL::to('../public/customer/')}}">CUSTOMER DATA</a> -->
         </li>
         <li id="tab-2" class="nav-item">
             <a id="nav-tulisan" id="navbar-active" class="nav-link nav-appt-active">APPOINTMENT</a>
@@ -22,9 +22,6 @@
             <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="product_list"><h5>Product* : </h5></label>
             <select id="product_type0" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="product_type0">
                <option required disabled selected value> -- select an option -- </option>
-              @foreach($product_types as $product_type)
-                <option class='{{$product_type -> id}}' value="{{$product_type->id}}">{{$product_type->desc}}</option>
-              @endforeach
             </select>
           </div>
 
@@ -46,7 +43,7 @@
         </div>
         <div class="col-sm-12 col-md-4 col-md-offset-12">
           <input name="unique_code" type="hidden" value="345901">
-          <input name="customer_id" type="hidden" value="{{$customer->id}}">
+          <!-- <input name="customer_id" type="hidden" value=""> -->
           <p>*) Required</p>
           <input class="btn btn-primary" type="submit" value="Submit Appointment" onclick="show_alert()">
         </div>
@@ -57,7 +54,6 @@
 
 
 <script>
-  // var product_types = @json($product_types);
   // var total_product = 0;
   // $('#adder').click(function(){
   //   total_product += 1;
