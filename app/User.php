@@ -83,7 +83,7 @@ class User extends Authenticatable
         // return 'abap';
         return 'salesperson';
       } else {
-        if ($tester2 -> is_gh == 1) {
+          if ($tester2[0] -> is_gh == 1) {
           return 'group_head';
         }
         $tester3 = DB::table('regions')
