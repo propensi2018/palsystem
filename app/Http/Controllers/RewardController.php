@@ -25,10 +25,10 @@ class RewardController extends Controller
   public function compareSalesperson(){
     date_default_timezone_set("Asia/Bangkok");
     $date = date('d-m');
-    $input = '7'; //best performance Salesperson user id
+    $input = '6'; //best performance Salesperson user id
 
     //add reward
-    if($date == '11-05'){
+    if($date == '12-05'){
         $currentYear = date("y");
 
         if(sizeof(Rating::All()) !== 0){
@@ -55,20 +55,39 @@ class RewardController extends Controller
         }
       }
     }
-    //set reward to UI
+//set reward to UI======================================================================================
     $id = Auth::id();
     $user = User::find($id);
-    $rewardedSp = $user -> Rating;
+    $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
 
-
-    if((Rating::where('sales_user_id',$id)->get()->first()) !== null ){
-        $amountRating = Rating::select('score')->where('sales_user_id',$id)->get()->first()->score;
+    if($is_sp == 1){
+      if((Rating::where('sales_user_id',$id)->get()->first()) !== null ){
+        $amountRating =  Rating::where('sales_user_id',$id)->count();
         return view('dummyReward',compact('amountRating'));
-        //return compact('amountRating');
+
+      }else{
+        $amountRating = 0;
+        return view('dummyReward',compact('amountRating'));
+      }
     }else{
-      $amountRating = 0;
-      return view('dummyReward',compact('amountRating'));
+      $jml = sizeof(Rating::all());
+      $listRating = array();
+
+      for($i=0; $i< $jml; $i++){
+        $idSls = Rating::select('sales_user_id')->where('id',$i+1)->get()->first()->sales_user_id;
+        $nameSls = User::find($idSls)->name;
+        $year = substr((Rating::select('date')->where('id',$i+1)->get()->first()->date),0,4);
+        $listRating[] =  array('name' => $nameSls,'year'=> $year );
+      }
+       $amountRating = $jml;
+
+      return view('dummyReward',compact('amountRating','listRating'));
     }
+
+
+//=======================================================================================================
+
+//
 
   }
 
