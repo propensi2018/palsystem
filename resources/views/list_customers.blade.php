@@ -331,7 +331,7 @@ select {
             @foreach ($exCust as $exCustView)
             <tr>
               <td>
-                {{$exCustView->name}}
+                  <a href="{{ URL::to('../../palsystem/public/customer/' . $exCustView->customer_id)}}">{{$exCustView->name}}</a>
               </td>
               <td>
                 {{$exCustView->updated_at}}

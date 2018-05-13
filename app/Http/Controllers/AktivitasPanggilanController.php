@@ -389,7 +389,8 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         return redirect()->route('list_customers');
     }
 
-    public function store_response_ex_cust() {
+    public function store_response_ex_cust(Request $request) {
+         $id = Auth::id();
         if (request ('customer_type') == "Pending") {
             $strApp = new Appointment();
             $strApp ->is_a_deal = 0;

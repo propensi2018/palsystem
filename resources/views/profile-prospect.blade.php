@@ -92,17 +92,31 @@
            
                 @endforeach
              <h3 class='card-title'>Product(s) :</h3>
+            
+            
              @foreach($kumpulanTemp as $keys => $productLoop)
-                             @for($i = 0; $i < sizeof($productLoop['dataAmountProduct']); $i++)
-                                <p class="card-text">{{$productLoop['dataTypeProduct'][$i]->desc}} : Rp.{{$productLoop['dataAmountProduct'][$i]->amount}} </p>
-                                @if($productLoop['dataAppointment'][$i]->is_a_deal == 0)
-                                <p>Produk ditambahkan pada tanggal {{$productLoop['dataAppointment'][$i]->created_at}} </p>
-                                @else
-                                <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][$i]->created_at}} </p>
-                                @endif
-                             @endfor
-                            @endforeach 
-            <p>{{$scheduleDeal[0]->id}}</p>
+            
+           
+            @for($i=0; $i<sizeof($productLoop['dataTypeProduct']);$i++)
+                <?php
+            
+                $tipeProduk = $productLoop['dataTypeProduct'][$i];
+                $amountProduk = $productLoop['dataAmountProduct'][$i];
+                ?>
+                                                
+             @if(sizeof($scheduleDeal)!=0)
+                     <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
+                     <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
+             @else
+                     <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
+                    <p style="color: blue">Produk ditambahkan pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
+            @endif  
+            @endfor
+                
+                    @endforeach 
+          
+        
+        
         </div>
     </div>
 </div>

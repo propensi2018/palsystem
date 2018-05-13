@@ -60,13 +60,21 @@ class CustomerController extends Controller
      */
     public function show($id)
     {   
-        
+//        $appointmentDeal =  $scheduleDeal=DB::table('schedules')
+//            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+//            ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
+//            ->where('id_customer',$id )
+//            ->orderBy('schedule_types.created_at','desc')->get();
+       
        $scheduleDeal=DB::table('schedules')
             ->join('schedule_types','schedule_type_id','=','schedule_types.id')
             ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
             ->where([['id_customer',$id],['is_a_deal' ,1]] )
             ->orderBy('schedule_types.created_at','desc')->get();
-                   
+            
+           
+//        $scheduleTypeDeal = DB::table('schedule_types')
+//            ->join()
         $customerData = Customer::find($id);
         $prospect = Prospect::where('customer_id', $id) -> get();
         $addressProspect = Address::where('prospect_customer_id' , $id)->get();
@@ -79,8 +87,9 @@ class CustomerController extends Controller
         $customerType = CustomerType::find($customerTypeId);
         $customerSchedule = Schedule::where('id_customer',$id)->get();
         $joinSchedule =DB::table('product_lists')->join('schedules','schedule_id','=','schedules.id')->where('schedules.id_customer' , $id)->get();
-        $allSchedule = Schedule::where([['schedules.id_customer' , $id],['is_done',1]])->get();
        
+        $allSchedule = Schedule::where([['schedules.id_customer' , $id],['is_done',1]])->get();
+  
         if(sizeof($allSchedule)!=0){
         $jumlahSchedule = sizeof($allSchedule);
         if($jumlahSchedule!=0){
@@ -117,6 +126,7 @@ class CustomerController extends Controller
             $productListCustomer = array();    
             array_push($productListSemua, $joinSchedule[$i]->id);  
            array_push($scheduleType , ScheduleType::where('id',$joinSchedule[$i]->schedule_type_id)->get()->first());
+       
 //            array_push($scheduleType , $joinType = DB::table('schedules')
 //            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
 //            ->where([['id_customer',$id],['schedule_types.id' ,$joinSchedule[$i]->schedule_type_id ])
@@ -146,8 +156,9 @@ class CustomerController extends Controller
           
                                    
         }
-     return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal'));
-   //return compact('kumpulanTemp');
+//return [$kumpulanTemp];
+return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule'));
+//  return compact('kumpulanTemp');
 
 
     }
