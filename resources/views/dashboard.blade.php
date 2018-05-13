@@ -98,7 +98,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
-        @if(@role == 'sp')
+        @if($role == 'salesperson')
         <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -110,9 +110,6 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
-<<<<<<< HEAD
-
-=======
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(document.getElementById("myChart"), {
@@ -120,7 +117,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
   data: {
     labels: @json($labels),
     datasets: @json($data)
-    
+
   },
   options: {
     title: {
@@ -129,7 +126,6 @@ var myChart = new Chart(document.getElementById("myChart"), {
     }
   }
 });</script>
->>>>>>> 393bafd1cc337e47fa6eedb76f690071be1de95c
                 </div>
               </div>
             </div>
@@ -325,7 +321,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
         </div>
         @endif
 
-        @if(@role == 'bm')
+        @if($role == 'branch_manager')
         <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -369,7 +365,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   <br>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
         </div>
         <div class="row batas">
@@ -422,7 +418,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
           @endif
 
 
-          @if(@role == 'rm')
+          @if($role == 'regional_manager')
           <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -466,7 +462,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   <br>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
         </div>
         <div class="row batas">
@@ -495,7 +491,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
         </div>
         @endif
 
-          @if(@role == 'gh')
+          @if($role == 'group_head')
           <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -539,7 +535,7 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   <br>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
         </div>
         <div class="row batas">
