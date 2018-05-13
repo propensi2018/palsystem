@@ -70,16 +70,16 @@ class ReminderController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
 
-<<<<<<< HEAD
+
         return view('dashboard', compact('schedules','today', 'sched_cal'));
-=======
+
         //HANDLING STATISTICS (author : Farhan Np)
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
 
         return view('dashboard', compact('labels', 'data', 'schedules', 'today'));
->>>>>>> 4ed877d276df084a66edba1f67422cd398e43581
+
     }
 
     /**

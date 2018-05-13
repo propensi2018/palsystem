@@ -110,21 +110,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-  }
-});</script>
+
                 </div>
               </div>
             </div>
