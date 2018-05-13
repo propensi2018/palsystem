@@ -51,7 +51,7 @@
                     <a href="{{ url('/dashboard') }}"><img class="sidebar-icon" src="{{ url('image/dashboard.svg') }}" alt="icon name">DASHBOARD</a>
                 </li>
 
-                @if($role == 'sp')
+                @if(Auth::user()->role() == 'salesperson')
                 <li class="active">
                     <a href="{{ url('/customer') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">CUSTOMER</a>
                 </li>
@@ -67,7 +67,7 @@
                 </li>
                 @endif
 
-                @if($role == 'bm')
+                @if(Auth::user()->role() == 'branch_manager')
                 <li >
                     <a href="{{ url('/####') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
                 </li>
@@ -76,13 +76,13 @@
                 </li>
                 @endif
 
-                 @if($role == 'rm')
+                 @if(Auth::user()->role() == 'rm')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>
                 @endif
 
-                 @if($role == 'gh')
+                 @if(Auth::user()->role() == 'gh')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>
@@ -93,7 +93,7 @@
         <nav class="navbar">
             <a href="#menu-toggle" class="btn btn-link" id="menu-toggle"><img class="menu-icon" src="{{ url('image/menu-icon.svg') }}" alt="icon name"></a>
             <div>
-               Hi, <b>{{ Auth::user()->name }}</b> 
+               Hi, <b>{{ Auth::user()->name }}</b>
                 <a class="logout-btn" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">(logout)</a>
@@ -132,7 +132,7 @@
     });
 
     $(function() {
-      
+
       $(".regular").slick({
         dots: true,
         infinite: true,
