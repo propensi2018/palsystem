@@ -43,7 +43,7 @@ Route::get('/test/{id}','UserController@test');
 
 // --TARGET CONTROLLER (PIC : FAIZ MUHAMMAD REFANO DAN FARHAN NURDIATAMAPAKAYA)
 Route::get('/setTarget/product','TargetController@create')->middleware('auth');
-
+Route::post('/setTarget/product/store','TargetController@store')->middleware('auth');
 
 
 Route::get('/customer','CustomerController@show_all');

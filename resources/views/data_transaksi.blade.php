@@ -36,7 +36,7 @@ session_start();
   </div> -->
 
 
-    <form method="GET" action="/dataTransaksi">
+    <form method="GET" action="/palsystem/public/dataTransaksi">
       <select name="month">
         <option value="1">January</option>
         <option value="2">February</a>
