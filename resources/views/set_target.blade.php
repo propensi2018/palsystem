@@ -45,7 +45,7 @@ function addCommas(nStr)
         <div id="product0">
           <div id="divProductList" class="form-group row">
             <label class="control-label col-sm-6 col-md-4 col-md-offset-12 appt-form-name" for="product_list"><h5>Product : </h5></label>
-            <select required id="product_type0" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="product_type0">
+            <select required id="product_type" class="form-control col-sm-6 col-md-4 col-md-offset-12" name="product_type">
                <option disabled selected value> -- select an option -- </option>
                @foreach($product_types as $pt)
                 <option value="{{$pt->id}}">{{$pt->desc}}</option>
