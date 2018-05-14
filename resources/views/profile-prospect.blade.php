@@ -3,6 +3,8 @@
 @section('title','Profile Customer')
 @section('contents')
 
+
+
 <div class="profile-customer">
     <ul class="nav nav-tabs nav-appt">
         <li id="tab-1" class="nav-item">
@@ -29,10 +31,10 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
 
-                    <form method="post" action="customer/storeResponse" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
+                    <form method="post" action="customer/storeExistingCust" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
 
                       <div class="modal-header">
-                        <h4 class="modal-title">Customer Response:</h4>
+                        <h4 class="modal-title" style="color:black">Customer Response:</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;
                         </button>
                       </div>
@@ -48,7 +50,7 @@
 
                         <div class="row">
                           <div class="col-sm-6 col-md-6 col-md-offset-12">
-                            <h6>Customer Responses<span><font color="red">* </font></span>:</h6>
+                            <h6 style="color:black">Customer Responses<span><font color="red">* </font></span>:</h6>
                             <select id="customer_type" class="custom-select" name="customer_type">
                               <option value="Pending">Pending</option>
                               <option value="Reject">Reject</option>
@@ -56,20 +58,20 @@
                           </div>
 
                           <div class="col-sm-6 col-md-6 col-md-offset-12">
-                            <h6>Date<span><font color="red">* </font></span>:</h6>
+                            <h6 style="color:black" >Date<span><font color="red">* </font></span>:</h6>
                             <input type="hidden" name="id_customer" value="{{$customerData -> id}}">
                             <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
                           </div>
                         </div>
                         <br>
-                        <h6>Notes:</h6>
+                        <h6 style="color:black">Notes:</h6>
                         <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea><br>
                       </div>
 
                       <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
                       </div>
-
+                        <input type="hidden" name="cycleCust" value="{{$prospect[0]->cycle}}">
                     </form>
                   </div>
                 </div>
@@ -131,9 +133,8 @@
             @foreach ($customerSchedule as $customerScheduleLoop)
                 <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
             @endforeach
-             <h4 class="card-title">Address :</h4>
             @foreach ($addressProspect as $addressProspectLoop)
-           <p class="card-title">Address {{$loop->iteration}} </p> 
+              <h4 class="card-title">Address {{$loop->iteration}} :</h4> 
             <p class="card-text">Province : {{$addressProspectLoop->province}}</p>
             <p class="card-text">Village : {{$addressProspectLoop->kelurahan}}</p>
             <p class="card-text">City : {{$addressProspectLoop->city}}</p>

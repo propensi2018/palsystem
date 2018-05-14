@@ -63,6 +63,9 @@ Route::get('/prospect/form','AktivitasPanggilanController@show')->middleware('au
 Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_customers')->middleware('auth');
 Route::post('/customer/storeCsv','AktivitasPanggilanController@storeCsv');
 
+
+Route::post('/customer/storeExistingCust','CustomerController@store_response_ex_cust')->middleware('auth');
+
 // --PENGELOLAAN PESAN (PIC : ICHSANDY RIZKI)--
 
 Route::post('/messageInbox/store/{id}','MessageController@store')->middleware('auth');
