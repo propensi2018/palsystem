@@ -87,3 +87,5 @@ Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniq
 Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
 
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
+Route::get('/history/call/{id}','RiwayatController@show_call')->middleware('auth');
+Route::get('/history/appointment/{id}','RiwayatController@show_appointment')->middleware('auth');
