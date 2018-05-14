@@ -30,7 +30,7 @@ Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_cust
 Route::post('/customer/storeResponse', 'AktivitasPanggilanController@storeResponse')->middleware('auth');
 Auth::routes();
 
-// --AKTIVITAS PERTEMUAN DAN DUMMY HELPER (PIC : FARHAN NURDIATAMAPAKAYA)--
+// --AKTIVITAS PERTEMUAN (PIC : FARHAN NURDIATAMAPAKAYA)--
 Route::get('/haha/{id}', 'AppointmentController@show')->middleware('auth');
 Route::get('/users', 'UserController@show_all')->middleware('auth');
 Route::get('/show/user/{id}','UserController@show')->middleware('auth');
@@ -41,7 +41,9 @@ Route::post('/appointment/store','AppointmentController@store')->middleware('aut
 Route::get('/appointment/{user_id}','AppointmentController@create')->middleware('auth');
 Route::get('/test/{id}','UserController@test');
 
-
+// --TARGET CONTROLLER (PIC : FAIZ MUHAMMAD REFANO DAN FARHAN NURDIATAMAPAKAYA)
+Route::get('/setTarget/product','TargetController@create')->middleware('auth');
+Route::post('/setTarget/product/store','TargetController@store')->middleware('auth');
 
 
 Route::get('/customer','CustomerController@show_all');
@@ -54,12 +56,12 @@ Route::get('/appointment/{user_id}','AppointmentController@create');
 
 
 
-// --PENGELOLAAN PROSPECT (PIC : FAIZ MIUHAMMAD REFANO)--
+// --PENGELOLAAN PROSPECT (PIC : FAIZ MUHAMMAD REFANO)--
 Route::get('/customer/{id}','CustomerController@show')->name('profile-prospect')->middleware('auth');
 Route::post('/prospect/StoreProspect','AktivitasPanggilanController@storeProspect')->middleware('auth');
 Route::get('/prospect/form','AktivitasPanggilanController@show')->middleware('auth');
 Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_customers')->middleware('auth');
-
+Route::post('/customer/storeCsv','AktivitasPanggilanController@storeCsv');
 
 // --PENGELOLAAN PESAN (PIC : ICHSANDY RIZKI)--
 
@@ -85,6 +87,7 @@ Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniq
 
 // --MENAMPILKAN DATA TRANSAKSI (PIC : MAKTALSAKRIADHI)--
 Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
+Route::get('/dataTransaksi/print_PDF','DataTransaksiController@printPDF')->middleware('auth');
 
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
 Route::get('/history/call/{id}','RiwayatController@show_call')->middleware('auth');

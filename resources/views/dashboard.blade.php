@@ -98,7 +98,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
-
+        @if($role == 'salesperson')
         <div class="row batas">
           <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
@@ -117,7 +117,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
   data: {
     labels: @json($labels),
     datasets: @json($data)
-    
+
   },
   options: {
     title: {
@@ -319,6 +319,320 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
             </div>
           </div>
         </div>
+        @endif
+
+        @if($role == 'branch_manager')
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <canvas id="myChart" width="400" height="200"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($data)
+
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Product'
+    }
+  }
+});</script>
+<br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+  <script>
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(document.getElementById("myChart"), {
+    type: 'line',
+    data: {
+      labels: @json($labels),
+      datasets: @json($data)
+
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Product'
+      }
+    }
+  });</script>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Rating
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+          @endif
+
+
+          @if($role == 'regional_manager')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <canvas id="myChart" width="400" height="200"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($data)
+
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Product'
+    }
+  }
+});</script>
+
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
+
+          @if($role == 'group_head')
+          <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <canvas id="myChart" width="400" height="200"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($data)
+
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Product'
+    }
+  }
+});</script>
+
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Calendar
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row batas">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="container reminder-layout">
+              <div class="reminder-form">
+                <div class="row reminder-title">
+                  <div class="col-sm-6 col-md-12 col-md-offset-12">
+                    Statistic
+                  </div>
+                </div>
+                <div class="row reminder-body">
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          @endif
 
         <script>
         $(document).ready(function(){

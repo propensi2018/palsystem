@@ -30,6 +30,8 @@ class Statistic extends Model
       borderColor: "#3e95cd",
       fill: '-1'
     }
+    $statistic = New Statistic;
+    // $statistic -> calculateProduct(6,2018,3);
   */
   protected function product_data_set($product_id, $color) {
     date_default_timezone_set("Asia/Bangkok");
@@ -54,7 +56,7 @@ class Statistic extends Model
   }
 
   /*
-  calucate the amount of product given year month and porduct // IDEA: 
+  calucate the amount of product given year month and porduct // IDEA:
   */
   public function calculateProduct($month, $year, $product_type_id) {
     $amounts = DB::table('transactions')
@@ -64,7 +66,23 @@ class Statistic extends Model
     ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
     ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
     ->select('amount')->get();
-    // return $amounts;
+
+    return $amounts -> sum('amount');
+  }
+
+  /*
+  return the value of product from 01-01-$year to 01-01-$year+1
+  BUAT ICAN
+  */
+  public function calculateProductYear($year, $product_type_id) {
+    $amounts = DB::table('transactions')
+    ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+    ->join('product_list_assocs', 'product_lists.id', '=', 'product_list_assocs.product_list_id')
+    ->where('product_list_assocs.id_ptype', '=', $product_type_id)
+    ->where('product_list_assocs.created_at', '>=', $year . "-" . "1" . "-1 00:00:00")
+    ->where('product_list_assocs.created_at', '<', $year + 1 . "-" . "1" . "-1 00:00:00")
+    ->select('amount')->get();
+
     return $amounts -> sum('amount');
   }
 
@@ -180,5 +198,6 @@ public function sales_data($id) {
         }
         return $returner;
   }
+
 
 }

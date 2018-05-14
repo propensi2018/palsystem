@@ -59,7 +59,14 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
+    {   
+        
+       $scheduleDeal=DB::table('schedules')
+            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+            ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
+            ->where([['id_customer',$id],['is_a_deal' ,1]] )
+            ->orderBy('schedule_types.created_at','desc')->get();
+                   
         $customerData = Customer::find($id);
         $prospect = Prospect::where('customer_id', $id) -> get();
         $addressProspect = Address::where('prospect_customer_id' , $id)->get();
@@ -109,7 +116,11 @@ class CustomerController extends Controller
             $productListType = array();
             $productListCustomer = array();    
             array_push($productListSemua, $joinSchedule[$i]->id);  
-            array_push($scheduleType , ScheduleType::where('id',$joinSchedule[$i]->schedule_type_id)->get()->first());
+           array_push($scheduleType , ScheduleType::where('id',$joinSchedule[$i]->schedule_type_id)->get()->first());
+//            array_push($scheduleType , $joinType = DB::table('schedules')
+//            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+//            ->where([['id_customer',$id],['schedule_types.id' ,$joinSchedule[$i]->schedule_type_id ])
+//            ->orderBy('schedule_types.created_at','desc')->get()->first());
             array_push($scheduleAppointment ,Appointment::where('id',$scheduleType[$i]->appointment_id)->get());
            
             array_push($productListCustomer , ProductList::where('schedule_id' , $productListSemua[0])->get()->first());
@@ -135,8 +146,8 @@ class CustomerController extends Controller
           
                                    
         }
-            return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId'));
-    //return compact('allSchedule');
+     return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal'));
+   //return compact('kumpulanTemp');
 
 
     }

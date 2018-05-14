@@ -42,6 +42,9 @@ class User extends Authenticatable
     {
       return $this->hasMany(Salesperson::class);
     }
+    public function Rating() {
+      return $this->hasOne(Rating::class, 'sales_user_id');
+    }
 
     public function role_complex () {
       $tester = DB::table('salespeople')
@@ -75,12 +78,12 @@ class User extends Authenticatable
       $tester2 = DB::table('managers')
       ->where('managers.user_id', $this->id)
       ->get();
-      return $tester2;
-      if ($tester->isEmpty()) {
+      // return $tester2;
+      if (!$tester->isEmpty()) {
         // return 'abap';
         return 'salesperson';
       } else {
-        if ($tester2 -> is_gh == 1) {
+          if ($tester2[0] -> is_gh == 1) {
           return 'group_head';
         }
         $tester3 = DB::table('regions')

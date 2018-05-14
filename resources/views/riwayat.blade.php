@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 ?>
 
 @extends('layouts.master')
@@ -15,7 +14,6 @@ session_start();
     </div>
     <h2 style="text-align: center; margin-top: 10px"><b>HISTORY</b></h2>
 
-  <!-- Modal Fill Response -->
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%; text-align: center">
         
@@ -65,3 +63,4 @@ session_start();
 
 
 @endsection
+ 

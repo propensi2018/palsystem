@@ -67,7 +67,8 @@ class AktivitasPanggilanController extends Controller
 
         $customery=Customer::where([['is_act', false], ['pic_sp_id', $id]])->get();
 
-        $exCust=DB::table('prospects')->join('customers', 'prospects.customer_id', '=', 'customers.id')->where([['pic_sp_id', $id],['cycle', '>=', '1']])->get();
+        $exCust=DB::table('prospects')->join('customers', 'prospects.customer_id', '=', 'customers.id')->where([['pic_sp_id', $id],['cycle', '>', '1']])->get();
+        //return $exCust;
 
         foreach($customery as $individuals) {
             $individuals -> telephones = array();
@@ -95,9 +96,11 @@ class AktivitasPanggilanController extends Controller
         $allSchedule = Schedule::where('id_user_sp', $id)->get();
         $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");
+
         $today1 = date('Y-m-d');
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
+        
         $jumlah = sizeof($joinProspectId);
         $tempSchedule = array();
         $allScheduleCustomer = array();
@@ -364,11 +367,22 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
 
     }
 
-    public function store_csv(Request $req){
+    public function storeCsv(Request $req){
+        // dd($req);
+        $validator = Validator::make($req->all(), [
+            'file_csv'   => 'required|mimes:csv,txt'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
         $tmpName = $req->file('file_csv')->getPathName();
         // dd($req);
+
         $csvAsArray = array_map('str_getcsv', file($tmpName));
         // dd($csvAsArray);
+
 
         foreach ($csvAsArray as $value) {
             //$validatedData = $request->validate([$value[1] => 'required|unique:telephones,telp_no']);
@@ -389,7 +403,10 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         return redirect()->route('list_customers');
     }
 
-    public function store_response_ex_cust() {
+    public function store_response_ex_cust(Request $request) {
+
+        $id = Auth::id();
+        
         if (request ('customer_type') == "Pending") {
             $strApp = new Appointment();
             $strApp ->is_a_deal = 0;

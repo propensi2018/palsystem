@@ -47,7 +47,7 @@ class UpdateFk extends Migration
 
           Schema::table('addresses', function($table)
           {
-              $table->integer('prospect_customer_id')->unsigned()->nullable();
+              $table->integer('prospect_customer_id')->unsigned()->nullable() ;
 
               $table -> foreign('prospect_customer_id')
               ->references('customer_id')
@@ -56,6 +56,15 @@ class UpdateFk extends Migration
               ->onDelete('cascade');
           });
 
+
+          Schema::table('ratings', function($table)
+          {
+          $table->foreign('product_types_id')
+          ->references('id')
+          ->on('product_types')
+          ->onUpdate('cascade')
+          ->onDelete('cascade');
+          });
 
     }
 
