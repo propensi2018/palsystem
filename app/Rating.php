@@ -14,6 +14,10 @@ class Rating extends Model
   }
   public function User()
   {
-    $this->belongsToMany(User::class);
+    $this->belongsTo(User::class);
+  }
+  public function product_type()
+  {
+    $this->belongsTo(ProductType::class);
   }
 }

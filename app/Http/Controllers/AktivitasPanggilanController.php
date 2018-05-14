@@ -101,6 +101,7 @@ class AktivitasPanggilanController extends Controller
                 ['is_done',0]
             ])
            ->orderBy('time','ascending')->get();
+
         $allSchedule = Schedule::where('id_user_sp', $id)->get();
         $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");

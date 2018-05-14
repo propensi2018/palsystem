@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\ProductType;
 
 class TargetController extends Controller
 {
@@ -23,7 +26,10 @@ class TargetController extends Controller
      */
     public function create()
     {
-        return view('set_target');
+
+        $product_types = ProductType::all();
+        $today = date('y');
+        return view('set_target', compact('product_types', 'today'));
     }
 
     /**
