@@ -19,7 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="{{ url('css/sidebars.css') }}" rel="stylesheet">
     <link href="{{ url('css/navbars.css') }}" rel="stylesheet">
-    <link href="{{ url('css/dashboardsss.css') }}" rel="stylesheet">
+    <link href="{{ url('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ url('css/messages.css') }}" rel="stylesheet">
     <link href="{{ url('css/achsani.css') }}" rel="stylesheet">
     <link href="{{ url('css/customers_prospects.css') }}" rel="stylesheet">
@@ -72,17 +72,21 @@
                     <a href="{{ url('/dataTransaksi') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
                 </li>
                 <li class="">
-                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"><img class="sidebar-icon" src="{{ url('image/message.svg') }}" alt="icon name">MESSAGE</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="{{ url('/show/messageInbox') }}"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}">INBOX</a></li>
+                        <li><a href="{{ url('/show/messageSent') }}"><img class="sidebar-icon" src="{{ url('image/sent.svg') }}">SENT MAIL</a></li>
+                    </ul>
                 </li>
                 @endif
 
-                 @if(Auth::user()->role() == 'rm')
+                 @if(Auth::user()->role() == 'regional_manager')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>
                 @endif
 
-                 @if(Auth::user()->role() == 'gh')
+                 @if(Auth::user()->role() == 'group_head')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>

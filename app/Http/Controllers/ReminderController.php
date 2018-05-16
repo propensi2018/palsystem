@@ -91,6 +91,7 @@ class ReminderController extends Controller
         $dataSales = $statistics-> sales_data($id);
 
 
+        if($role == 'branch_manager'){
 
         $agresiveProduct = array();
         $moderateProduct = array();
@@ -124,6 +125,7 @@ class ReminderController extends Controller
 
 
         //REWARD LIST SLS & Produk
+
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
         $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
@@ -171,7 +173,7 @@ class ReminderController extends Controller
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
         // return $role;
         //for salesperson view
-        if($role == 'branch_manager'){
+        
 
           $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
           $jml = sizeof(Rating::all());
@@ -254,32 +256,35 @@ class ReminderController extends Controller
 
             // COMPLETED
             $strApp = new Appointment();
-            // $strApp ->id = sizeof(Appointment::select('id')->get())+1;
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
 
             $strScTp = new ScheduleType();
             $strScTp ->telp_flag = 1;
-            // $strScTp->id_appt = sizeof(Appointment::select('id')->get());
             $strScTp -> appointment() -> associate($strApp);
             $strScTp->save();
 
             $strSch = new Schedule;
             $strSch->is_done = 0;
+            $strSch->cycle = 1;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
-            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();
 
-            // $notes = Schedule::select('notes')->where('id', sizeof(Schedule::select('id')->get()));
+            Schedule::where('id', request('id'))->update(['is_done' => true]);
             return view('form_prospect',compact('strSch'));
         }
 
         else if (request ('customer_type') == "Pending") {
+            $strApp = new Appointment();
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 0;
             $strScTp->save();
@@ -288,8 +293,8 @@ class ReminderController extends Controller
             $strSch->is_done = 0;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->cycle = 1;
             $strSch -> scheduleType() -> associate($strScTp);
-            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();
@@ -299,15 +304,20 @@ class ReminderController extends Controller
         }
 
         else {
+            $strApp = new Appointment();
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
 
             $strSch = new Schedule;
             $strSch->is_done = 1;
+            $strSch->cycle = 1;
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
-//            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();

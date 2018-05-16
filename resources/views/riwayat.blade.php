@@ -11,9 +11,9 @@ session_start();
     <div style="background-color: blue; margin-top: 30px;border-radius: 5px">
         <h3 style="color: white; margin-left: 20px; padding-top: 10px">{{$salesperson->name}}</h3>
         <h5 style="color: white; margin-left: 20px; padding-bottom: 10px">ID : {{$salesperson->id_sp}}</h5>
-        @for ($i = 0; $i < $amountRating ; $i++)
-            <a>*</a>
-        @endfor
+            @for ($i = 0; $i < $amountRating ; $i++)
+                <a>*</a>
+            @endfor
     </div>
     <h2 style="text-align: center; margin-top: 10px"><b>HISTORY</b></h2>
     <div data-role="page" ng-app="dateInputExample" class="data-table">
@@ -34,27 +34,30 @@ session_start();
             <td>
               {{$history->created_at}}
             </td>
-            @if ($history->telp_flag === 0)
-              <td>
-                Call
-              </td>
-            @elseif ($history->telp_flag === 1)
+            @if (is_null($history->response))
               <td>
                 Appointment
+              </td>
+            @else
+              <td>
+                Call
               </td>
             @endif
             <td>
               {{$history->name}}
             </td>
-            @if ($history->telp_flag === 0)          
-              <td>
-                <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
-              </td>
-            @elseif ($history->telp_flag === 1)
+            @if (is_null($history->response))          
               <td>
                 <a href="history/appointment/{{$history->id}}" class="btn btn-primary">Detail</a>
               </td>
+            @else
+              <td>
+                <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
+              </td>
             @endif
+            <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">Detail</button>
+            </td>
           </tr>
           @endforeach
         </tbody>
