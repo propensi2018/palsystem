@@ -90,6 +90,40 @@ class RiwayatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show_call($id)
+    {
+        $call = DB::table('schedules')
+            ->join('customers', 'schedules.id_customer', '=', 'customers.id')
+            ->where('schedules.id', $id)
+            ->select('schedules.created_at', 'schedules.notes', 'customers.name')
+            ->first();
+
+        return view('riwayat_call', ['call' => $call]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_appointment($id)
+    {
+        $appointment = DB::table('schedules')
+            ->join('customers', 'schedules.id_customer', '=', 'customers.id')
+            ->where('schedules.id', $id)
+            ->select('schedules.created_at', 'schedules.notes', 'customers.name')
+            ->first();
+
+        return view('riwayat_appointment', ['appointment' => $appointment]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show_all() 
     {
         $id =Auth::id();
@@ -97,7 +131,7 @@ class RiwayatController extends Controller
             ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->where('schedules.id_user_sp', $id)
-            ->select('schedules.created_at','schedule_types.telp_flag','customers.name')
+            ->select('schedules.created_at','schedule_types.telp_flag','customers.name', 'schedules.id')
             ->get();
 
         $salesperson = DB::table('salespeople')

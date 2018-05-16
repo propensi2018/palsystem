@@ -83,3 +83,5 @@ Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
 Route::get('/dataTransaksi/print_PDF','DataTransaksiController@printPDF')->middleware('auth');
 
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
+Route::get('/history/call/{id}','RiwayatController@show_call')->middleware('auth');
+Route::get('/history/appointment/{id}','RiwayatController@show_appointment')->middleware('auth');
