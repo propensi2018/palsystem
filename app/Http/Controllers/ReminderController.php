@@ -86,7 +86,7 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-        // return [$data];
+        
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
 

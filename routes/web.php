@@ -19,8 +19,8 @@ Route::post('/logout', 'LoginController@logout');
 Route::get('/hasher/{password}', function ($password) {
 	return Hash::make($password);
 });
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'UserController@index');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 //--AKTIVITAS PANGGILAN (PIC : MAKTAL SAKRIADHI)--
 Route::get('/dataUser','AktivitasPanggilanController@show_all')->middleware('auth');
@@ -31,7 +31,7 @@ Route::post('/customer/storeResponse', 'AktivitasPanggilanController@storeRespon
 Auth::routes();
 
 // --AKTIVITAS PERTEMUAN (PIC : FARHAN NURDIATAMAPAKAYA)--
-Route::get('/haha/{id}', 'AppointmentController@show')->middleware('auth');
+// Route::get('/haha/{id}', 'AppointmentController@show')->middleware('auth');
 Route::get('/users', 'UserController@show_all')->middleware('auth');
 Route::get('/show/user/{id}','UserController@show')->middleware('auth');
 Route::get('/create/user/{name}','UserController@store')->middleware('auth');
@@ -48,13 +48,6 @@ Route::post('/setTarget/product/store','TargetController@store')->middleware('au
 
 Route::get('/customer','CustomerController@show_all');
 Route::get('/appointment/{user_id}','AppointmentController@create');
-
-
-
-
-
-
-
 
 // --PENGELOLAAN PROSPECT (PIC : FAIZ MUHAMMAD REFANO)--
 Route::get('/customer/{id}','CustomerController@show')->name('profile-prospect')->middleware('auth');
