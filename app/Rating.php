@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {
-  protected $primaryKey = 'sales_user_id';
+  // protected $primaryKey = 'sales_user_id';
 
   public function Salesperson()
   {

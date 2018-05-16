@@ -20,7 +20,6 @@
     <div class="form-group">
         <label>Province :</label>
         <input name="provinsi0" type="text" class="form-control" id="provinsi0" aria-describedby="emailHelp" placeholder="Enter the province"  minlength='1' oninvalid="this.setCustomValidity('Please Insert This Field Before You Submit')" oninput="setCustomValidity('')" required>
-
     </div>
     <div class="form-group">
       <label>City :</label>
@@ -36,7 +35,7 @@
     </div>
     <div class="form-group">
       <label >Postal Code :</label>
-      <input name="kodePos0" type="text" class="form-control" id="kodePos0" placeholder="Enter the postal code number" minlength='1' oninvalid="this.setCustomValidity('Please Insert This Field Before You Submit')" oninput="setCustomValidity('')" required>
+      <input name="kodePos0" type="text" class="form-control" id="kodePos0" placeholder="Enter the postal code number" minlength='1' pattern="^[0-9\+\(\)]*$" oninvalid="this.setCustomValidity('Please Enter a Valid Postal Code Number')" oninput="setCustomValidity('')" required>
     </div>
     <div class="form-group">
       <label>Street Name :</label>

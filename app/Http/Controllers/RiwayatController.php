@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Rating;
+use App\Salesperson;
+use App\ProductType;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+use DateTime;
+
 
 class RiwayatController extends Controller
 {
@@ -90,6 +98,8 @@ class RiwayatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
     public function show_call($id)
     {
         $call = DB::table('schedules')
@@ -134,8 +144,7 @@ class RiwayatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show_all() 
-    {
+    public function show_all(){
         $id =Auth::id();
         $salesperson_history = DB::table('schedules')
             ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
@@ -150,6 +159,62 @@ class RiwayatController extends Controller
             ->select('salespeople.id_sp', 'users.name')
             ->first();
 
-        return view('riwayat', ['salesperson_history' => $salesperson_history, 'salesperson' => $salesperson]);
+        date_default_timezone_set("Asia/Bangkok");
+        $date = date('d-m');
+        $inputSls = '7'; //best performance Salesperson user id
+        $inputProdAgr  = '1';//best performance ProductType id for Aggresif
+        $inputProdMod  = '2';//best performance ProductType id  for Moderate
+        $inputProdCons = '3';//best performance ProductType id for Conservative
+        //add reward
+        if($date == '13-05'){
+            $currentYear = date("y");
+            if(sizeof(Rating::All()) !== 0){
+            $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
+          }else{
+            $latestYear = 0;
+          }
+
+          if($currentYear !== $latestYear ){
+
+               //ADD SLS REWARD
+               $newReward = new Rating;
+               $newReward->sales_user_id = $inputSls;
+               $newReward->date = new DateTime();
+               $newReward->save();
+
+               //ADD PROD REWARD
+               $newReward = new Rating;
+               $newReward->product_types_id = $inputProdAgr;
+               $newReward->date = New DateTime();
+               $newReward->save();
+
+               $newReward = new Rating;
+               $newReward->product_types_id = $inputProdMod;
+               $newReward->date = New DateTime();
+               $newReward->save();
+
+               $newReward = new Rating;
+               $newReward->product_types_id = $inputProdCons;
+               $newReward->date = New DateTime();
+               $newReward->save();
+          }
+        }
+        //set reward to UI======================================================================================
+
+        $user = User::find($id);
+        $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
+        //for salesperson view
+        if($is_sp == 1){
+          if((Rating::where('sales_user_id',$id)->get()->first()) !== null ){
+            $amountRating =  Rating::where('sales_user_id',$id)->count();
+            return view('riwayat', ['salesperson_history' => $salesperson_history, 'salesperson' => $salesperson, 'amountRating'=> $amountRating]);
+          }else{
+            $amountRating = 0;
+            return view('riwayat', ['salesperson_history' => $salesperson_history, 'salesperson' => $salesperson, 'amountRating'=> $amountRating]);
+          }
+        }
     }
+
+
+
 }
