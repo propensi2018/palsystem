@@ -75,8 +75,13 @@ Route::get('show/message/{id}','MessageController@showMessage')->middleware('aut
 Route::get('show/message2/{id}','MessageController@showMessage2')->middleware('auth');
 
 // --MELIHAT RATING (PIC : ICHSANDY RIZKI)--
+<<<<<<< HEAD
 Route::get('/history','RewardController@compareSalesperson')->middleware('auth');
 Route::get('/','RewardController@compareSalesperson')->middleware('auth');
+=======
+//Route::get('/dummyReward','RewardController@compareSalesperson')->middleware('auth');
+Route::get('/history','RiwayatController@reward')->middleware('auth');
+>>>>>>> 9a0c1219dbc99a9aac601690f6407713fe517540
 
 
 
@@ -92,6 +97,8 @@ Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniq
 // --MENAMPILKAN DATA TRANSAKSI (PIC : MAKTALSAKRIADHI)--
 Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
 Route::get('/dataTransaksi/print_PDF','DataTransaksiController@printPDF')->middleware('auth');
+
+
 
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
 Route::get('/history/call/{id}','RiwayatController@show_call')->middleware('auth');

@@ -93,9 +93,29 @@ class Statistic extends Model
     ->where('product_list_assocs.created_at', '>=', $year . "-" . "1" . "-1 00:00:00")
     ->where('product_list_assocs.created_at', '<', $year + 1 . "-" . "1" . "-1 00:00:00")
     ->select('amount')->get();
-
+    // return $amounts;
     return $amounts -> sum('amount');
   }
+
+  /*
+  return the value of product from 01-01-$year to 01-01-$year+1
+  BUAT ICAN
+  */
+  public function calculateSalespersonYear($year, $salesperson_id) {
+    $amounts = DB::table('transactions')
+    ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+    ->join('schedules', 'schedules.id', '=', 'product_lists.schedule_id')
+    ->join('product_list_assocs', 'product_lists.id', '=', 'product_list_assocs.product_list_id')
+    ->where('schedules.id_user_sp', '=', $salesperson_id)
+    ->where('product_list_assocs.created_at', '>=', $year . "-" . "1" . "-1 00:00:00")
+    ->where('product_list_assocs.created_at', '<', $year + 1 . "-" . "1" . "-1 00:00:00")
+    ->select('amount')->get();
+    // return $amounts;
+    return $amounts -> sum('amount');
+  }
+
+
+
 
   /*
   return the set of labels needed by the chart.js
