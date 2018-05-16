@@ -29,7 +29,7 @@ class StatisticType extends Model
       return [$returner, 'salespeople'];
     } else {
       $returner = $this -> id_level;
-      if($returner != null)) {
+      if($returner != null) {
         return [$returner, 'levels'];
       } else {
         $returner = $this -> id_product;

@@ -32,25 +32,25 @@ session_start();
             <td>
               {{$history->created_at}}
             </td>
-            @if ($history->telp_flag === 0)          
-              <td>
-                Call
-              </td>
-            @elseif ($history->telp_flag === 1)
+            @if (is_null($history->response))
               <td>
                 Appointment
+              </td>
+            @else
+              <td>
+                Call
               </td>
             @endif
             <td>
               {{$history->name}}
             </td>
-            @if ($history->telp_flag === 0)          
-              <td>
-                <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
-              </td>
-            @elseif ($history->telp_flag === 1)
+            @if (is_null($history->response))          
               <td>
                 <a href="history/appointment/{{$history->id}}" class="btn btn-primary">Detail</a>
+              </td>
+            @else
+              <td>
+                <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
               </td>
             @endif
           </tr>
