@@ -69,7 +69,7 @@
 
                 @if(Auth::user()->role() == 'branch_manager')
                 <li >
-                    <a href="{{ url('/####') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
+                    <a href="{{ url('/dataTransaksi') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
                 </li>
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>

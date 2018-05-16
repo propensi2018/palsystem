@@ -17,6 +17,7 @@ use DateTime;
 class RewardController extends Controller
 {
   public function compareSalesperson(){
+
     date_default_timezone_set("Asia/Bangkok");
     $date = date('d-m');
     $inputSls = '7'; //best performance Salesperson user id
@@ -33,7 +34,7 @@ class RewardController extends Controller
       }
 
       if($currentYear !== $latestYear ){
-
+           //ADD SLS REWARD
            $newReward = new Rating;
            $newReward->sales_user_id = $inputSls;
            $newReward->date = new DateTime();
@@ -43,7 +44,7 @@ class RewardController extends Controller
            $newReward->product_types_id = $inputProdAgr;
            $newReward->date = New DateTime();
            $newReward->save();
-
+           //ADD PROD REWARD
            $newReward = new Rating;
            $newReward->product_types_id = $inputProdMod;
            $newReward->date = New DateTime();
@@ -57,11 +58,11 @@ class RewardController extends Controller
     }
 
 
-//set reward to UI======================================================================================
+    //set reward to UI======================================================================================
     $id = Auth::id();
     $user = User::find($id);
     $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
-//for salesperson view
+    //for salesperson view
     if($is_sp == 1){
       if((Rating::where('sales_user_id',$id)->get()->first()) !== null ){
         $amountRating =  Rating::where('sales_user_id',$id)->count();
@@ -71,63 +72,28 @@ class RewardController extends Controller
         return view('dummyReward',compact('amountRating'));
       }
     }
-//for branch manager view
+    //for branch manager view
     else{
       $jml = sizeof(Rating::all());
       $listRatingSls = array();
       $listRatingProd = array();
-
-      // for($i=0; $i< $jml; $i++){
-      //
-      //   $arr = (array) Rating::select('sales_user_id')->where('id',$i+2)->get()->first();
-      //   return $arr;
-      //   if(!empty($arr)){
-      //
-      //     $idSls = Rating::select('sales_user_id')->whereNotNull('sales_user_id')->where('id',$i+1)->get()->first()->sales_user_id;
-      //     $nameSls = User::find($idSls)->name;
-      //      $year = substr((Rating::select('date')->whereNotNull('sales_user_id')->where('id',$i+1)->get()->first()->date),0,4);
-      //     $listRatingSls[] =  array('name' => $nameSls,'year'=> $year );
-      //
-      //   }else{
-      //     return "s";
-      //     $idProd = Rating::select('product_types_id')->where('id',$i+1)->get()->first()->product_types_id;
-      //
-      //   }
-      // }
-
       $ratings = Rating::all();
+
       foreach($ratings as $rating) {
-        if (isset($rating -> sales_user_id)) {
+        if (isset($rating -> sales_user_id))
+        {
         $nameSls = User::find($rating -> sales_user_id) -> name;
         $yearSls = substr($rating -> date, 0,4);
         $listRatingSls[] =  array('name' => $nameSls,'year'=> $yearSls );
-
-
-      } else if (isset($rating -> product_types_id)) {
+        }
+        else if (isset($rating -> product_types_id))
+        {
         $nameProd = ProductType::find($rating-> product_types_id) -> desc;
         $yearProd = substr($rating -> date, 0,4);
         $listRatingProd[] =  array('name' => $nameProd,'year'=> $yearProd );
-
         }
       }
-
       return view('dummyReward',compact('listRatingProd','listRatingSls','amountRating'));
     }
-
-
-
-    //  {{$listRating[$i]['name']}}
-    // {{$listRating[$i]['year']}} BUAT VIEW BRANCH MANAGER BUAT SP RATING
-//=======================================================================================================
-
-//
-
-  }
-
-
-
-
-  public function compareProduct(){
-    $rewardedProduct = "reksadana ";
   }
 }

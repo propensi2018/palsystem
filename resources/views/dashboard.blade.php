@@ -412,21 +412,12 @@ var myChart = new Chart(document.getElementById("myChart"), {
       }
     }
   });</script>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-sm-6 col-md-8 col-md-offset-12">
+          <div class="col-sm-6 col-md-4 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
@@ -435,20 +426,20 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
+                  @foreach ($listRatingSls as  $listRatingSls)
+                  {{$listRatingSls['name']}}
+                  {{$listRatingSls['year']}}
+                  @endforeach
                   <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  @foreach ($listRatingProd as  $listRatingProd)
+                  {{$listRatingProd['name']}}
+                  {{$listRatingProd['year']}}
+                  @endforeach
                 </div>
               </div>
             </div>
           </div>
-          </div>
+        </div>
           @endif
 
 
