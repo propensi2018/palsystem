@@ -60,11 +60,12 @@ class ReminderController extends Controller
                     $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getCustomer[0] -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp);
                 } elseif ($getActivity[0] -> telp_flag == 1 && $date == $now) {
                     $getProspect = Prospect::where('customer_id', $getCustomer[0]['id']) -> get();
-                    $getAddress = Address::where('id', $getProspect[0]['address_id']) -> get();
+                    $getAddress = Address::where('prospect_customer_id', $allSchedule[$i] -> id_customer) -> get();
                     $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getCustomer[0] -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp, 'street' => $getAddress[0] -> street, 'kelurahan' => $getAddress[0] -> kelurahan, 'district' => $getAddress[0] -> district);
                 }
             }
         }
+        // return 'something i dont know';
 
         date_default_timezone_set("Asia/Bangkok");
         $today1 = date('Y-m-d');
@@ -75,7 +76,7 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-
+        // return [$data];
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
 

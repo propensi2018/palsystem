@@ -100,36 +100,37 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
         @if($role == 'salesperson')
         <div class="row batas">
-          <div class="col-sm-6 col-md-8 col-md-offset-12">
+        <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistik Produk
+                    Statistik Salesperson
                   </div>
                 </div>
-                <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
+                  <div class="row reminder-body">
+                <canvas id="chartSalesperson" height="100" width="200"></canvas>
+                  </div>
+                <script>
+var ctx = document.getElementById("chartSalesperson").getContext('2d');
+var myChart = new Chart(document.getElementById("chartSalesperson"), {
   type: 'line',
   data: {
     labels: @json($labels),
-    datasets: @json($data)
-
+    datasets: @json($dataSales)
   },
+
   options: {
     title: {
       display: true,
-      text: 'Product'
+      text: 'Salesperson'
     }
   }
 });</script>
-                </div>
               </div>
             </div>
           </div>
+         
           <div class="col-sm-6 col-md-4 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
@@ -180,36 +181,37 @@ var myChart = new Chart(document.getElementById("myChart"), {
           </div>
         </div>
         <div class="row batas">
-          <div class="col-sm-6 col-md-8 col-md-offset-12">
+             <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistik Salesperson
+                    Statistik Produk
                   </div>
                 </div>
-                  <div class="row reminder-body">
-                <canvas id="chartSalesperson" height="100" width="200"></canvas>
-                  </div>
-                <script>
-var ctx = document.getElementById("chartSalesperson").getContext('2d');
-var myChart = new Chart(document.getElementById("chartSalesperson"), {
+                <div class="row reminder-body">
+                  <canvas id="myChart" width="400" height="200"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
   type: 'line',
   data: {
     labels: @json($labels),
-    datasets: @json($dataSales)
-  },
+    datasets: @json($data)
 
+  },
   options: {
     title: {
       display: true,
-      text: 'Salesperson'
+      text: 'Product'
     }
   }
 });</script>
+                </div>
               </div>
             </div>
           </div>
+          
           <div class="col-sm-6 col-md-4 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
@@ -323,42 +325,33 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
 
         @if($role == 'branch_manager')
         <div class="row batas">
-          <div class="col-sm-6 col-md-8 col-md-offset-12">
+            <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Statistik Salesperson
                   </div>
                 </div>
-                <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
+                  <div class="row reminder-body">
+                <canvas id="chartSalesperson" height="100" width="200"></canvas>
+                  </div>
+                <script>
+var ctx = document.getElementById("chartSalesperson").getContext('2d');
+var myChart = new Chart(document.getElementById("chartSalesperson"), {
   type: 'line',
   data: {
     labels: @json($labels),
-    datasets: @json($data)
-
+    datasets: @json($dataSales)
   },
+
   options: {
     title: {
       display: true,
-      text: 'Product'
+      text: 'Salesperson'
     }
   }
 });</script>
-<br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                </div>
               </div>
             </div>
           </div>
@@ -391,36 +384,27 @@ var myChart = new Chart(document.getElementById("myChart"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Statistic Produk
                   </div>
                 </div>
                 <div class="row reminder-body">
-                    <canvas id="myChart" width="400" height="200"></canvas>
-  <script>
-  var ctx = document.getElementById("myChart").getContext('2d');
-  var myChart = new Chart(document.getElementById("myChart"), {
-    type: 'line',
-    data: {
-      labels: @json($labels),
-      datasets: @json($data)
+                  <canvas id="myChart" width="400" height="200"></canvas>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(document.getElementById("myChart"), {
+  type: 'line',
+  data: {
+    labels: @json($labels),
+    datasets: @json($data)
 
-    },
-    options: {
-      title: {
-        display: true,
-        text: 'Product'
-      }
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Product'
     }
-  });</script>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+  }
+});</script>
                 </div>
               </div>
             </div>
