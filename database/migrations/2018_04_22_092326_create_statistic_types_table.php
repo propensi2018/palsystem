@@ -15,8 +15,8 @@ class CreateStatisticTypesTable extends Migration
     {
       Schema::create('statistic_types', function (Blueprint $table) {
           $table->increments('id_types');
-          $table->string('name');
-          $table->string('desc');
+          $table->integer('target');
+          $table->integer('date');
           $table->integer('id_user_sp')->unsigned()->nullable();
           $table->integer('id_level')->unsigned()->nullable();
           $table->integer('id_product')->unsigned()->nullable();
