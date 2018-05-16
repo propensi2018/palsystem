@@ -65,10 +65,11 @@ class RewardController extends Controller
     if($is_sp == 1){
       if((Rating::where('sales_user_id',$id)->get()->first()) !== null ){
         $amountRating =  Rating::where('sales_user_id',$id)->count();
-        return view('dummyReward',compact('amountRating'));
+        // return $amountRating; 
+        return view('riwayat',compact('amountRating'));
       }else{
         $amountRating = 0;
-        return view('dummyReward',compact('amountRating'));
+        return view('riwayat',compact('amountRating'));
       }
     }
 //for branch manager view
@@ -76,24 +77,6 @@ class RewardController extends Controller
       $jml = sizeof(Rating::all());
       $listRatingSls = array();
       $listRatingProd = array();
-
-      // for($i=0; $i< $jml; $i++){
-      //
-      //   $arr = (array) Rating::select('sales_user_id')->where('id',$i+2)->get()->first();
-      //   return $arr;
-      //   if(!empty($arr)){
-      //
-      //     $idSls = Rating::select('sales_user_id')->whereNotNull('sales_user_id')->where('id',$i+1)->get()->first()->sales_user_id;
-      //     $nameSls = User::find($idSls)->name;
-      //      $year = substr((Rating::select('date')->whereNotNull('sales_user_id')->where('id',$i+1)->get()->first()->date),0,4);
-      //     $listRatingSls[] =  array('name' => $nameSls,'year'=> $year );
-      //
-      //   }else{
-      //     return "s";
-      //     $idProd = Rating::select('product_types_id')->where('id',$i+1)->get()->first()->product_types_id;
-      //
-      //   }
-      // }
 
       $ratings = Rating::all();
       foreach($ratings as $rating) {
@@ -111,7 +94,7 @@ class RewardController extends Controller
         }
       }
 
-      return view('dummyReward',compact('listRatingProd','listRatingSls','amountRating'));
+      return view('dashboard',compact('listRatingProd','listRatingSls'));
     }
 
 

@@ -435,15 +435,15 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+    @foreach ($listRatingSls as  $listRatingSls)
+    {{$listRatingSls['name']}}
+    {{$listRatingSls['year']}}
+    @endforeach
+
+    @foreach ($listRatingProd as  $listRatingProd)
+    {{$listRatingProd['name']}}
+    {{$listRatingProd['year']}}
+    @endforeach
                 </div>
               </div>
             </div>

@@ -11,6 +11,10 @@ session_start();
     <div style="background-color: blue; margin-top: 30px;border-radius: 5px">
         <h3 style="color: white; margin-left: 20px; padding-top: 10px">{{$salesperson->name}}</h3>
         <h5 style="color: white; margin-left: 20px; padding-bottom: 10px">ID : {{$salesperson->id_sp}}</h5>
+            @for ($i = 0; $i < $amountRating ; $i++)
+                <a>*</a>
+            @endfor
+
     </div>
     <h2 style="text-align: center; margin-top: 10px"><b>HISTORY</b></h2>
 

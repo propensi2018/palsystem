@@ -72,7 +72,8 @@ Route::get('show/message/{id}','MessageController@showMessage')->middleware('aut
 Route::get('show/message2/{id}','MessageController@showMessage2')->middleware('auth');
 
 // --MELIHAT RATING (PIC : ICHSANDY RIZKI)--
-Route::get('/dummyReward','RewardController@compareSalesperson')->middleware('auth');
+Route::get('/history','RewardController@compareSalesperson')->middleware('auth');
+Route::get('/','RewardController@compareSalesperson')->middleware('auth');
 
 
 

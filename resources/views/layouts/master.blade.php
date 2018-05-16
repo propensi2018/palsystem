@@ -69,10 +69,14 @@
 
                 @if(Auth::user()->role() == 'branch_manager')
                 <li >
-                    <a href="{{ url('/####') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
+                    <a href="{{ url('/dataTransaksi') }}"><img class="sidebar-icon" src="{{ url('image/customer.svg') }}" alt="icon name">TRANSACTION</a>
                 </li>
                 <li class="">
-                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"><img class="sidebar-icon" src="{{ url('image/message.svg') }}" alt="icon name">MESSAGE</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="{{ url('/show/messageInbox') }}"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}">INBOX</a></li>
+                        <li><a href="{{ url('/show/messageSent') }}"><img class="sidebar-icon" src="{{ url('image/sent.svg') }}">SENT MAIL</a></li>
+                    </ul>
                 </li>
                 @endif
 
