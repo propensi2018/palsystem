@@ -15,22 +15,22 @@ class Statistic extends Model
     $all_ptype = ProductType::all();
     $returner = array();
     foreach ($all_ptype as $product) {
-      array_push($returner, array($this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"), $this -> get_target($product -> id)));
-      // array_push($returner, $this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
+//      array_push($returner, array($this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"), $this -> get_target($product -> id)));
+      array_push($returner, $this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
     }
     return $returner;
   }
 
-  protected function get_target($product_id){
-    $target = StatisticType::where('id_product', $product_id) -> target;
-    $dataset = new Dataset;
-    $dataset -> label = 'target';
-    $dataset -> data = array();
-    foreach ($this->returnLabels() as $label) {
-      array_push($dataset -> data, $target);
-    }
-    return $dataset;
-  }
+//  protected function get_target($product_id){
+//    $target = StatisticType::where('id_product', $product_id) -> target;
+//    $dataset = new Dataset;
+//    $dataset -> label = 'target';
+//    $dataset -> data = array();
+//    foreach ($this->returnLabels() as $label) {
+//      array_push($dataset -> data, $target);
+//    }
+//    return $dataset;
+//  }
 
   /*
   author : farhannp
