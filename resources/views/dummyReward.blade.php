@@ -16,9 +16,7 @@
     @endforeach
 
     @for ($i = 0; $i < $amountRating ; $i++)
-
         <a>*</a>
-
     @endfor
 
 

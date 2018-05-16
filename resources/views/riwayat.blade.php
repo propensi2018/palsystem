@@ -11,12 +11,14 @@ session_start();
     <div style="background-color: blue; margin-top: 30px;border-radius: 5px">
         <h3 style="color: white; margin-left: 20px; padding-top: 10px">{{$salesperson->name}}</h3>
         <h5 style="color: white; margin-left: 20px; padding-bottom: 10px">ID : {{$salesperson->id_sp}}</h5>
+        @for ($i = 0; $i < $amountRating ; $i++)
+            <a>*</a>
+        @endfor
     </div>
     <h2 style="text-align: center; margin-top: 10px"><b>HISTORY</b></h2>
-
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%; text-align: center">
-        
+
         <thead>
           <tr>
             <th>Time</th>
@@ -32,7 +34,7 @@ session_start();
             <td>
               {{$history->created_at}}
             </td>
-            @if ($history->telp_flag === 0)          
+            @if ($history->telp_flag === 0)
               <td>
                 Call
               </td>
@@ -63,4 +65,3 @@ session_start();
 
 
 @endsection
- 
