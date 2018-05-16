@@ -65,7 +65,7 @@ class ReminderController extends Controller
                 }
             }
         }
-        return 'something i dont know';
+        // return 'something i dont know';
 
         date_default_timezone_set("Asia/Bangkok");
         $today1 = date('Y-m-d');

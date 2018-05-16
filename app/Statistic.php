@@ -15,8 +15,8 @@ class Statistic extends Model
     $all_ptype = ProductType::all();
     $returner = array();
     foreach ($all_ptype as $product) {
-      // array_push($returner, array($this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"), $this -> get_target($product -> id)));
-      array_push($returner, $this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
+      array_push($returner, array($this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"), $this -> get_target($product -> id)));
+      // array_push($returner, $this -> product_data_set($product -> id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
     }
     return $returner;
   }
