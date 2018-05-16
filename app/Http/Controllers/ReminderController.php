@@ -65,6 +65,7 @@ class ReminderController extends Controller
                 }
             }
         }
+        return 'something i dont know';
 
         date_default_timezone_set("Asia/Bangkok");
         $today1 = date('Y-m-d');
@@ -75,7 +76,7 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-
+        // return [$data];
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
 
