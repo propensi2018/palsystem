@@ -10,7 +10,7 @@
         <li id="tab-1" class="nav-item">
             <a id="nav-tulisan" id="navbar-active" class="nav-link nav-appt-active">CUSTOMER DATA</a>
         </li>
-           @if($scheduleAppointmentId[0]->is_a_deal == 0)
+           @if(sizeof($allSchedule)!=0)
         <li id="tab-2" class="nav-item">
             <a id="nav-tulisan" class="nav-link nav-appt-no-active" href="{{ URL::to('../public/appointment/' . $customerData->id)}}">APPOINTMENT</a>
         </li>
@@ -22,7 +22,7 @@
             <h1 class="card-customer-title-name">{{$customerData->name}}</h1>
       
                 
-              @if($scheduleAppointmentId[0]->is_a_deal == 0)
+              @if(sizeof($allSchedule)!=0)
                             
                 @else
                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerData->id}}">Re-Approach</button>
@@ -84,7 +84,9 @@
                     <span class='badge badge-success'>{{$customerType->name}}</span>
                 @endif
             <span class="badge badge-secondary">{{$pw->name}}</span>
+            
              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
+            <br>
              <div class="modal fade" id="modalWillingness">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
@@ -122,10 +124,13 @@
                     </div>
                  </div>
             </div>
-            <br><span class="card-customer-title-telp">{{$customerData->telp_no}}</span>
-            
-        </div>
         
+            @foreach($telepon as $teleponLoop)
+          <span class="card-customer-title-telp">{{$teleponLoop->telp_no}} / </span>
+            @endforeach
+        </div>
+         </div>
+
         <div class="card-customer-body">
            
             <h4 class="card-title">Customer Notes :</h4>
@@ -160,7 +165,7 @@
                      <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
              @else
                      <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
-                    <p style="color: blue">Produk ditambahkan pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
+                    <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
             @endif  
             @endfor
                 
@@ -171,5 +176,5 @@
         </div>
     </div>
 </div>
-
+</div>
 @endsection
