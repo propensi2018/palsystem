@@ -187,7 +187,7 @@ class PemesananController extends Controller
         $transaction = new Transaction;
 
         $transaction->code = $uniqueCode;
-        $transaction->is_valid = "1";
+        $transaction->is_valid = "0";
         $transaction->id_pl = $id_pl;
 
         $transaction -> save();

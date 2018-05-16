@@ -3,12 +3,14 @@
 @section('title','Profile Customer')
 @section('contents')
 
+
+
 <div class="profile-customer">
     <ul class="nav nav-tabs nav-appt">
         <li id="tab-1" class="nav-item">
             <a id="nav-tulisan" id="navbar-active" class="nav-link nav-appt-active">CUSTOMER DATA</a>
         </li>
-           @if($scheduleAppointmentId[0]->is_a_deal == 0)
+           @if(sizeof($allSchedule)!=0)
         <li id="tab-2" class="nav-item">
             <a id="nav-tulisan" class="nav-link nav-appt-no-active" href="{{ URL::to('../public/appointment/' . $customerData->id)}}">APPOINTMENT</a>
         </li>
@@ -20,7 +22,7 @@
             <h1 class="card-customer-title-name">{{$customerData->name}}</h1>
       
                 
-              @if($scheduleAppointmentId[0]->is_a_deal == 0)
+              @if(sizeof($allSchedule)!=0)
                             
                 @else
                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerData->id}}">Re-Approach</button>
@@ -29,10 +31,10 @@
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
 
-                    <form method="post" action="customer/storeResponse" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
+                    <form method="post" action="customer/storeExistingCust" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
 
                       <div class="modal-header">
-                        <h4 class="modal-title">Customer Response:</h4>
+                        <h4 class="modal-title" style="color:black">Customer Response:</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;
                         </button>
                       </div>
@@ -48,7 +50,7 @@
 
                         <div class="row">
                           <div class="col-sm-6 col-md-6 col-md-offset-12">
-                            <h6>Customer Responses<span><font color="red">* </font></span>:</h6>
+                            <h6 style="color:black">Customer Responses<span><font color="red">* </font></span>:</h6>
                             <select id="customer_type" class="custom-select" name="customer_type">
                               <option value="Pending">Pending</option>
                               <option value="Reject">Reject</option>
@@ -56,20 +58,20 @@
                           </div>
 
                           <div class="col-sm-6 col-md-6 col-md-offset-12">
-                            <h6>Date<span><font color="red">* </font></span>:</h6>
+                            <h6 style="color:black" >Date<span><font color="red">* </font></span>:</h6>
                             <input type="hidden" name="id_customer" value="{{$customerData -> id}}">
                             <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
                           </div>
                         </div>
                         <br>
-                        <h6>Notes:</h6>
+                        <h6 style="color:black">Notes:</h6>
                         <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea><br>
                       </div>
 
                       <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
                       </div>
-
+                        <input type="hidden" name="cycleCust" value="{{$prospect[0]->cycle}}">
                     </form>
                   </div>
                 </div>
@@ -82,7 +84,9 @@
                     <span class='badge badge-success'>{{$customerType->name}}</span>
                 @endif
             <span class="badge badge-secondary">{{$pw->name}}</span>
+            
              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
+            <br>
              <div class="modal fade" id="modalWillingness">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
@@ -120,10 +124,13 @@
                     </div>
                  </div>
             </div>
-            <br><span class="card-customer-title-telp">{{$customerData->telp_no}}</span>
-            
-        </div>
         
+            @foreach($telepon as $teleponLoop)
+          <span class="card-customer-title-telp">{{$teleponLoop->telp_no}} / </span>
+            @endforeach
+        </div>
+         </div>
+
         <div class="card-customer-body">
            
             <h4 class="card-title">Customer Notes :</h4>
@@ -131,9 +138,8 @@
             @foreach ($customerSchedule as $customerScheduleLoop)
                 <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
             @endforeach
-             <h4 class="card-title">Address :</h4>
             @foreach ($addressProspect as $addressProspectLoop)
-           <p class="card-title">Address {{$loop->iteration}} </p> 
+              <h4 class="card-title">Address {{$loop->iteration}} :</h4> 
             <p class="card-text">Province : {{$addressProspectLoop->province}}</p>
             <p class="card-text">Village : {{$addressProspectLoop->kelurahan}}</p>
             <p class="card-text">City : {{$addressProspectLoop->city}}</p>
@@ -142,19 +148,33 @@
            
                 @endforeach
              <h3 class='card-title'>Product(s) :</h3>
+            
+            
              @foreach($kumpulanTemp as $keys => $productLoop)
-                             @for($i = 0; $i < sizeof($productLoop['dataAmountProduct']); $i++)
-                                <p class="card-text">{{$productLoop['dataTypeProduct'][$i]->desc}} : Rp.{{$productLoop['dataAmountProduct'][$i]->amount}} </p>
-                                @if($productLoop['dataAppointment'][$i]->is_a_deal == 0)
-                                <p>Produk ditambahkan pada tanggal {{$productLoop['dataAppointment'][$i]->created_at}} </p>
-                                @else
-                                <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][$i]->created_at}} </p>
-                                @endif
-                             @endfor
-                            @endforeach 
-            <p>{{$scheduleDeal[0]->id}}</p>
+            
+           
+            @for($i=0; $i<sizeof($productLoop['dataTypeProduct']);$i++)
+                <?php
+            
+                $tipeProduk = $productLoop['dataTypeProduct'][$i];
+                $amountProduk = $productLoop['dataAmountProduct'][$i];
+                ?>
+                                                
+             @if(sizeof($scheduleDeal)!=0)
+                     <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
+                     <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
+             @else
+                     <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
+                    <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
+            @endif  
+            @endfor
+                
+                    @endforeach 
+          
+        
+        
         </div>
     </div>
 </div>
-
+</div>
 @endsection

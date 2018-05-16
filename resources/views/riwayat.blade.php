@@ -46,9 +46,15 @@ session_start();
             <td>
               {{$history->name}}
             </td>
-            <td>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">Detail</button>
-            </td>
+            @if ($history->telp_flag === 0)          
+              <td>
+                <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
+              </td>
+            @elseif ($history->telp_flag === 1)
+              <td>
+                <a href="history/appointment/{{$history->id}}" class="btn btn-primary">Detail</a>
+              </td>
+            @endif
           </tr>
           @endforeach
         </tbody>

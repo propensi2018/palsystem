@@ -334,9 +334,9 @@ select {
 
           <tbody>
             @foreach ($exCust as $exCustView)
-            <tr>
+            <tr class='clickable-row' data-href="{{ URL::to('../../palsystem/public/customer/' . $exCustView->customer_id)}}">
               <td>
-                  <a href="{{ URL::to('../../palsystem/public/customer/' . $exCustView->customer_id)}}">{{$exCustView->name}}</a>
+                  {{$exCustView->name}}
               </td>
               <td>
                 {{$exCustView->updated_at}}
@@ -398,6 +398,16 @@ select {
   // Adding more phone number
 
  
+</script>
+<script>
+  jQuery(document).ready(function($) {
+  $(".clickable-row").click(function() {
+      window.location = $(this).data("href");
+    });
+    $("#sendButton").click(function(){
+        $("#successSent").show();
+    });
+  });
 </script>
 
 @endsection
