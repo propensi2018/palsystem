@@ -20,16 +20,12 @@ class UserController extends Controller
 //          $y = date('y');
 //       $statistic = new Statistic;
 //        $bubu = $statistic -> statisticSalesperson($m,$y,$id);
-//         
+//
 //      return [$bubu];
 
     public function test($id){
 
     $user = User::find($id);
-
-
-
-
 
 
       $s = new Statistic;
