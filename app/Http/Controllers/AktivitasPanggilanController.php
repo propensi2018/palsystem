@@ -302,6 +302,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch->is_done = 0;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->cycle = 1;
             $strSch -> scheduleType() -> associate($strScTp);
             // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
@@ -321,10 +322,10 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
-
+            
             $strSch = new Schedule;
             $strSch->is_done = 1;
-
+            $strSch->cycle = 1;
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
 //            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());

@@ -59,16 +59,16 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         for ($i=0; $i<sizeof($sched_cal); $i++) {
           $act = $sched_cal[$i]['act'];
           if ($act == $date) {
-            $week .= '<td class="activity_cal"><a data-toggle="modal" data-target="#myModal'.$act.'">'.$day.'</a>';
+            $week .= '<a data-toggle="modal" data-target="#myModal'.$act.'"><td class="activity_cal">'.$day;
             break;
           } else if ($i+1 == sizeof($sched_cal)) {
-            $week .= '<td>'.$day;
+            $week .= '<a><td>'.$day;
           }
         }
     } else {
         $week .= '<td>'.$day;
     }
-    $week .= '</td>';
+    $week .= '</td></a>';
 
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
@@ -110,25 +110,28 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                     Statistik Salesperson
                   </div>
                 </div>
-                  <div class="row reminder-body">
-                <canvas id="chartSalesperson" height="100" width="200"></canvas>
-                  </div>
-                <script>
-var ctx = document.getElementById("chartSalesperson").getContext('2d');
-var myChart = new Chart(document.getElementById("chartSalesperson"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($dataSales)
-  },
+                <div class="row reminder-body">
+                  <div class="container">
+                    <canvas id="chartSalesperson" height="100" width="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("chartSalesperson").getContext('2d');
+                      var myChart = new Chart(document.getElementById("chartSalesperson"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($dataSales)
+                        },
 
-  options: {
-    title: {
-      display: true,
-      text: 'Salesperson'
-    }
-  }
-});</script>
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Salesperson'
+                          }
+                        }
+                      });
+                    </script>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -193,22 +196,23 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
+                  <script>
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var myChart = new Chart(document.getElementById("myChart"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($data)
 
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-  }
-});</script>
+                        },
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Product'
+                          }
+                        }
+                      });
+                  </script>
                 </div>
               </div>
             </div>
@@ -321,6 +325,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
                               </div>
                             </div>
                         @endfor
+                        <hr style="padding: 0px; margin-left: 0px; border-width: 2px; background-color: #D5D5D5;" width="100%">
                         @if (sizeof($schedules) == 0)
                           <div class="no_act">
                             <span>There are no activities</span>
@@ -459,17 +464,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-<<<<<<< HEAD
-    @foreach ($listRatingSls as  $listRatingSls)
-    {{$listRatingSls['name']}}
-    {{$listRatingSls['year']}}
-    @endforeach
 
-    @foreach ($listRatingProd as  $listRatingProd)
-    {{$listRatingProd['name']}}
-    {{$listRatingProd['year']}}
-    @endforeach
-=======
                   @foreach ($listRatingSls as  $listRatingSls)
                   {{$listRatingSls['name']}}
                   {{$listRatingSls['year']}}
@@ -479,7 +474,6 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   {{$listRatingProd['name']}}
                   {{$listRatingProd['year']}}
                   @endforeach
->>>>>>> 9a0c1219dbc99a9aac601690f6407713fe517540
                 </div>
               </div>
             </div>
