@@ -19,7 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="{{ url('css/sidebars.css') }}" rel="stylesheet">
     <link href="{{ url('css/navbars.css') }}" rel="stylesheet">
-    <link href="{{ url('css/dashboardsss.css') }}" rel="stylesheet">
+    <link href="{{ url('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ url('css/messages.css') }}" rel="stylesheet">
     <link href="{{ url('css/achsani.css') }}" rel="stylesheet">
     <link href="{{ url('css/customers_prospects.css') }}" rel="stylesheet">
@@ -80,13 +80,13 @@
                 </li>
                 @endif
 
-                 @if(Auth::user()->role() == 'rm')
+                 @if(Auth::user()->role() == 'regional_manager')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>
                 @endif
 
-                 @if(Auth::user()->role() == 'gh')
+                 @if(Auth::user()->role() == 'group_head')
                 <li class="">
                     <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
                 </li>

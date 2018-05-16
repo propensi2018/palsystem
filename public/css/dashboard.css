@@ -116,8 +116,10 @@ ul li {
 
 /* Style Calendar */
 
-.calendar-style {
-
+.calendar-style-title {
+	margin-top: 20px;
+	text-align: center;
+	font-weight: 700;
 }
 
 .calendar-style-table {
@@ -140,13 +142,10 @@ ul li {
 
 .today {
 	background-color: #EFEFEF;
-	color: #fff;
+	color: #000;
 }
 
-.calendar-style-table th:nth-of-type(1),td:nth-of-type(1){
-	color: red;
-}
-
-.calendar-style-table th:nth-of-type(7),td:nth-of-type(7){
-	color: red;
+.activity_cal {
+	background-color: #6DC8EA;
+	color: #000;
 }	

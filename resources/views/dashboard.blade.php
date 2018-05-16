@@ -52,7 +52,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
     if ($today == $date) {
         $week .= '<td class="today">'.$day;
-    } elseif (sizeof($sched_cal) > 0) {
+    } elseif (sizeof($sched_cal) > 0 && $role == 'salesperson') {
         if ($day <= 9) {
           $date = $ym.'-0'.$day;
         }
@@ -64,14 +64,6 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
           } else if ($i+1 == sizeof($sched_cal)) {
             $week .= '<td>'.$day;
           }
-
-          echo '<div class="modal fade" id="#myModal'.$act.'">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      asaks
-                    </div>
-                  </div>
-                </div>';
         }
     } else {
         $week .= '<td>'.$day;
@@ -96,6 +88,16 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 }
 
 ?>
+
+<style type="text/css">
+  .calendar-style-table th:nth-of-type(1),td:nth-of-type(1){
+  color: red;
+}
+
+.calendar-style-table th:nth-of-type(7),td:nth-of-type(7){
+  color: #134D72;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
         @if($role == 'salesperson')
@@ -267,16 +269,18 @@ var myChart = new Chart(document.getElementById("myChart"), {
                             </a>
                           @endif
                           <li>
-
                             <div class="modal fade" id="myModal{{$schedules[$i]['id_customer']}}">
                               <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
+
                                   <form method="post" action="dashboard/scheduleResponse" ng-controller="DateController as dateCtrl">  {{ csrf_field() }}
+
                                     <div class="modal-header">
                                       <h4 class="modal-title">Customer Response:</h4>
                                       <button type="button" class="close" data-dismiss="modal">&times;
                                       </button>
                                     </div>
+
                                     <div class="modal-body" ng-app="dateInputExample">
                                       <script>
                                         angular.module('dateInputExample', []) .controller('DateController', ['$scope', function($scope) {
@@ -285,24 +289,33 @@ var myChart = new Chart(document.getElementById("myChart"), {
                                           };
                                         }]);
                                       </script>
-                                      <h6>Follow up:</h6>
-                                      <input type="hidden" name="id" value="{{$schedules[$i]['id']}}">
-                                      <input type="hidden" name="id_customer" value="{{$schedules[$i]['id_customer']}}">
-                                      <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
-                                      <h6>Notes:</h6>
-                                      <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea>
-                                      <div>
-                                        <h6>Customer Responses:</h6>
-                                        <select id="customer_type" class="custom-select col-8 col-sm-9" name="customer_type">
-                                          <option value="Reject">Reject</option>
-                                          <option value="Prospect">Prospect</option>
-                                          <option value="Pending">Pending</option>
-                                        </select>
+
+                                      <div class="row">
+                                        <div class="col-sm-6 col-md-6 col-md-offset-12">
+                                          <h6>Customer Responses<span><font color="red">* </font></span>:</h6>
+                                          <select id="customer_type" class="custom-select" name="customer_type">
+                                            <option value="Prospect">Prospect</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Reject">Reject</option>
+                                          </select>
+                                        </div>
+
+                                        <div class="col-sm-6 col-md-6 col-md-offset-12">
+                                          <h6>Date<span><font color="red">* </font></span>:</h6>
+                                          <input type="hidden" name="id" value="{{$schedules[$i]['id']}}">
+                                          <input type="hidden" name="id_customer" value="{{$schedules[$i]['id_customer']}}">
+                                          <input name="time" id="time" type="datetime-local" min="{{$today}}" class="form-control" >
+                                        </div>
                                       </div>
+                                      <br>
+                                      <h6>Notes:</h6>
+                                      <textarea type="text" class="form-control" rows="2" name="notes" id="notes" placeholder="write any response here.."></textarea><br>
                                     </div>
+
                                     <div class="modal-footer">
                                       <input type="submit" class="btn btn-primary" data-inline="true" value="Submit">
                                     </div>
+
                                   </form>
                                 </div>
                               </div>
@@ -364,15 +377,41 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
+                    <div class="row calendar-style-title">
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                      </div>
+                      <div class="col-8 col-md-8 col-md-offset-12">
+                        <?php echo $html_title; ?>
+                      </div>
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                      </div>
+                    </div>
+                    <center>
+                    <table class="table table-bordered calendar-style-table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>SUN</th>
+                          <th>MON</th>
+                          <th>TUE</th>
+                          <th>WED</th>
+                          <th>THU</th>
+                          <th>FRI</th>
+                          <th>SAT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                            foreach ($weeks as $week) {
+                                echo $week;
+                            }
+                        ?>
+                      </tbody>
+                    </table>
+                    </center>
+                  </div>
                 </div>
               </div>
             </div>
@@ -487,15 +526,41 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
+                    <div class="row calendar-style-title">
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                      </div>
+                      <div class="col-8 col-md-8 col-md-offset-12">
+                        <?php echo $html_title; ?>
+                      </div>
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                      </div>
+                    </div>
+                    <center>
+                    <table class="table table-bordered calendar-style-table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>SUN</th>
+                          <th>MON</th>
+                          <th>TUE</th>
+                          <th>WED</th>
+                          <th>THU</th>
+                          <th>FRI</th>
+                          <th>SAT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                            foreach ($weeks as $week) {
+                                echo $week;
+                            }
+                        ?>
+                      </tbody>
+                    </table>
+                    </center>
+                  </div>
                 </div>
               </div>
             </div>
@@ -578,15 +643,41 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
+                    <div class="row calendar-style-title">
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                      </div>
+                      <div class="col-8 col-md-8 col-md-offset-12">
+                        <?php echo $html_title; ?>
+                      </div>
+                      <div class="col-2 col-md-2 col-md-offset-12">
+                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                      </div>
+                    </div>
+                    <center>
+                    <table class="table table-bordered calendar-style-table">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>SUN</th>
+                          <th>MON</th>
+                          <th>TUE</th>
+                          <th>WED</th>
+                          <th>THU</th>
+                          <th>FRI</th>
+                          <th>SAT</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                            foreach ($weeks as $week) {
+                                echo $week;
+                            }
+                        ?>
+                      </tbody>
+                    </table>
+                    </center>
+                  </div>
                 </div>
               </div>
             </div>
