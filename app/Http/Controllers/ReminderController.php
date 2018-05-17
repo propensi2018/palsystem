@@ -93,7 +93,10 @@ class ReminderController extends Controller
 
 
 
+        
         if($role == 'branch_manager'){
+
+        $faiz = 'faiz bala';
 
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
@@ -178,6 +181,7 @@ class ReminderController extends Controller
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
         // return $role;
         //for salesperson view
+
 
 
           $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
