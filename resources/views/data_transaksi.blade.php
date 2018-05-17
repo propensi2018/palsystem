@@ -35,27 +35,38 @@ session_start();
     </div>
   </div> -->
 
-
+    <!-- <div class="row"> -->
     <form method="GET" action="/palsystem/public/dataTransaksi">
       <select name="month">
-        <option value="1">January</option>
-        <option value="2">February</a>
-        <option value="3">March</a>
-        <option value="4">April</a>
-        <option value="5">May</a>
-        <option value="6">June</a>
-        <option value="7">July</a>
-        <option value="8">August</a>
-        <option value="9">September</a>
-        <option value="10">October</a>
-        <option value="11">November</a>
-        <option value="12">December</a>
+        <option value="1" {{ old("month") == "1" ? "selected":"" }}>Jan</option>
+        <option value="2" {{ old("month") == "2" ? "selected":"" }}>Feb</option>
+        <option value="3" {{ old("month") == "3" ? "selected":"" }}>Mar</option>
+        <option value="4" {{ old("month") == "4" ? "selected":"" }}>Apr</option>
+        <option value="5" {{ old("month") == "5" ? "selected":"" }}>May</option>
+        <option value="6" {{ old("month") == "6" ? "selected":"" }}>June</option>
+        <option value="7" {{ old("month") == "7" ? "selected":"" }}>Jul</option>
+        <option value="8" {{ old("month") == "8" ? "selected":"" }}>August</option>
+        <option value="9" {{ old("month") == "9" ? "selected":"" }}>Sept</option>
+        <option value="10" {{ old("month") == "10" ? "selected":"" }}>Oct</option>
+        <option value="11" {{ old("month") == "11" ? "selected":"" }}>Nov</option>
+        <option value="12" {{ old("month") == "12" ? "selected":"" }}>Dec</option>
+
       </select>
       <select name="year">
         <option value="2018">2018</option>
       </select>
-      <button type="submit">view</button>
+      <button type="submit" class="btn btn-primary">View</button>
     </form>
+    <p> {{old('month')}}</p>
+
+        <form method="get" action="dataTransaksi/print_PDF">
+        @if(!empty($month) && !empty($year))
+          <input type="hidden" name="month"  value="{{$month}}">
+          <input type="hidden" name="year"  value="{{$year}}">
+        @endif
+        <button type="submit" class="btn btn-primary float-right">Print</button>
+      </form>
+     
 
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -107,13 +118,6 @@ session_start();
         </tbody>
 
       </table>
-      <form method="get" action="dataTransaksi/print_PDF">
-        @if(!empty($month) && !empty($year))
-          <input type="hidden" name="month"  value="{{$month}}">
-          <input type="hidden" name="year"  value="{{$year}}">
-        @endif
-        <button type="submit" >print</button>
-      </form>
     <!-- <a href="dataTransaksi/print_PDF">print</a> -->
     </div>
   </div>
