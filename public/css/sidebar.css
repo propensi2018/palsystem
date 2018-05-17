@@ -171,3 +171,7 @@ body {
 .navbar a:hover {
   color: #6DC8EA;
 }
+
+.side-scroll {
+  overflow: hidden;
+}

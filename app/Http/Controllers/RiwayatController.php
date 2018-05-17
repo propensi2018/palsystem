@@ -166,7 +166,7 @@ class RiwayatController extends Controller
         $inputProdMod  = '2';//best performance ProductType id  for Moderate
         $inputProdCons = '3';//best performance ProductType id for Conservative
         //add reward
-        if($date == '13-05'){
+        if($date == '17-05'){
             $currentYear = date("y");
             if(sizeof(Rating::All()) !== 0){
             $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
