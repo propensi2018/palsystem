@@ -13,6 +13,7 @@ use App\CustomerType;
 use App\ActivityType;
 use App\Appointment;
 use App\Address;
+use App\Branch;
 use App\Telephone;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -47,8 +48,10 @@ class DataTransaksiController extends Controller
      */
     public function printPDF(Request $req)
     {
-        // $user =Auth::user();                                                                                                          
-        // $role = $user -> role();
+        $user =Auth::user();
+        //return $user;                                                                                                
+        $id = $user-> id;
+        //return $id;
         // dd($req);
 
         if (!empty($req->month) && !empty($req->year)) {
@@ -56,6 +59,8 @@ class DataTransaksiController extends Controller
             $from = date("Y-m-01", mktime(0,0,0,$req->month, 1, $req->year));
             $until = date("Y-m-t", mktime(0,0,0,$req->month, 1, $req->year));
 
+            $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
+            //return $id_branch;
             $TransData=DB::table('transactions')
             ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
@@ -64,13 +69,22 @@ class DataTransaksiController extends Controller
             ->join('addresses', 'prospects.address_id','=','addresses.id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
+            ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
+            // ->join('users','schedules.id_user_sp','=','users.id')
+            ->where('salespeople.branch_level_id','=', $id_branch)
+            // ->join('levels','branches.level_id','=','levels.id')
             //->join('telephones','customers.id','=','telephones.customer_id')
             ->where('transactions.is_valid', '=', '1')
+            // ->orWhere('users.is_sp', '=', '0')
+            // ->orWhere('branches.mgr_user_id', '=', $id) 
             ->whereBetween("transactions.created_at", [$from, $until])
             // ->select('product_lists.id as id_pl', 'schedules.id_customer as customer_id', 'product_list_assocs.id_ptype as prod_id')
             ->get();
+            //return $TransData;
             
         } else  {
+            $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
+
             $TransData=DB::table('transactions')
             ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
@@ -79,10 +93,16 @@ class DataTransaksiController extends Controller
             ->join('addresses', 'prospects.address_id','=','addresses.id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
+            ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
+            // ->join('users','schedules.id_user_sp','=','users.id')
+            ->where('salespeople.branch_level_id','=', $id_branch)
+            // ->join('levels','branches.level_id','=','levels.id')
             //->join('telephones','customers.id','=','telephones.customer_id')
             ->where('transactions.is_valid', '=', '1')
-            // ->select('product_lists.id as id_pl', 'schedules.id_customer as customer_id', 'product_list_assocs.id_ptype as prod_id')
+            // ->orWhere('users.is_sp', '=', '0')
+            // ->orWhere('branches.mgr_user_id', '=', $id) 
             ->get();
+            //return $TransData;
         }
 
         foreach ($TransData as $singleData) {
@@ -92,7 +112,7 @@ class DataTransaksiController extends Controller
 
         $pdf = PDF::loadView('print_PDF', ['TransData' => $TransData]);
 
-        return $pdf->stream('test.pdf');
+        return $pdf->stream('Transaction-data.pdf');
     }
 
     /**
@@ -103,8 +123,10 @@ class DataTransaksiController extends Controller
      */
     public function show(Request $req)
     {
-        // $user =Auth::user();                                                                                                          
-        // $role = $user -> role();
+        $user =Auth::user();
+        //return $user;                                                                                                
+        $id = $user-> id;
+        //return $id;
         // dd($req);
 
         if (!empty($req->month) && !empty($req->year)) {
@@ -112,6 +134,8 @@ class DataTransaksiController extends Controller
             $from = date("Y-m-01", mktime(0,0,0,$req->month, 1, $req->year));
             $until = date("Y-m-t", mktime(0,0,0,$req->month, 1, $req->year));
 
+            $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
+            //return $id_branch;
             $TransData=DB::table('transactions')
             ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
@@ -120,13 +144,23 @@ class DataTransaksiController extends Controller
             ->join('addresses', 'prospects.address_id','=','addresses.id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
+            ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
+            // ->join('users','schedules.id_user_sp','=','users.id')
+            ->where('salespeople.branch_level_id','=', $id_branch)
+            // ->join('levels','branches.level_id','=','levels.id')
             //->join('telephones','customers.id','=','telephones.customer_id')
             ->where('transactions.is_valid', '=', '1')
+            // ->orWhere('users.is_sp', '=', '0')
+            // ->orWhere('branches.mgr_user_id', '=', $id) 
             ->whereBetween("transactions.created_at", [$from, $until])
             // ->select('product_lists.id as id_pl', 'schedules.id_customer as customer_id', 'product_list_assocs.id_ptype as prod_id')
             ->get();
+            //return $TransData;
+
             
         } else  {
+            $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
+
             $TransData=DB::table('transactions')
             ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
@@ -135,13 +169,18 @@ class DataTransaksiController extends Controller
             ->join('addresses', 'prospects.address_id','=','addresses.id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
+            ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
+            // ->join('users','schedules.id_user_sp','=','users.id')
+            ->where('salespeople.branch_level_id','=', $id_branch)
+            // ->join('levels','branches.level_id','=','levels.id')
             //->join('telephones','customers.id','=','telephones.customer_id')
             ->where('transactions.is_valid', '=', '1')
-            // ->select('product_lists.id as id_pl', 'schedules.id_customer as customer_id', 'product_list_assocs.id_ptype as prod_id')
+            // ->orWhere('users.is_sp', '=', '0')
+            // ->orWhere('branches.mgr_user_id', '=', $id) 
             ->get();
+            //return $TransData;
         }
 
-        
             
         // return $TransData;
         // $returner = array();
