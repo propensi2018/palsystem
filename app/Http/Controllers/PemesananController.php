@@ -74,16 +74,11 @@ class PemesananController extends Controller
                     ->where('transactions.code', $uniqueCode)
                     ->select('transactions.code','product_types.desc','product_list_assocs.amount')
                     ->get();
-            return response()->json($productSolds);
+            //return response()->json($productSolds);
 
             DB::table('transactions')
                 ->where('code', $uniqueCode)
                 ->update(['is_valid' => 1]);
-
-            //$id_pl = DB::table('transactions')->where('code', $uniqueCode)->value('id_pl');
-            //$schedule_id = DB::table('product_lists')->where('id', $id_pl)->value('schedule_id');
-            //$schedule_type_id = DB::table('schedules')->where('id', $schedule_id)->value('schedule_type_id');
-            //$appointment_id = DB::table('schedule_types')->where('id', $schedule_type_id)->value('appointment_id');
 
             $appointment_id = DB::table('transactions')
                 ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
@@ -95,6 +90,22 @@ class PemesananController extends Controller
             DB::table('appointments')
                 ->where('id', $appointment_id)
                 ->update(['is_a_deal' => 1]);
+
+            $id_customer = DB::table('transactions')
+                ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+                ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
+                ->where('transactions.code', $uniqueCode)
+                ->value('id_customer');
+
+            $cycle = DB::table('prospects')
+                ->where('customer_id', $id_customer)
+                ->value('cycle');
+
+            $cycle = $cycle + 1;
+
+            DB::table('prospects')
+                ->where('customer_id', $id_customer)
+                ->update(['cycle' => $cycle]);
 
 
         }
