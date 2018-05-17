@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-
 //    public function test(){
 //         $id = Auth::id();
 //         $user  = User::find($id);
@@ -44,7 +43,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return '/dashboard';
+        return redirect()->route('main');
     }
 
     /**

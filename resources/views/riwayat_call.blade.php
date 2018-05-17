@@ -14,9 +14,10 @@
     </ul>
     <div class="card-customer">
         <div class="card-customer-body">
+            <p >Call Type : {{$call->response}}</p>
             <p >Time : {{$call->created_at}}</p>
             <p >Customer Name : {{$call->name}}</p>
-            <p >Notes : {{$call->notes}}</p>
+            <p >Note : {{$call->notes}}</p>
             <a href="../public/history" class="btn btn-primary">Back</a>
         </div>
     </div>

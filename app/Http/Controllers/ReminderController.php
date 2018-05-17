@@ -86,10 +86,14 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-        // return [$data];
+
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
         //add reward
+
+
+
+        if($role == 'branch_manager'){
 
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
@@ -168,12 +172,13 @@ class ReminderController extends Controller
 
 
         //set reward to UI======================================================================================
+
         $id = Auth::id();
         $user = User::find($id);
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
         // return $role;
         //for salesperson view
-        if($role == 'branch_manager'){
+
 
           $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
           $jml = sizeof(Rating::all());
@@ -207,7 +212,7 @@ class ReminderController extends Controller
           // $ratings = array_merge($rat1, $rat2);
           // ->whereNotNull('product_type_id');
           // return [$ratings[0] -> sales_user_id];
-          ;
+
           // return [$ratings];
           foreach($ratings as $rating) {
             if (isset($rating -> sales_user_id))
@@ -256,32 +261,35 @@ class ReminderController extends Controller
 
             // COMPLETED
             $strApp = new Appointment();
-            // $strApp ->id = sizeof(Appointment::select('id')->get())+1;
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
             $strApp->save();
 
             $strScTp = new ScheduleType();
             $strScTp ->telp_flag = 1;
-            // $strScTp->id_appt = sizeof(Appointment::select('id')->get());
             $strScTp -> appointment() -> associate($strApp);
             $strScTp->save();
 
             $strSch = new Schedule;
             $strSch->is_done = 0;
+            $strSch->cycle = 1;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
-            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();
 
-            // $notes = Schedule::select('notes')->where('id', sizeof(Schedule::select('id')->get()));
+            Schedule::where('id', request('id'))->update(['is_done' => true]);
             return view('form_prospect',compact('strSch'));
         }
 
         else if (request ('customer_type') == "Pending") {
+            $strApp = new Appointment();
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 0;
             $strScTp->save();
@@ -290,8 +298,8 @@ class ReminderController extends Controller
             $strSch->is_done = 0;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->cycle = 1;
             $strSch -> scheduleType() -> associate($strScTp);
-            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();
@@ -301,15 +309,20 @@ class ReminderController extends Controller
         }
 
         else {
+            $strApp = new Appointment();
+            $strApp ->is_a_deal = 0;
+            $strApp ->id_act_type = 1;
+            $strApp->save();
+
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
 
             $strSch = new Schedule;
             $strSch->is_done = 1;
+            $strSch->cycle = 1;
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
-//            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
             $strSch->save();

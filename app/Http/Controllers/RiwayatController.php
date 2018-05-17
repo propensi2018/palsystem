@@ -105,7 +105,7 @@ class RiwayatController extends Controller
         $call = DB::table('schedules')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->where('schedules.id', $id)
-            ->select('schedules.created_at', 'schedules.notes', 'customers.name')
+            ->select('schedules.created_at', 'schedules.notes', 'customers.name', 'schedules.response')
             ->first();
 
         return view('riwayat_call', ['call' => $call]);
@@ -121,11 +121,21 @@ class RiwayatController extends Controller
     {
         $appointment = DB::table('schedules')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
+            ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
+            ->join('appointments', 'schedule_types.appointment_id', '=', 'appointments.id')
+            ->join('activity_types', 'appointments.id_act_type', '=', 'activity_types.id')
             ->where('schedules.id', $id)
-            ->select('schedules.created_at', 'schedules.notes', 'customers.name')
+            ->select('schedules.created_at', 'schedules.notes', 'customers.name as customer_name', 'activity_types.name as activity_name')
             ->first();
 
-        return view('riwayat_appointment', ['appointment' => $appointment]);
+        $products = DB::table('product_lists')
+            ->join('product_list_assocs', 'product_lists.id', '=', 'product_list_assocs.product_list_id')
+            ->join('product_types', 'product_list_assocs.id_ptype', '=', 'product_types.id')
+            ->where('product_lists.schedule_id', $id)
+            ->select('product_types.desc', 'product_list_assocs.amount')
+            ->get();
+
+        return view('riwayat_appointment', ['appointment' => $appointment, 'products' => $products]);
     }
 
     /**
@@ -140,7 +150,7 @@ class RiwayatController extends Controller
             ->join('schedule_types', 'schedules.schedule_type_id', '=', 'schedule_types.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->where('schedules.id_user_sp', $id)
-            ->select('schedules.created_at','schedule_types.telp_flag','customers.name', 'schedules.id')
+            ->select('schedules.created_at','schedule_types.telp_flag','customers.name', 'schedules.id', 'schedules.response')
             ->get();
 
         $salesperson = DB::table('salespeople')
@@ -149,12 +159,6 @@ class RiwayatController extends Controller
             ->select('salespeople.id_sp', 'users.name')
             ->first();
 
-        date_default_timezone_set("Asia/Bangkok");
-        $date = date('d-m');
-        $inputSls = '7'; //best performance Salesperson user id
-        $inputProdAgr  = '1';//best performance ProductType id for Aggresif
-        $inputProdMod  = '2';//best performance ProductType id  for Moderate
-        $inputProdCons = '3';//best performance ProductType id for Conservative
 
 
         //set reward to UI======================================================================================

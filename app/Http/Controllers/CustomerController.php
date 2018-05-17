@@ -199,7 +199,7 @@ return view('profile-prospect',  compact('prospect','prospectNotes','customerDat
             $strApp->save();
             
             $strScTp = new ScheduleType;
-            $strScTp->telp_flag = 0;
+            $strScTp->telp_flag = 1;
             $strScTp->save();
 
             $strSch = new Schedule;
