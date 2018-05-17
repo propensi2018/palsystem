@@ -203,7 +203,6 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         data: {
                           labels: @json($labels),
                           datasets: @json($data)
-
                         },
                         options: {
                           title: {
@@ -433,23 +432,22 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                 </div>
                 <div class="row reminder-body">
                   <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
-
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-
-});</script>
-
+                  <script>
+                    var ctx = document.getElementById("myChart").getContext('2d');
+                    var myChart = new Chart(document.getElementById("myChart"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($data)
+                        },
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Product'
+                          }
+                        }
+                      });
+                  </script>
                 </div>
               </div>
             </div>
@@ -489,7 +487,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Statistik Produk
                   </div>
                 </div>
                 <div class="row reminder-body">
