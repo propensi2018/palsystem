@@ -99,6 +99,13 @@ class AppointmentController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
 
+        $failure = request('failure');
+        // return $failure;
+        if  (!isset($failure)) {
+          $failure = 1;
+        }
+
+        // return $failure;
         //getting salesperson id
         $id_user_sp = Auth::id();
         //getting activity type id
@@ -257,6 +264,8 @@ class AppointmentController extends Controller
         //ROUTING TO UNIQUE CODE
         if ($id_activity_type == 3){
           return redirect()->route('unique_code', ['id_pl' => $id, 'id_customer' => $id_customer]);
+        } else if ($failure == 0) {
+          return redirect()->route('list_customers');
         }
         return redirect()->route('profile-prospect', ['id' => $id_customer]);
 

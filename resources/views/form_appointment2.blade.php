@@ -4,28 +4,6 @@
 
 @section('contents')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-function addCommas(nStr)
-  {
-  	nStr += '';
-  	x = nStr.split('.');
-  	x1 = x[0];
-  	x2 = x.length > 1 ? '.' + x[1] : '';
-  	var rgx = /(\d+)(\d{3})/;
-  	while (rgx.test(x1)) {
-  		x1 = x1.replace(rgx, '$1' + ',' + '$2');
-  	}
-  	return x1 + x2;
-  }
-  $(document).ready(function(){
-    var amounts = $('#product_container').find('input');
-    amounts.change(function(){
-      var val = amounts.val();
-      // console.log(val);
-      amounts.val(addCommas(val));
-    });
-  });
-</script>
 <div class="profile-customer">
   <ul class="nav nav-tabs nav-appt">
         <li id="tab-1" class="nav-item">
@@ -169,10 +147,10 @@ function addCommas(nStr)
     function () {
       if ($('#failure').val() == 0) {
         $('#next_app').hide();
-        $('#next_app').removeAttr();
+        $('#next_app').find('input').removeAttr('required');
       } else {
         $('#next_app').show();
-        $('#next_app').attr('required', '');
+        $('#next_app').find('input').attr('required', '');
       }
     }
   );
