@@ -157,7 +157,7 @@ class CustomerController extends Controller
         }
 
 return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','telepon','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule'));
-  //return compact('allSchedule');
+ // return compact('kumpulanTemp');
  }
     /**
      * Show the form for editing the specified resource.
@@ -177,9 +177,11 @@ return view('profile-prospect',  compact('prospect','prospectNotes','customerDat
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateWillingness()
     {
-        //
+        $id = request('id_willingness');
+        Prospect::where('customer_id' , $id)->update(['prospect_willingness_id'=>request('prospect_willingness')]);
+        return redirect() ->route('profile-prospect', ['id' => $id]);
     }
 
     /**

@@ -84,6 +84,7 @@ class AktivitasPanggilanController extends Controller
 //                ->select('customer_id')
                 ->join('schedules','id_customer','=','customer_id')
                 ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+                
 //                ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
                 ->where([['id_user_sp' , $id],['is_done',0]])
 //                ->groupBy('customer_id')
@@ -301,7 +302,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch = new Schedule;
             $strSch->is_done = 0;
             $strSch->time = request('time');
-            $strSch->notes = request('notes');
+            $strSch->notes = request('notes');  
             $strSch -> scheduleType() -> associate($strScTp);
             // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
