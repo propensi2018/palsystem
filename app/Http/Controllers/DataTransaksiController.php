@@ -15,6 +15,7 @@ use App\Appointment;
 use App\Address;
 use App\Branch;
 use App\Telephone;
+use App\Transaction;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
@@ -129,7 +130,17 @@ class DataTransaksiController extends Controller
         //return $id;
         // dd($req);
 
-        if (!empty($req->month) && !empty($req->year)) {
+        $allYear = DB::table('transactions')->select('updated_at')->distinct()->get();//->updated_at;
+        $yearArray =array();
+
+        foreach($allYear as $year) {
+            $a = substr($year->updated_at,0,4);
+            if(!in_array($a, $yearArray)){
+                array_push($yearArray, $a);
+            }
+        }
+
+        if (!empty($req->month) && !empty($req->year) && $req->month!="All") {
             // $from = $req->month . "-01-" . $req->year;
             $from = date("Y-m-01", mktime(0,0,0,$req->month, 1, $req->year));
             $until = date("Y-m-t", mktime(0,0,0,$req->month, 1, $req->year));
@@ -158,7 +169,7 @@ class DataTransaksiController extends Controller
             //return $TransData;
 
             
-        } else  {
+        } else  { // kalo gaada tanggalnya
             $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
 
             $TransData=DB::table('transactions')
@@ -242,7 +253,7 @@ class DataTransaksiController extends Controller
         //         $indexStr = $indexStr + 3;
         //     }
         // }
-        return view('data_transaksi', ['TransData' => $TransData, 'month' => $req->month, 'year' => $req->year]);
+        return view('data_transaksi', ['TransData' => $TransData, 'month' => $req->month, 'year' => $req->year], ['yearArray' => $yearArray]);
 
     }
 

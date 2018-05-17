@@ -155,13 +155,13 @@ select {
 </script>
 
 @if ($errors->any())
-<!--   @foreach($errors->all() as $error)
-    <div class="alert alert-danger">
-    {{$error}}
-  </div>
-  @endforeach -->
   <div class="alert alert-danger">
-    The file must be a file of type: csv.
+    Your action has not been successful. Please check your input again.
+  </div>
+  
+@else
+  <div class="alert alert-danger">
+    Your action is successful.
   </div>
 @endif
 
