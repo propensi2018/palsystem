@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Salesperson extends Model
 {
+
+  protected $primaryKey = 'user_id';
+
     public function user()
     {
       return $this->belongsTo(User::class);

@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductListAssoc extends Model
 {
-    //
+    protected $primaryKey = 'assoc_id';
+
     public function productList()
     {
         return $this->belongsTo(ProductList::class);

@@ -19,8 +19,8 @@ Route::post('/logout', 'LoginController@logout');
 Route::get('/hasher/{password}', function ($password) {
 	return Hash::make($password);
 });
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'UserController@index');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 //--AKTIVITAS PANGGILAN (PIC : MAKTAL SAKRIADHI)--
 Route::get('/dataUser','AktivitasPanggilanController@show_all')->middleware('auth');
@@ -31,7 +31,7 @@ Route::post('/customer/storeResponse', 'AktivitasPanggilanController@storeRespon
 Auth::routes();
 
 // --AKTIVITAS PERTEMUAN (PIC : FARHAN NURDIATAMAPAKAYA)--
-Route::get('/haha/{id}', 'AppointmentController@show')->middleware('auth');
+// Route::get('/haha/{id}', 'AppointmentController@show')->middleware('auth');
 Route::get('/users', 'UserController@show_all')->middleware('auth');
 Route::get('/show/user/{id}','UserController@show')->middleware('auth');
 Route::get('/create/user/{name}','UserController@store')->middleware('auth');
@@ -49,19 +49,15 @@ Route::post('/setTarget/product/store','TargetController@store')->middleware('au
 Route::get('/customer','CustomerController@show_all');
 Route::get('/appointment/{user_id}','AppointmentController@create');
 
-
-
-
-
-
-
-
 // --PENGELOLAAN PROSPECT (PIC : FAIZ MUHAMMAD REFANO)--
 Route::get('/customer/{id}','CustomerController@show')->name('profile-prospect')->middleware('auth');
 Route::post('/prospect/StoreProspect','AktivitasPanggilanController@storeProspect')->middleware('auth');
 Route::get('/prospect/form','AktivitasPanggilanController@show')->middleware('auth');
 Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_customers')->middleware('auth');
 Route::post('/customer/storeCsv','AktivitasPanggilanController@storeCsv');
+
+
+Route::post('/customer/storeExistingCust','CustomerController@store_response_ex_cust')->middleware('auth');
 
 // --PENGELOLAAN PESAN (PIC : ICHSANDY RIZKI)--
 
@@ -71,8 +67,7 @@ Route::get('show/messageSent','MessageController@showSent')->middleware('auth');
 Route::get('show/message/{id}','MessageController@showMessage')->middleware('auth');
 Route::get('show/message2/{id}','MessageController@showMessage2')->middleware('auth');
 
-// --MELIHAT RATING (PIC : ICHSANDY RIZKI)--
-Route::get('/dummyReward','RewardController@compareSalesperson')->middleware('auth');
+
 
 
 
@@ -89,4 +84,8 @@ Route::get('/generateUC/{id_pl}/{id_customer}','PemesananController@generateUniq
 Route::get('/dataTransaksi','DataTransaksiController@show')->middleware('auth');
 Route::get('/dataTransaksi/print_PDF','DataTransaksiController@printPDF')->middleware('auth');
 
+
+
 Route::get('/history','RiwayatController@show_all')->middleware('auth');
+Route::get('/history/call/{id}','RiwayatController@show_call')->middleware('auth');
+Route::get('/history/appointment/{id}','RiwayatController@show_appointment')->middleware('auth');

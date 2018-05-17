@@ -79,9 +79,17 @@ class AktivitasPanggilanController extends Controller
             ->where('id_user_sp' , $id)
            ->orderBy('schedules.updated_at','desc')->get();
 
-            $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
-
-
+//          $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
+            $joinProspectId = DB::table('prospects')
+//                ->select('customer_id')
+                ->join('schedules','id_customer','=','customer_id')
+                ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+//                ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
+                ->where([['id_user_sp' , $id],['is_done',0]])
+//                ->groupBy('customer_id')
+                ->get();
+    
+         
         $joinProspectCustomer = DB::table('prospects')
             ->select('customer_id','appointments.id_act_type','activity_types.name','prospects.notes')
             ->join('schedules','id_customer','=','customer_id')
@@ -121,7 +129,7 @@ class AktivitasPanggilanController extends Controller
             {
                 array_push($allProspect , $joinProspectId[$i]);
                 array_push($allProspectNotes , Schedule::where([['id_customer' , $allProspect[$i] ->customer_id],['is_done',1]])->orderBy('created_at','desc')->get()->first());
-
+               
             //    array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first());
                 array_push($allProspectData ,Prospect::where('customer_id' , $allProspect[$i] ->customer_id)->get()->first());
 
@@ -269,6 +277,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch->cycle = 1;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
             $strSch -> scheduleType() -> associate($strScTp);
             //$strSch->schedule_type_id = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
@@ -294,6 +303,8 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch->is_done = 0;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
+            $strSch->cycle = 1;
             $strSch -> scheduleType() -> associate($strScTp);
             // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
@@ -313,10 +324,11 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
-
+            
             $strSch = new Schedule;
             $strSch->is_done = 1;
-
+            $strSch->response = request('customer_type');
+            $strSch->cycle = 1;
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
 //            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
@@ -402,57 +414,5 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $newTelp->save();
         }
         return redirect()->route('list_customers');
-    }
-
-    public function store_response_ex_cust(Request $request) {
-
-        $id = Auth::id();
-        
-        if (request ('customer_type') == "Pending") {
-            $strApp = new Appointment();
-            $strApp ->is_a_deal = 0;
-            $strApp ->id_act_type = 1;
-            $strApp->save();
-
-            $strScTp = new ScheduleType;
-            $strScTp->telp_flag = 0;
-            $strScTp->save();
-
-            $strSch = new Schedule;
-            $strSch->is_done = 0;
-            $strSch->time = request('time');
-            $strSch->notes = request('notes');
-            $strSch -> scheduleType() -> associate($strScTp);
-            // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
-            $strSch->id_customer = request('id_customer');
-            $strSch->id_user_sp = $id;
-            $strSch->save();
-
-            Customer::where('id', request('id_customer')) ->update(['is_act'=>true]);
-            return redirect()->route('list_customers');
-        }
-
-        else {
-            $strApp = new Appointment();
-            $strApp ->is_a_deal = 0;
-            $strApp ->id_act_type = 1;
-            $strApp->save();
-
-            $strScTp = new ScheduleType;
-            $strScTp->telp_flag = 1;
-            $strScTp->save();
-
-            $strSch = new Schedule;
-            $strSch->is_done = 1;
-            $strSch->notes = request('notes');
-            $strSch -> scheduleType() -> associate($strScTp);
-//            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
-            $strSch->id_customer = request('id_customer');
-            $strSch->id_user_sp = $id;
-            $strSch->save();
-
-            Customer::where('id', request('id_customer')) ->update(['is_act'=>true]);
-            return redirect()->route('list_customers');
-        }
     }
 }

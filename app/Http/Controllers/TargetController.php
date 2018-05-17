@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\ProductType;
+use App\StatisticType;
 
 class TargetController extends Controller
 {
@@ -35,12 +36,18 @@ class TargetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
      */
     public function store(Request $request)
     {
-        //
+        $statistic_type = new StatisticType;
+        $statistic_type -> id_product = request('product_type');
+        $statistic_type -> target = request('target');
+        $statistic_type -> date = date('d-m-y');
+        $statistic_type -> save();
+
+        return redirect()->route('main');
     }
 
     /**

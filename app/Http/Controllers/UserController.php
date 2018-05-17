@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 
-
 //    public function test(){
 //         $id = Auth::id();
 //         $user  = User::find($id);
@@ -20,16 +19,12 @@ class UserController extends Controller
 //          $y = date('y');
 //       $statistic = new Statistic;
 //        $bubu = $statistic -> statisticSalesperson($m,$y,$id);
-//         
+//
 //      return [$bubu];
 
     public function test($id){
 
     $user = User::find($id);
-
-
-
-
 
 
       $s = new Statistic;
@@ -48,7 +43,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return '/dashboard';
+        return redirect()->route('main');
     }
 
     /**
