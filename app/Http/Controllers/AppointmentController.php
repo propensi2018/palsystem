@@ -196,6 +196,7 @@ class AppointmentController extends Controller
 
           $appointment = new Appointment;
           $appointment -> id_act_type = $id_activity_type;
+          $appointment -> is_a_deal = $is_a_deal;
           $appointment -> save();
 
           $schedule_type = $schedule -> scheduleType;
