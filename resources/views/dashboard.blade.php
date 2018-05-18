@@ -71,6 +71,8 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         $week .= '<td>'.$day;
     }
     $week .= '</td>';
+
+    if ($role == 'salesperson') {
     $date_d = substr($act, 8);
     $date_click = date('M Y', time());
     $week .= '<div class="modal fade" id="myModal'.$act.'">
@@ -125,6 +127,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   </div>
                 </div>
               </div>';
+      }
 
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
