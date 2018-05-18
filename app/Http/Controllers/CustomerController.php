@@ -65,14 +65,13 @@ class CustomerController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
         $scheduleDeal=DB::table('schedules')
-            
             ->join('product_lists','schedule_id','=','schedules.id')
             ->join('transactions' , 'id_pl','=','product_lists.id')
             ->join('product_list_assocs','product_list_id','=','product_lists.id')
             ->join('product_types','id_ptype','=','product_types.id')
-            ->where([['id_customer',$id]] )
+            ->where([['id_customer',$id],['is_valid',1]] )
             ->orderBy('schedules.created_at','desc')->get();
-   
+        
         if(sizeof($scheduleDeal)!=0){
         $tanggalSchedule = Schedule::where('id',$scheduleDeal[0]->schedule_id)->get();
         }
@@ -87,7 +86,7 @@ class CustomerController extends Controller
             ->leftJoin('transactions' , 'id_pl','=','product_lists.id')
             ->where([['id_customer',$id],['is_valid',null]] )
             ->orderBy('schedules.created_at','desc')->get();
-     
+
         if(sizeof($scheduleDealSaja)!=0){
         $tanggalScheduleSaja = Schedule::where('id',$scheduleDealSaja[0]->schedule_id)->get();
         
@@ -95,6 +94,14 @@ class CustomerController extends Controller
         else{
             
         }
+        $scheduleBelumDeal=DB::table('schedules')
+            ->join('product_lists','schedule_id','=','schedules.id')
+            ->join('transactions' , 'id_pl','=','product_lists.id')
+            ->join('product_list_assocs','product_list_id','=','product_lists.id')
+            ->join('product_types','id_ptype','=','product_types.id')
+            ->where([['id_customer',$id],['is_valid',0]] )
+            ->orderBy('schedules.created_at','desc')->get();
+     
         $customerData = Customer::find($id);
         if($customerData!= null){
         $telepon = Telephone::where('customer_id' , $customerData->id)->get();
@@ -166,7 +173,7 @@ class CustomerController extends Controller
             abort(404);
         }
 
-        return view('profile-prospect',  compact('prospect','customerData','pw','telepon','customerType','customerSchedule','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule','scheduleDealSaja','tanggalSchedule','tanggalScheduleSaja'));
+        return view('profile-prospect',  compact('prospect','customerData','pw','telepon','customerType','customerSchedule','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule','scheduleDealSaja','tanggalSchedule','tanggalScheduleSaja','scheduleBelumDeal'));
  // return compact('scheduleDeal','scheduleDealSaja');
  }
     /**
