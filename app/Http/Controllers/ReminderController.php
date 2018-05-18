@@ -94,61 +94,68 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-        
+
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
+        //add reward
 
 
+
+        
         if($role == 'branch_manager'){
 
-        $agresiveProduct = array();
-        $moderateProduct = array();
-        $conservativeProduct = array();
-        $salesPersonPerformance = array();
-        $candidate = new Statistic;
-
-
-        //calculate product agresive
-        $agr = ProductType::where('id_class', 1)->get();
-        foreach($agr as $productType){
-          array_push($agresiveProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-
-        //calculate product moderate
-        $mod = ProductType::where('id_class', 2)->get();
-        foreach($mod as $productType){
-          array_push($moderateProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-
-        //calculate product consecative
-        $con = ProductType::where('id_class', 3)->get();
-        foreach($con as $productType){
-          array_push($conservativeProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-        //calculate salesperson
-        $sls = User::where('is_sp',1)->get();
-        foreach($sls as $slss ){
-            $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear(2018,$slss->id));
-        }
-
-
-        //REWARD LIST SLS & Produk
+        $faiz = 'faiz bala';
 
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
-        $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
-        $inputProdAgr  = ProductListAssoc::select('id_ptype')->where('amount',max($agresiveProduct))->get()->first()->id_ptype;//best performance ProductType id for Aggresif
-        $inputProdMod  = ProductListAssoc::select('id_ptype')->where('amount',max($moderateProduct))->get()->first()->id_ptype;//best performance ProductType id  for Moderate
-        $inputProdCons = ProductListAssoc::select('id_ptype')->where('amount',max($conservativeProduct))->get()->first()->id_ptype;//best performance ProductType id for Conservative
 
-        //add reward
-        if($date == '16-05'){
+        if($date == '17-05'){
             $currentYear = date("y");
             if(sizeof(Rating::All()) !== 0){
            $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
           }else{
             $latestYear = 0;
           }
+
+
+                  $agresiveProduct = array();
+                  $moderateProduct = array();
+                  $conservativeProduct = array();
+                  $salesPersonPerformance = array();
+                  $candidate = new Statistic;
+
+
+                  //calculate product agresive
+                  $agr = ProductType::where('id_class', 1)->get();
+                  foreach($agr as $productType){
+                    array_push($agresiveProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                  }
+
+                  //calculate product moderate
+                  $mod = ProductType::where('id_class', 2)->get();
+                  foreach($mod as $productType){
+                    array_push($moderateProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                  }
+                  //calculate product consecative
+                  $con = ProductType::where('id_class', 3)->get();
+                  foreach($con as $productType){
+                    array_push($conservativeProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                  }
+
+                  //calculate salesperson
+                  $sls = User::where('is_sp',1)->get();
+                  foreach($sls as $slss ){
+                      $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear(2018,$slss->id));
+                  }
+
+
+                  //REWARD LIST SLS & Produk
+
+                  $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
+                  $inputProdAgr  = max($agresiveProduct)[1];//best performance ProductType id for Aggresif
+                  $inputProdMod  = max($moderateProduct)[1];//best performance ProductType id  for Moderate
+                  $inputProdCons =max($conservativeProduct)[1];//best performance ProductType id for Conservative
+
 
           if($currentYear !== $latestYear ){
                //ADD SLS REWARD
@@ -176,12 +183,14 @@ class ReminderController extends Controller
 
 
         //set reward to UI======================================================================================
+
         $id = Auth::id();
         $user = User::find($id);
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
         // return $role;
         //for salesperson view
-        
+
+
 
           $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
           $jml = sizeof(Rating::all());
@@ -215,7 +224,7 @@ class ReminderController extends Controller
           // $ratings = array_merge($rat1, $rat2);
           // ->whereNotNull('product_type_id');
           // return [$ratings[0] -> sales_user_id];
-          ;
+
           // return [$ratings];
           foreach($ratings as $rating) {
             if (isset($rating -> sales_user_id))

@@ -60,6 +60,7 @@
 
     <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
 
+    <p>Month:{{$month}} - Year:{{$year}}</p>
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%">
 
@@ -68,8 +69,8 @@
             <th>No.</th>
             <th>Customer's Name</th>
             <th>Costumer's Address</th>
-            <th>Product(s)</th>
-            <th>Telephone</th>
+            <th>Product</th>
+            <th>Telephone(s)</th>
             <th>Amount</th>
           </tr>
         </thead>

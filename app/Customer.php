@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
 
+    // protected $primaryKey = 'user_id';
     //user customer bisa digolongkan kedalam prospect list
 
     //retrieve last currently appointed schedule to customer
     public function retrieve_last_schedule($id_user_sp) {
-      return DB::table('schedules') 
+      return DB::table('schedules')
           ->join('schedule_types', 'schedule_types.id', '=', 'schedules.schedule_type_id')
           // ->where('id_user_sp', $this -> id_user_sp)
           ->where('id_user_sp', $id_user_sp)

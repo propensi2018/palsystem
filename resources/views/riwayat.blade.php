@@ -28,7 +28,7 @@ session_start();
               <tr>
                 <th>Time</th>
                 <th>Activity</th>
-                <th>Name</th>
+                <th>Cutomer Name</th>
                 <th>Detail</th>
               </tr>
             </thead>
@@ -39,21 +39,27 @@ session_start();
                 <td>
                   {{$history->created_at}}
                 </td>
-                @if ($history->telp_flag === 0)
-                  <td>
-                    Call
-                  </td>
-                @elseif ($history->telp_flag === 1)
+                @if (is_null($history->response))
                   <td>
                     Appointment
+                  </td>
+                @else
+                  <td>
+                    Call
                   </td>
                 @endif
                 <td>
                   {{$history->name}}
                 </td>
-                <td>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">Detail</button>
-                </td>
+                @if (is_null($history->response))          
+                  <td>
+                    <a href="history/appointment/{{$history->id}}" class="btn btn-primary">Detail</a>
+                  </td>
+                @else
+                  <td>
+                    <a href="history/call/{{$history->id}}" class="btn btn-primary">Detail</a>
+                  </td>
+                @endif
               </tr>
               @endforeach
             </tbody>
@@ -64,5 +70,12 @@ session_start();
   </div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          "order": [[ 0, "desc" ]]
+      } );
+  } );
+</script>
 
 @endsection
