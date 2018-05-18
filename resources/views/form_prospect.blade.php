@@ -7,7 +7,6 @@
   <div class="customer-form">
       <h2><b>CUSTOMER INFORMATION FORM</b></h2>
   </div>
-<button data-toggle="collapse" data-target="#form">Collapsible</button>
     <form id="form" method="POST" action="prospect/StoreProspect"> {{ csrf_field() }}
    <div id="address_container">
 

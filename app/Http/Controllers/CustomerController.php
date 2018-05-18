@@ -65,32 +65,48 @@ class CustomerController extends Controller
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
         $scheduleDeal=DB::table('schedules')
-            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
-            ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
-            ->where([['id_customer',$id],['is_a_deal' ,1]] )
-            ->orderBy('schedule_types.created_at','desc')->get();
-        $scheduleSkrg=DB::table('schedules')
-            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
+            
+            ->join('product_lists','schedule_id','=','schedules.id')
+            ->join('transactions' , 'id_pl','=','product_lists.id')
+            ->join('product_list_assocs','product_list_id','=','product_lists.id')
+            ->join('product_types','id_ptype','=','product_types.id')
             ->where([['id_customer',$id]] )
-            ->orderBy('schedule_types.created_at','desc')->get();
+            ->orderBy('schedules.created_at','desc')->get();
+        return $scheduleDeal;
+        if(sizeof($scheduleDeal)!=0){
+        $tanggalSchedule = Schedule::where('id',$scheduleDeal[0]->schedule_id)->get();
+        }
+        else{
+            
+        }
+        
+        $scheduleDealSaja=DB::table('schedules')
+            ->join('product_lists','schedule_id','=','schedules.id')
+            ->join('product_list_assocs','product_list_id','=','product_lists.id')
+            ->join('product_types','id_ptype','=','product_types.id')
+            ->leftJoin('transactions' , 'id_pl','=','product_lists.id')
+            ->where([['id_customer',$id],['is_valid',null]] )
+            ->orderBy('schedules.created_at','desc')->get();
+     
+        if(sizeof($scheduleDealSaja)!=0){
+        $tanggalScheduleSaja = Schedule::where('id',$scheduleDealSaja[0]->schedule_id)->get();
+        
+        }
+        else{
+            
+        }
         $customerData = Customer::find($id);
         if($customerData!= null){
         $telepon = Telephone::where('customer_id' , $customerData->id)->get();
         $prospect = Prospect::where('customer_id', $id) -> get();
         $addressProspect = Address::where('prospect_customer_id' , $id)->get();
-        $prospectNotes = $prospect[0]->notes;
         $prospectWillingnessId = $prospect[0] ->prospect_willingness_id;
         $pw = ProspectWillingness::find($prospectWillingnessId);
-        $prospectAddressId = $prospect[0] -> address_id;
-        $prospectAddress= Address::find($prospectAddressId);
         $customerTypeId = $prospect[0] -> customer_type_id;
         $customerType = CustomerType::find($customerTypeId);
         $customerSchedule = Schedule::where('id_customer',$id)->get();
         $joinSchedule =DB::table('product_lists')->join('schedules','schedule_id','=','schedules.id')->where('schedules.id_customer' , $id)->get();
         $allSchedule = Schedule::where([['schedules.id_customer' , $id],['is_done',0]])->get();
-        
-//        $allSchedule = Schedule::where([['schedules.id_customer' , $id],['is_done',1]])->get();
-        
         if(sizeof($allSchedule)!=0){
         $jumlahSchedule = sizeof($allSchedule);
             if($jumlahSchedule!=0){
@@ -111,7 +127,6 @@ class CustomerController extends Controller
         $productListId = $customerSchedule[0]-> id;
         $temp = array();
         $tempProductType=array();
-        $productList = ProductList::find($productListId); 
         $jumlahProduct = sizeof($joinSchedule);
         $kumpulanTemp = array();       
         $scheduleType = array();
@@ -124,12 +139,7 @@ class CustomerController extends Controller
             $productListCustomer = array();    
             array_push($productListSemua, $joinSchedule[$i]->id);  
             array_push($scheduleType , ScheduleType::where('id',$joinSchedule[$i]->schedule_type_id)->get()->first());
-//            array_push($scheduleType , $joinType = DB::table('schedules')
-//            ->join('schedule_types','schedule_type_id','=','schedule_types.id')
-//            ->where([['id_customer',$id],['schedule_types.id' ,$joinSchedule[$i]->schedule_type_id ])
-//            ->orderBy('schedule_types.created_at','desc')->get()->first());
             array_push($scheduleAppointment ,Appointment::where('id',$scheduleType[$i]->appointment_id)->get());
-           
             array_push($productListCustomer , ProductList::where('schedule_id' , $productListSemua[0])->get()->first());
             if($productListCustomer[0] !=null){
                 array_push($productListAssoc , ProductListAssoc::where('product_list_id',$productListCustomer[0]->id)->get()); 
@@ -156,8 +166,8 @@ class CustomerController extends Controller
             abort(404);
         }
 
-return view('profile-prospect',  compact('prospect','prospectNotes','customerData','pw','telepon','prospectAddress','customerType','customerSchedule','productList','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule'));
-  //return compact('allSchedule');
+        return view('profile-prospect',  compact('prospect','customerData','pw','telepon','customerType','customerSchedule','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule','scheduleDealSaja','tanggalSchedule','tanggalScheduleSaja'));
+ // return compact('scheduleDeal','scheduleDealSaja');
  }
     /**
      * Show the form for editing the specified resource.
@@ -177,9 +187,11 @@ return view('profile-prospect',  compact('prospect','prospectNotes','customerDat
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateWillingness()
     {
-        //
+        $id = request('id_willingness');
+        Prospect::where('customer_id' , $id)->update(['prospect_willingness_id'=>request('prospect_willingness')]);
+        return redirect() ->route('profile-prospect', ['id' => $id]);
     }
 
     /**

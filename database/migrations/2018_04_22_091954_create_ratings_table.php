@@ -16,7 +16,7 @@ class CreateRatingsTable extends Migration
       Schema::create('ratings', function (Blueprint $table) {
             $table->increments('id') ;
             $table->integer('sales_user_id')->unsigned()->nullable();
-            $table->date('date');
+            $table->string('date');
             $table->integer('product_types_id')->unsigned()->nullable();
 
             $table->foreign('sales_user_id')

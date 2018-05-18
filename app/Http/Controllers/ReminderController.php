@@ -101,18 +101,20 @@ class ReminderController extends Controller
 
 
 
-        
-        if($role == 'branch_manager'){
 
-        $faiz = 'faiz bala';
+
+
+
 
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
 
-        if($date == '17-05'){
-            $currentYear = date("y");
-            if(sizeof(Rating::All()) !== 0){
-           $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
+
+          $currentYear = date("y");
+
+
+          if(sizeof(Rating::All()) !== 0){
+          $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
           }else{
             $latestYear = 0;
           }
@@ -128,24 +130,24 @@ class ReminderController extends Controller
                   //calculate product agresive
                   $agr = ProductType::where('id_class', 1)->get();
                   foreach($agr as $productType){
-                    array_push($agresiveProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                    array_push($agresiveProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
                   }
 
                   //calculate product moderate
                   $mod = ProductType::where('id_class', 2)->get();
                   foreach($mod as $productType){
-                    array_push($moderateProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                    array_push($moderateProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
                   }
                   //calculate product consecative
                   $con = ProductType::where('id_class', 3)->get();
                   foreach($con as $productType){
-                    array_push($conservativeProduct,$candidate -> calculateProductYear(2018, $productType->id));
+                    array_push($conservativeProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
                   }
 
                   //calculate salesperson
                   $sls = User::where('is_sp',1)->get();
                   foreach($sls as $slss ){
-                      $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear(2018,$slss->id));
+                      $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear($currentYear-1,$slss->id));
                   }
 
 
@@ -157,33 +159,34 @@ class ReminderController extends Controller
                   $inputProdCons =max($conservativeProduct)[1];//best performance ProductType id for Conservative
 
 
-          if($currentYear !== $latestYear ){
+          if($currentYear != ($latestYear+1) ){
+
                //ADD SLS REWARD
                $newReward = new Rating;
                $newReward->sales_user_id = $inputSls;
-               $newReward->date = new DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
 
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdAgr;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
                //ADD PROD REWARD
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdMod;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
 
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdCons;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
           }
-        }
+
 
 
         //set reward to UI======================================================================================
-
+        if($role == 'branch_manager'){
         $id = Auth::id();
         $user = User::find($id);
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
