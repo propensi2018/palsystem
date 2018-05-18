@@ -547,23 +547,44 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                 <div class="row reminder-body">
                 <div class="container">
                   <ul class="demo">
-                    <li>
-                      <h4>SalesPersons</h4>
-                    </li>
-                    @foreach ($listRatingSls as  $listRatingSls)
-                    <li>
-                      {{$listRatingSls['name']}} {{$listRatingSls['year']}} <img class="riwayat-icon" src="{{ url('image/rating.png') }}" alt="icon name">
-                    </li>
-                    @endforeach
-                    <hr style="padding: 0px; margin-left: 0px; border-width: 2px; background-color: #D5D5D5;" width="100%">
-                    <li>
-                      <h4>Products</h4>
-                    </li>
-                    @foreach ($listRatingProd as  $listRatingProd)
-                    <li>
-                      {{$listRatingProd['name']}} {{$listRatingProd['year']}} <img class="riwayat-icon" src="{{ url('image/rating.png') }}" alt="icon name">
-                    </li>
-                    @endforeach
+                    <div class="rating-body">
+                      <li>
+                        <div class="rating-body-title">
+                          SalesPersons
+                        </div>
+                      </li>
+                      @foreach ($listRatingSls as  $listRatingSls)
+                      <li>
+                        <div class="row">
+                          <div class="col-sm-6 col-md-8 col-md-offset-12 rating-body-list">
+                            {{$listRatingSls['name']}} <b>{{$listRatingSls['year']}}</b>
+                          </div>
+                          <div class="col-sm-6 col-md-4 col-md-offset-12">
+                            <img class="rating-icon" src="{{ url('image/rating.png') }}" alt="icon name">
+                          </div>
+                        </div>
+                      </li>
+                      @endforeach
+                    </div>
+                    <div class="rating-body">
+                      <li>
+                        <div class="rating-body-title">
+                          Products
+                        </div>
+                      </li>
+                      @foreach ($listRatingProd as  $listRatingProd)
+                      <li>
+                        <div class="row">
+                          <div class="col-sm-6 col-md-8 col-md-offset-12 rating-body-list">
+                            {{$listRatingProd['name']}} <b>{{$listRatingProd['year']}}</b>
+                          </div>
+                          <div class="col-sm-6 col-md-4 col-md-offset-12">
+                            <img class="rating-icon" src="{{ url('image/rating.png') }}" alt="icon name">
+                          </div>
+                        </div>
+                      </li>
+                      @endforeach
+                    </div>
                   </ul>
                 </div>
                 </div>
