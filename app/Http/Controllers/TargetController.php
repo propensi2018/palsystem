@@ -46,6 +46,8 @@ class TargetController extends Controller
         $statistic_type -> target = request('target');
         $statistic_type -> date = date('d-m-y');
         $statistic_type -> save();
+
+        return redirect()->route('main');
     }
 
     /**

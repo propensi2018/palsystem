@@ -59,7 +59,11 @@
   <div class="container">
 
     <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
-
+<!--     <div>
+      @foreach ($until as $rangeTime)
+      <p>{{$rangeTime -> month}}</p>
+      @endforeach
+    </div> -->
     <div data-role="page" ng-app="dateInputExample" class="data-table">
       <table id="example" class="table table-striped table-bordered" style="width:100%">
 

@@ -82,6 +82,7 @@
             <span class="badge badge-secondary">{{$pw->name}}</span>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
             <br>
+             <p>{{$prospect[0]->email}}</p>
              <div class="modal fade" id="modalWillingness">
                 <div class="modal-dialog modal-dialog-centered">
                   <div class="modal-content">
@@ -138,21 +139,23 @@
                 <p class="card-text">Sub-district : {{$addressProspectLoop->district}}</p>
             @endforeach
                 <h3 class='card-title'>Product(s) :</h3>
-            @foreach($kumpulanTemp as $keys => $productLoop)
-            @for($i=0; $i<sizeof($productLoop['dataTypeProduct']);$i++)
-                <?php
-                $tipeProduk = $productLoop['dataTypeProduct'][$i];
-                $amountProduk = $productLoop['dataAmountProduct'][$i];
-                ?>                                    
-             @if(sizeof($scheduleDeal)!=0)
-                <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
-                <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
-             @else
-                <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
-                <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
-            @endif  
-            @endfor
-            @endforeach 
+                    @if(sizeof($scheduleDeal)!=0)
+                        @foreach($scheduleDeal as $loopingSched)
+                            <p class="card-text">{{$loopingSched->desc}} : Rp.{{$loopingSched->amount}} </p>
+                            <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
+                        @endforeach  
+                        @if(sizeof($scheduleDealSaja)!=0 && $scheduleDealSaja[0]->id != $scheduleDeal[0]->id)
+                            <p class="card-text">{{$scheduleDealSaja[0]->desc}} : Rp.{{$scheduleDealSaja[0]->amount}} </p>
+                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                        @else
+                        @endif
+                    @else
+                        @if(sizeof($scheduleDealSaja)!=0)
+                            <p class="card-text">{{$scheduleDealSaja[0]->desc}} : Rp.{{$scheduleDealSaja[0]->amount}} </p>
+                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                        @else
+                        @endif
+                    @endif 
         </div>
     </div>
 @endsection

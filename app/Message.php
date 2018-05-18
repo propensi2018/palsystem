@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    //
-    public function messageReceived()
+    protected $primaryKey = 'id_msg';
+
+    public function messageReceived ()
     {
         $this->belongsToMany(Message::class);
     }

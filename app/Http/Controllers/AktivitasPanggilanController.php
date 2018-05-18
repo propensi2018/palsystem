@@ -81,15 +81,11 @@ class AktivitasPanggilanController extends Controller
 
 //          $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
             $joinProspectId = DB::table('prospects')
-//                ->select('customer_id')
                 ->join('schedules','id_customer','=','customer_id')
                 ->join('schedule_types','schedule_type_id','=','schedule_types.id')
-                
-//                ->join('appointments' , 'appointments.id','=','schedule_types.appointment_id')
                 ->where([['id_user_sp' , $id],['is_done',0]])
-//                ->groupBy('customer_id')
                 ->get();
-    
+        
          
         $joinProspectCustomer = DB::table('prospects')
             ->select('customer_id','appointments.id_act_type','activity_types.name','prospects.notes')
@@ -102,15 +98,10 @@ class AktivitasPanggilanController extends Controller
                 ['is_done',0]
             ])
            ->orderBy('time','ascending')->get();
-
-        $allSchedule = Schedule::where('id_user_sp', $id)->get();
-        $allNotes = Schedule::where('id_user_sp', $id)->get();
         date_default_timezone_set("Asia/Bangkok");
-
         $today1 = date('Y-m-d');
         $today2 = date('H:i');
         $today = $today1.'T'.$today2;
-        
         $jumlah = sizeof($joinProspectId);
         $tempSchedule = array();
         $allScheduleCustomer = array();
@@ -118,22 +109,17 @@ class AktivitasPanggilanController extends Controller
         $temp= array();
         $allCustomer = array();
         $allProspect = array();
-        $allNotes = array();
         $allAppointment = array();
         $allActivityType = array();
         $allCustomerType = array();
         $allCustomerWillingness = array();
         $allProspectNotes = array();
-        $allAppointmentTes = array();
         $allProspectData = array();
             for($i=0;$i<$jumlah;$i++)
             {
                 array_push($allProspect , $joinProspectId[$i]);
                 array_push($allProspectNotes , Schedule::where([['id_customer' , $allProspect[$i] ->customer_id],['is_done',1]])->orderBy('created_at','desc')->get()->first());
-               
-            //    array_push($allProspectData ,Prospect::where('customer_id' , $allProspectNotes[$i]['id_customer'])->get()->first());
                 array_push($allProspectData ,Prospect::where('customer_id' , $allProspect[$i] ->customer_id)->get()->first());
-
                 array_push($allCustomer , Customer::where('id' , $allProspect[$i]->customer_id)->get());
                 array_push($allScheduleCustomer , ScheduleType::where('id' , $allProspectNotes[$i]['schedule_type_id'])->get()->first());
                 array_push($allAppointment , Appointment::where('id' , $allScheduleCustomer[$i]['appointment_id'])->get()->first());
@@ -154,7 +140,7 @@ class AktivitasPanggilanController extends Controller
                             'dataScheduleTypeBaru' => $allScheduleCustomer[$i],
                             'dataAppointment' => $allAppointment[$i],
                             'dataActivityType' => $allActivityType[$i],
-                           'dataTipeCustomer' => $allCustomerType[$i],
+                            'dataTipeCustomer' => $allCustomerType[$i],
                             'dataTipeWillingness' => $allCustomerWillingness[$i]);
 
 
@@ -278,6 +264,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch->cycle = 1;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
             $strSch -> scheduleType() -> associate($strScTp);
             //$strSch->schedule_type_id = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
@@ -302,7 +289,10 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strSch = new Schedule;
             $strSch->is_done = 0;
             $strSch->time = request('time');
-            $strSch->notes = request('notes');  
+
+            $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
+            $strSch->cycle = 1;
             $strSch -> scheduleType() -> associate($strScTp);
             // $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
             $strSch->id_customer = request('id_customer');
@@ -322,10 +312,11 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $strScTp = new ScheduleType;
             $strScTp->telp_flag = 1;
             $strScTp->save();
-
+            
             $strSch = new Schedule;
             $strSch->is_done = 1;
-
+            $strSch->response = request('customer_type');
+            $strSch->cycle = 1;
             $strSch->notes = request('notes');
             $strSch -> scheduleType() -> associate($strScTp);
 //            $strSch->id_schedule_types = sizeof(ScheduleType::select('id')->get());
