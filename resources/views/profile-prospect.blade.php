@@ -168,12 +168,14 @@
                         @else
                         @endif
                     @else
+                
                         @if(sizeof($scheduleDealSaja)!=0)
                              @foreach($scheduleDealSaja as $loopingSchedule)
                             <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
                             <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
                             @endforeach
                         @else
+                            
                         @endif
                     @endif 
         </div>
