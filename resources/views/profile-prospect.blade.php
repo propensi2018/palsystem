@@ -168,31 +168,36 @@
               <div class="prospect-title">
                 Product(s) :
               </div>
-              @if(sizeof($scheduleDeal)!=0)
-                  @foreach($scheduleDeal as $loopingSched)
-                      <p class="card-text">{{$loopingSched->desc}} : Rp.{{$loopingSched->amount}} </p>
-                      <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
-                  @endforeach  
-                  @if(sizeof($scheduleDealSaja)!=0 && $scheduleDealSaja[0]->id != $scheduleDeal[0]->id)
-                      @foreach($scheduleDealSaja as $loopingSchedule)
-                      <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
-                      <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
-                      @endforeach
-                  @else
-                  @endif
-              @else
-          
-                  @if(sizeof($scheduleDealSaja)!=0)
-                       @foreach($scheduleDealSaja as $loopingSchedule)
-                      <p class="card-text">{{$loopingSchedule->desc}} : <b>Rp.{{$loopingSchedule->amount}}</b> </p>
-                      <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
-                      @endforeach
-                  @else
-                      
-                  @endif
-              @endif
+              @if(sizeof($scheduleDeal)!=0 )
+                        @foreach($scheduleDeal as $loopingSched)
+                            <p class="card-text">{{$loopingSched->desc}} : <b>Rp. {{number_format($loopingSched-> amount,0,'','.')}}</b> </p>
+           
+                            <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
+                        @endforeach  
+                        @if(sizeof($scheduleDealSaja)!=0 )
+                            @foreach($scheduleDealSaja as $loopingSchedule)
+                            <p class="card-text">{{$loopingSchedule->desc}} : <b>Rp. {{number_format($loopingSchedule-> amount,0,'','.')}}</b> </p>
+                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                            @endforeach
+                        @else
+                            
+                        @endif
+                    @else
+                
+                        @if(sizeof($scheduleBelumDeal)!=0)
+                             @foreach($scheduleBelumDeal as $loopingSchedule)
+                            <p class="card-text">{{$loopingSchedule->desc}} : <b>Rp. {{number_format($loopingSchedule-> amount,0,'','.')}}</b> </p>
+                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$loopingSchedule->updated_at}} </p> 
+                            @endforeach
+                        @else
+                             @foreach($scheduleDealSaja as $loopingSched)
+                            <p class="card-text">{{$loopingSched->desc}} : <b>Rp. {{number_format($loopingSched-> amount,0,'','.')}}</b> </p>
+                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                        @endforeach 
+                        @endif
+                    @endif 
             </div>
-          </div> 
+          </div>
         </div>
     </div>
 @endsection
