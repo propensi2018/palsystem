@@ -8,8 +8,9 @@ session_start();
 
 <div class="data_transaksi">
   <div class="container">
-
-    <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
+    <div id="div-judul">
+      <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
+    </div>
   <!-- <div class="row" style="float: right;">
     <div class="dropdown">
       <select type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -36,28 +37,33 @@ session_start();
   </div> -->
 
     <!-- <div class="row"> -->
+    <br>
     <form method="GET" action="/palsystem/public/dataTransaksi">
       <select name="month">
-        <option value="1" {{ old("month") == "1" ? "selected":"" }}>Jan</option>
-        <option value="2" {{ old("month") == "2" ? "selected":"" }}>Feb</option>
-        <option value="3" {{ old("month") == "3" ? "selected":"" }}>Mar</option>
-        <option value="4" {{ old("month") == "4" ? "selected":"" }}>Apr</option>
-        <option value="5" {{ old("month") == "5" ? "selected":"" }}>May</option>
-        <option value="6" {{ old("month") == "6" ? "selected":"" }}>June</option>
-        <option value="7" {{ old("month") == "7" ? "selected":"" }}>Jul</option>
-        <option value="8" {{ old("month") == "8" ? "selected":"" }}>August</option>
-        <option value="9" {{ old("month") == "9" ? "selected":"" }}>Sept</option>
-        <option value="10" {{ old("month") == "10" ? "selected":"" }}>Oct</option>
-        <option value="11" {{ old("month") == "11" ? "selected":"" }}>Nov</option>
-        <option value="12" {{ old("month") == "12" ? "selected":"" }}>Dec</option>
+
+        <option value="All">All</option>        
+        <option value="1" {{ $month == 1 ? "selected":"" }}>January</option>
+        <option value="2" {{ $month == 2 ? "selected":"" }}>February</option>
+        <option value="3" {{ $month == 3 ? "selected":"" }}>March</option>
+        <option value="4" {{ $month == 4 ? "selected":"" }}>April</option>
+        <option value="5" {{ $month == 5 ? "selected":"" }}>May</option>
+        <option value="6" {{ $month == 6 ? "selected":"" }}>June</option>
+        <option value="7" {{ $month == 7 ? "selected":"" }}>July</option>
+        <option value="8" {{ $month == 8 ? "selected":"" }}>August</option>
+        <option value="9" {{ $month == 9 ? "selected":"" }}>September</option>
+        <option value="10" {{ $month == 10 ? "selected":"" }}>October</option>
+        <option value="11" {{ $month == 11 ? "selected":"" }}>November</option>
+        <option value="12" {{ $month == 12 ? "selected":"" }}>December</option>
 
       </select>
       <select name="year">
-        <option value="2018">2018</option>
+        @foreach ($yearArray as $yearOpt)
+        <option value="{{$yearOpt}}"> {{$yearOpt}}</option>
+        @endforeach
       </select>
+
       <button type="submit" class="btn btn-primary">View</button>
     </form>
-    <p> {{old('month')}}</p>
 
         <form method="get" action="dataTransaksi/print_PDF">
         @if(!empty($month) && !empty($year))

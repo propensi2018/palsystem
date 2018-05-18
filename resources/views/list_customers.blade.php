@@ -2,6 +2,11 @@
 session_start();
 
 ?>
+@if (session('alertFailed'))
+    <div class="alert alert-success">
+        {{ session('alertFailed') }}
+    </div>
+@endif
 
 @extends('layouts.master')
 @section('title', 'Customer')
@@ -50,9 +55,9 @@ session_start();
   </style>
 
     <div id="div-judul">
-        
+
         <h2 style="text-align: center"><b>PROSPECT LIST</b></h2>
-        
+
     </div>
       <div class="">
         <div class="list-card">
@@ -76,14 +81,14 @@ session_start();
                         <br>
                       @endif
                       <div>
-                          
+
                         <span class="card-body-title-name">{{$allProspectLoop['dataCustomer'][0]-> name}}</span><br>
                         <span class="card-body-title-telp">{{$allProspectLoop['dataCustomer'][0]-> telp_no}}</span>
 
                       </div>
                       <div class="row">
                         <div class="col-sm-12 col-md-12 col-md-offset-12 card-body-status">
-                            
+
                             @if($allProspectLoop['dataTipeCustomer']!= null && $allProspectLoop['dataTipeWillingness']!=null)
                             @if($allProspectLoop['dataTipeCustomer'][0]-> name == 'Hot')
                             <span class='badge badge-danger'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
@@ -91,20 +96,20 @@ session_start();
                             <span class='badge badge-success'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
                             @endif
                              <span class='badge badge-secondary'>{{ $allProspectLoop['dataTipeWillingness'][0]-> name}}</span>
-                              
+
                             @else
-                              <span class='badge badge-success'>Warm</span> 
+                              <span class='badge badge-success'>Warm</span>
                                <span class='badge badge-secondary'>Conservative</span>
-                              
+
                             @endif
-                            
+
                         </div>
                       </div>
-                    </div> 
+                    </div>
                     <div class="card-ct-footer">
-                    
+
                           {{$allProspectLoop['dataProspectLengkap']['notes'] }}
-                          
+
                     </div>
                   </a>
                 </div>
@@ -154,35 +159,47 @@ select {
     var total_number = 0;
 </script>
 
-@if ($errors->any())
-<!--   @foreach($errors->all() as $error)
-    <div class="alert alert-danger">
-    {{$error}}
-  </div>
-  @endforeach -->
-  <div class="alert alert-danger">
-    The file must be a file of type: csv.
+@if (session('alertCSV')) 
+  <div class="alert alert-success">
+    {{session('alertCSV')}}
   </div>
 @endif
 
+@if ($errors->any())
+  @if($errors ->has('file_csv'))
+  <div class="alert alert-danger">
+    Your action has not been successful. Please check your input again. (CSV ERROR)
+  </div>
+  
+  @else
+  <div class="alert alert-danger">
+    Your action has not been successful. Please check your input again. (PHONE NUMBER ERROR)
+  </div>
+  @endif
+@endif
 <div class="list-customer">
   <div class="container">
 
     <h2 style="text-align: center"><b>LIST OF CUSTOMERS</b></h2>
 
-    <div data-role="main" class="ui-content">
-      <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#myModal">
-        <span> New Customer</span>
-      </button>
-
-      <!-- upload csv -->
-      <form method="POST" action="customer/storeCsv" enctype="multipart/form-data">
-        {{csrf_field()}}
-        <input type="file" name="file_csv"></input>
-        
-      <input type="submit" name="submit" class="btn btn-primary float-right"></input>
-      </form>
-
+    <br>
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-md-offset-12">
+        <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#myModal">
+          <span> New Customer</span>
+        </button>
+      </div>
+      <div class="col-sm-4 col-md-3 col-md-offset-12" style="text-align: right; padding-right: 0px;">
+        <p>Upload Customer's List (.csv) : </p>
+      </div>
+      <div class="col-sm-4 col-md-5 col-md-offset-12">
+        <form method="POST" action="customer/storeCsv" enctype="multipart/form-data">
+          {{csrf_field()}}
+          <input type="file" name="file_csv"></input>
+          
+        <input type="submit" name="submit" class="btn btn-primary float-right"></input>
+        </form>
+      </div>
     </div>
 
     <div class="modal fade" id="myModal">
@@ -202,11 +219,11 @@ select {
               </input><br>
 
               <div class="form-group row">
-                <div class="col-md-4 col-md-offset-12">
-                </div>
                 <div class="col-sm-6 col-md-6 col-md-offset-12">
                   <button id ='adders' type='button' class="btn btn-secondary">Add More Phone Number</button>
-                  <button id ='deleters' type='button' style = 'display: none' class="btn btn-danger">Delete More Product</button>
+                </div>
+                <div class="col-sm-6 col-md-4 col-md-offset-12">
+                  <button id ='deleters' type='button' style = 'display: none' class="btn btn-danger">Delete Phone Number</button>
                 </div>
               </div>
 
@@ -375,7 +392,7 @@ select {
     if (total_number <= 0) {
       $('#deleters').hide();
     }
-  }); 
+  });
 
   // $("#example").bsFormAlerts({"id": "example"});
 
@@ -397,7 +414,7 @@ select {
 
   // Adding more phone number
 
- 
+
 </script>
 <script>
   jQuery(document).ready(function($) {

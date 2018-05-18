@@ -265,9 +265,9 @@ class AppointmentController extends Controller
         if ($id_activity_type == 3){
           return redirect()->route('unique_code', ['id_pl' => $id, 'id_customer' => $id_customer]);
         } else if ($failure == 0) {
-          return redirect()->route('list_customers');
+          return redirect()->route('list_customers')->with('alert', 'the appointment has been successfully added!');
         }
-        return redirect()->route('profile-prospect', ['id' => $id_customer]);
+        return redirect()->route('profile-prospect', ['id' => $id_customer])->with('alertFailed', 'the appointment has been successfully added!');
 
         //kalo ada amount = 0, gausah bikin product list
         //cari schedule dengan tanggal dan customer id_sp yang sama

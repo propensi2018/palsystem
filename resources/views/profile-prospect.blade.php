@@ -3,6 +3,11 @@
 @section('title','Profile Customer')
 @section('contents')
 
+@if (session('alert'))
+    <div class="alert alert-success">
+        {{ session('alert') }}
+    </div>
+@endif
 
 
 <div class="profile-customer">
@@ -20,10 +25,10 @@
     <div class="card-customer">
         <div class="card-customer-title">
             <h1 class="card-customer-title-name">{{$customerData->name}}</h1>
-      
-                
+
+
               @if(sizeof($allSchedule)!=0)
-                            
+
                 @else
                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerData->id}}">Re-Approach</button>
 
@@ -77,15 +82,15 @@
                 </div>
               </div>
                 @endif
-          
+
              @if($customerType->name === 'Hot')
-                    <span class='badge badge-danger'>{{$customerType->name}}</span>
+                    <h2 class='badge badge-danger'>{{$customerType->name}}</h2>
                 @else
-                    <span class='badge badge-success'>{{$customerType->name}}</span>
+                    <h2 class='badge badge-success'>{{$customerType->name}}</h2>
                 @endif
-            <span class="badge badge-secondary">{{$pw->name}}</span>
-            
-             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
+            <h2 class="badge badge-secondary">{{$pw->name}}</h2>
+
+             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalWillingness">Change</button>
             <br>
              <div class="modal fade" id="modalWillingness">
                 <div class="modal-dialog modal-dialog-centered">
@@ -124,7 +129,7 @@
                     </div>
                  </div>
             </div>
-        
+
             @foreach($telepon as $teleponLoop)
           <span class="card-customer-title-telp">{{$teleponLoop->telp_no}} / </span>
             @endforeach
@@ -132,47 +137,47 @@
          </div>
 
         <div class="card-customer-body">
-           
+
             <h4 class="card-title">Customer Notes :</h4>
 
             @foreach ($customerSchedule as $customerScheduleLoop)
                 <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
             @endforeach
             @foreach ($addressProspect as $addressProspectLoop)
-              <h4 class="card-title">Address {{$loop->iteration}} :</h4> 
+              <h4 class="card-title">Address {{$loop->iteration}} :</h4>
             <p class="card-text">Province : {{$addressProspectLoop->province}}</p>
             <p class="card-text">Village : {{$addressProspectLoop->kelurahan}}</p>
             <p class="card-text">City : {{$addressProspectLoop->city}}</p>
             <p class="card-text">Postal Code : {{$addressProspectLoop->postal_code}}</p>
             <p class="card-text">Sub-district : {{$addressProspectLoop->district}}</p>
-           
+
                 @endforeach
              <h3 class='card-title'>Product(s) :</h3>
-            
-            
+
+
              @foreach($kumpulanTemp as $keys => $productLoop)
-            
-           
+
+
             @for($i=0; $i<sizeof($productLoop['dataTypeProduct']);$i++)
                 <?php
-            
+
                 $tipeProduk = $productLoop['dataTypeProduct'][$i];
                 $amountProduk = $productLoop['dataAmountProduct'][$i];
                 ?>
-                                                
+
              @if(sizeof($scheduleDeal)!=0)
                      <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
                      <p style="color: red">Deal terjadi pada tanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
              @else
                      <p class="card-text">{{$tipeProduk->desc}} : Rp.{{$amountProduk->amount}} </p>
                     <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$productLoop['dataAppointment'][0]->created_at}} </p>
-            @endif  
+            @endif
             @endfor
-                
-                    @endforeach 
-          
-        
-        
+
+                    @endforeach
+
+
+
         </div>
     </div>
 </div>
