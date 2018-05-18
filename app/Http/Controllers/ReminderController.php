@@ -147,40 +147,46 @@ class ReminderController extends Controller
                   //calculate salesperson
                   $sls = User::where('is_sp',1)->get();
                   foreach($sls as $slss ){
-                      $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear($currentYear-1,$slss->id));
+                    array_push($salesPersonPerformance, $candidate -> calculateSalespersonYear($currentYear-1,$slss->id));
                   }
 
+                
 
                   //REWARD LIST SLS & Produk
 
-                  $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
-                  $inputProdAgr  = max($agresiveProduct)[1];//best performance ProductType id for Aggresif
-                  $inputProdMod  = max($moderateProduct)[1];//best performance ProductType id  for Moderate
-                  $inputProdCons =max($conservativeProduct)[1];//best performance ProductType id for Conservative
 
 
           if($currentYear != ($latestYear+1) ){
 
-               //ADD SLS REWARD
-               $newReward = new Rating;
-               $newReward->sales_user_id = $inputSls;
-               $newReward->date = '20'. $currentYear-1;
-               $newReward->save();
+              if(max($agresiveProduct)[0] != 0 ){
 
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdAgr;
-               $newReward->date = '20'. $currentYear-1;
-               $newReward->save();
-               //ADD PROD REWARD
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdMod;
-               $newReward->date = '20'. $currentYear-1;
-               $newReward->save();
-
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdCons;
-               $newReward->date = '20'. $currentYear-1;
-               $newReward->save();
+                $inputProdAgr  = max($agresiveProduct)[1];//best performance ProductType id for Aggresif
+                $newReward = new Rating;
+                $newReward->product_types_id = $inputProdAgr;
+                $newReward->date = '20'. $currentYear-1;
+                $newReward->save();
+              }
+              if(max($moderateProduct)[0] != 0){
+                $inputProdMod  = max($moderateProduct)[1];//best performance ProductType id  for Moderate
+                $newReward = new Rating;
+                $newReward->product_types_id = $inputProdMod;
+                $newReward->date = '20'. $currentYear-1;
+                $newReward->save();
+              }
+              if(max($conservativeProduct)[0] != 0){
+                $inputProdCons =max($conservativeProduct)[1];//best performance ProductType id for Conservative
+                $newReward = new Rating;
+                $newReward->product_types_id = $inputProdCons;
+                $newReward->date = '20'. $currentYear-1;
+                $newReward->save();
+              }
+              if(max($salesPersonPerformance)[0] != 0){
+                $inputSls = max($salesPersonPerformance)[1]; //input best salesperson performance
+                $newReward = new Rating;
+                $newReward->sales_user_id = $inputSls;
+                $newReward->date = '20'. $currentYear-1;
+                $newReward->save();
+              }
           }
 
 
@@ -190,67 +196,41 @@ class ReminderController extends Controller
         $id = Auth::id();
         $user = User::find($id);
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
-        // return $role;
-        //for salesperson view
 
+        $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
+        $jml = sizeof(Rating::all());
+        $listRatingSls = array();
+        $listRatingProd = array();
 
+        $rat1 = DB::table('salespeople')
+        ->join('ratings', 'salespeople.user_id' , '=', 'ratings.sales_user_id')
+        ->select('ratings.*')
+        ->where('branch_level_id', $idBranch)
+        ->get();
 
-          $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
-          $jml = sizeof(Rating::all());
-          $listRatingSls = array();
-          $listRatingProd = array();
+        $rat2 = DB::table('ratings')
+        ->whereNotNull('product_types_id')
+        ->get();
 
-          $rat1 = DB::table('salespeople')
-          ->join('ratings', 'salespeople.user_id' , '=', 'ratings.sales_user_id')
-          ->select('ratings.*')
-          ->where('branch_level_id', $idBranch)
-          ->get();
+        $ratings = $rat1 -> merge($rat2);
 
-          // return $rat1;
-          // return $id_salespeople;
+        foreach($ratings as $rating) {
+          if (isset($rating -> sales_user_id))
+          {
+          $nameSls = User::find($rating -> sales_user_id) -> name;
 
-          $rat2 = DB::table('ratings')
-          ->whereNotNull('product_types_id')
-          ->get();
-
-          // return $rat2;
-          $ratings = $rat1 -> merge($rat2);
-          // return $ratings;
-          // return $id_sp;
-
-
-          // return [$id_sp];
-          // $ratings = Rating::find([1,2]);
-
-
-
-          // $ratings = array_merge($rat1, $rat2);
-          // ->whereNotNull('product_type_id');
-          // return [$ratings[0] -> sales_user_id];
-
-          // return [$ratings];
-          foreach($ratings as $rating) {
-            if (isset($rating -> sales_user_id))
-            {
-            $nameSls = User::find($rating -> sales_user_id) -> name;
-
-            // return [$nameSls];
-
-            $yearSls = substr($rating -> date, 0,4);
-            $listRatingSls[] =  array('name' => $nameSls,'year'=> $yearSls );
-            }
-            else if (isset($rating -> product_types_id))
-            {
-            $nameProd = ProductType::find($rating-> product_types_id) -> desc;
-            $yearProd = substr($rating -> date, 0,4);
-            $listRatingProd[] =  array('name' => $nameProd,'year'=> $yearProd );
-            }
+          $yearSls = substr($rating -> date, 0,4);
+          $listRatingSls[] =  array('name' => $nameSls,'year'=> $yearSls );
           }
+          else if (isset($rating -> product_types_id))
+          {
+          $nameProd = ProductType::find($rating-> product_types_id) -> desc;
+          $yearProd = substr($rating -> date, 0,4);
+          $listRatingProd[] =  array('name' => $nameProd,'year'=> $yearProd );
+          }
+        }
 
-        // return $listRatingProd;
-
-
-          return view('dashboard',compact('listRatingProd','listRatingSls','role', 'labels', 'data', 'today', 'sched_cal','dataSales'));
+        return view('dashboard',compact('listRatingProd','listRatingSls','role', 'labels', 'data', 'today', 'sched_cal','dataSales'));
         }
 
         return view('dashboard', compact('role', 'labels', 'data', 'schedules', 'today', 'sched_cal','dataSales'));
