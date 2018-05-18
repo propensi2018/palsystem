@@ -141,43 +141,58 @@
         </div>
         </div>
         <div class="card-customer-body">
-            <h4 class="card-title">Customer Notes :</h4>
-            @foreach ($customerSchedule as $customerScheduleLoop)
-                <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
-            @endforeach
-            @foreach ($addressProspect as $addressProspectLoop)
-            
-                <h4 class="card-title">Address {{$loop->iteration}} :</h4> 
-                <p class="card-text">Province : {{$addressProspectLoop->province}}</p>
-                <p class="card-text">Village : {{$addressProspectLoop->kelurahan}}</p>
-                <p class="card-text">City : {{$addressProspectLoop->city}}</p>
-                <p class="card-text">Postal Code : {{$addressProspectLoop->postal_code}}</p>
-                <p class="card-text">Sub-district : {{$addressProspectLoop->district}}</p>
-            @endforeach
-                <h3 class='card-title'>Product(s) :</h3>
-                    @if(sizeof($scheduleDeal)!=0)
-                        @foreach($scheduleDeal as $loopingSched)
-                            <p class="card-text">{{$loopingSched->desc}} : Rp.{{$loopingSched->amount}} </p>
-                            <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
-                        @endforeach  
-                        @if(sizeof($scheduleDealSaja)!=0 && $scheduleDealSaja[0]->id != $scheduleDeal[0]->id)
-                            @foreach($scheduleDealSaja as $loopingSchedule)
-                            <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
-                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
-                            @endforeach
-                        @else
-                        @endif
-                    @else
-                
-                        @if(sizeof($scheduleDealSaja)!=0)
-                             @foreach($scheduleDealSaja as $loopingSchedule)
-                            <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
-                            <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
-                            @endforeach
-                        @else
-                            
-                        @endif
-                    @endif 
+          <div class="row">
+            <div class="col-sm-6 col-md-5 col-md-offset-12">
+              <div class="prospect-title">
+                Customer Notes :
+              </div>
+              @foreach ($customerSchedule as $customerScheduleLoop)
+                  <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
+              @endforeach
+              <div class="prospect-title">
+                Address(s) :
+              </div>
+              @foreach ($addressProspect as $addressProspectLoop)
+                <div class="card">
+                  <div class="card-header">Address {{$loop->iteration}} :</div>
+                  <div class="card-body">
+                    {{$addressProspectLoop->kelurahan}}, {{$addressProspectLoop->district}} <br>
+                    {{$addressProspectLoop->city}}, {{$addressProspectLoop->province}} <br>
+                    Postal Code : {{$addressProspectLoop->postal_code}}
+                  </div>
+                </div>
+                <br>
+              @endforeach
+            </div>
+            <div class="col-sm-6 col-md-7 col-md-offset-12">
+              <div class="prospect-title">
+                Product(s) :
+              </div>
+              @if(sizeof($scheduleDeal)!=0)
+                  @foreach($scheduleDeal as $loopingSched)
+                      <p class="card-text">{{$loopingSched->desc}} : Rp.{{$loopingSched->amount}} </p>
+                      <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
+                  @endforeach  
+                  @if(sizeof($scheduleDealSaja)!=0 && $scheduleDealSaja[0]->id != $scheduleDeal[0]->id)
+                      @foreach($scheduleDealSaja as $loopingSchedule)
+                      <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
+                      <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                      @endforeach
+                  @else
+                  @endif
+              @else
+          
+                  @if(sizeof($scheduleDealSaja)!=0)
+                       @foreach($scheduleDealSaja as $loopingSchedule)
+                      <p class="card-text">{{$loopingSchedule->desc}} : <b>Rp.{{$loopingSchedule->amount}}</b> </p>
+                      <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                      @endforeach
+                  @else
+                      
+                  @endif
+              @endif
+            </div>
+          </div> 
         </div>
     </div>
 @endsection

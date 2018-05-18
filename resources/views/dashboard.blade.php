@@ -92,32 +92,32 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
             if ($sched_cal[$i]["telp_flag"] == 0 && $sched_cal[$i]["act"] == $date) {
                 $week .=    '<div class="row">
-                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                  <div class="cal-title-sch">
                                     <span class="reminder-title-sch-type-call">CALL</span><br>
                                     <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
                                   </div>
-                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                  <div class="col-sm-6 col-md-9 col-md-offset-12 cal-body-customer">
                                     <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
                                     <span class="reminder-body-customer-telp">'.$sched_cal[$i]["telp_no"].'</span>
                                   </div>
                                 </div>
-                                <div>
-                                  <hr style="margin: 0px;">
+                                <hr style="margin: 0px;">
+                                <div class="cal-note">
                                   <span>Note : '.$sched_cal[$i]["notes"].'</span>
                                 </div>';
             } elseif ($sched_cal[$i]["telp_flag"] == 1 && $sched_cal[$i]["act"] == $date) {
                 $week .=  '<div class="row">
-                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                  <div class="cal-title-sch">
                                     <span class="reminder-title-sch-type-appt">APPT</span><br>
                                     <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
                                   </div>
-                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                  <div class="col-sm-6 col-md-9 cal-body-customer">
                                     <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
                                     <span class="reminder-body-customer-telp">'.$sched_cal[$i]["street"].', '.$sched_cal[$i]["kelurahan"].', '. $sched_cal[$i]["district"].'</span>
                                   </div>
                                 </div>
-                                <div>
-                                  <hr style="margin: 0px;">
+                                <hr style="margin: 0px;">
+                                <div class="cal-note">
                                   <span>Note : '.$sched_cal[$i]["notes"].'</span>
                                 </div>';
             }
