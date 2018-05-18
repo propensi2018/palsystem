@@ -59,7 +59,7 @@
                           <div class="col-sm-6 col-md-6 col-md-offset-12">
                             <h6 style="color:black">Customer Responses<span><font color="red">* </font></span>:</h6>
                             <select id="customer_type" class="custom-select" name="customer_type">
-                              <option value="Pending">Pending</option>
+                              <option value="Appointment">Appointment</option>
                               <option value="Reject">Reject</option>
                             </select>
                           </div>

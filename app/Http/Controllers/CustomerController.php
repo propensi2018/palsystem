@@ -204,7 +204,7 @@ class CustomerController extends Controller
     public function store_response_ex_cust(Request $request) {
         
         $id = Auth::id();
-        if (request ('customer_type') == "Pending") {
+        if (request ('customer_type') == "Appointment") {
             $strApp = new Appointment();
             $strApp ->is_a_deal = 0;
             $strApp ->id_act_type = 1;
