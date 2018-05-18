@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Appointment;
 use App\ProspectWillingness;
 use App\Schedule;
+use App\Status;
 use App\ScheduleType;
 use App\ProductType;
 use App\ProductList;
