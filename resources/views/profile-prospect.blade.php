@@ -84,13 +84,13 @@
                 @endif
 
              @if($customerType->name === 'Hot')
-                    <span class='badge badge-danger'>{{$customerType->name}}</span>
+                    <h2 class='badge badge-danger'>{{$customerType->name}}</h2>
                 @else
-                    <span class='badge badge-success'>{{$customerType->name}}</span>
+                    <h2 class='badge badge-success'>{{$customerType->name}}</h2>
                 @endif
-            <span class="badge badge-secondary">{{$pw->name}}</span>
+            <h2 class="badge badge-secondary">{{$pw->name}}</h2>
 
-             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
+             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalWillingness">Change</button>
             <br>
              <div class="modal fade" id="modalWillingness">
                 <div class="modal-dialog modal-dialog-centered">

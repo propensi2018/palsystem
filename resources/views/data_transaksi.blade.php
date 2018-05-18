@@ -8,8 +8,9 @@ session_start();
 
 <div class="data_transaksi">
   <div class="container">
-
-    <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
+    <div id="div-judul">
+      <h2 style="text-align: center"><b>TRANSACTION DATA</b></h2>
+    </div>
   <!-- <div class="row" style="float: right;">
     <div class="dropdown">
       <select type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
