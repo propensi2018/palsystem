@@ -89,7 +89,11 @@
 
                  @if(Auth::user()->role() == 'group_head')
                 <li class="">
-                    <a href="#"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}" alt="icon name">MESSAGE</a>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"><img class="sidebar-icon" src="{{ url('image/message.svg') }}" alt="icon name">MESSAGE</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="{{ url('/show/messageInbox') }}"><img class="sidebar-icon" src="{{ url('image/inbox.svg') }}">INBOX</a></li>
+                        <li><a href="{{ url('/show/messageSent') }}"><img class="sidebar-icon" src="{{ url('image/sent.svg') }}">SENT MAIL</a></li>
+                    </ul>
                 </li>
                 @endif
             </ul>

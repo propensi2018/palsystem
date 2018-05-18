@@ -26,7 +26,9 @@ if ($timestamp === false) {
 $today = date('Y-m-j', time());
 
 // For H3 title
-$html_title = date('M j, Y', time());
+$bulan = substr($ym, 5, 2);
+$tahun = substr($ym, 0, 4);
+$html_title = $bulan. '-' .date('j', time()) .'-'. $tahun;
 
 // Create prev & next month link     mktime(hour,minute,second,month,day,year)
 $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
@@ -59,16 +61,70 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         for ($i=0; $i<sizeof($sched_cal); $i++) {
           $act = $sched_cal[$i]['act'];
           if ($act == $date) {
-            $week .= '<a data-toggle="modal" data-target="#myModal'.$act.'"><td class="activity_cal">'.$day;
+            $week .= '<td class="activity_cal" data-toggle="modal" data-target="#myModal'.$act.'">'.$day;
             break;
           } else if ($i+1 == sizeof($sched_cal)) {
-            $week .= '<a><td>'.$day;
+            $week .= '<td>'.$day;
           }
         }
     } else {
         $week .= '<td>'.$day;
     }
-    $week .= '</td></a>';
+    $week .= '</td>';
+    $date_d = substr($act, 8);
+    $date_click = date('M Y', time());
+    $week .= '<div class="modal fade" id="myModal'.$act.'">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">'.$date_d.' '.$date_click.'</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                      </div>
+
+                      <div class="modal-body" ng-app="dateInputExample">';
+
+
+        for ($i=0; $i<sizeof($sched_cal); $i++) {
+
+            if ($sched_cal[$i]["telp_flag"] == 0 && $sched_cal[$i]["act"] == $date) {
+                $week .=    '<div class="row">
+                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                    <span class="reminder-title-sch-type-call">CALL</span><br>
+                                    <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
+                                  </div>
+                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                    <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
+                                    <span class="reminder-body-customer-telp">'.$sched_cal[$i]["telp_no"].'</span>
+                                  </div>
+                                </div>
+                                <div>
+                                  <hr style="margin: 0px;">
+                                  <span>Note : '.$sched_cal[$i]["notes"].'</span>
+                                </div>';
+            } elseif ($sched_cal[$i]["telp_flag"] == 1 && $sched_cal[$i]["act"] == $date) {
+                $week .=  '<div class="row">
+                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                    <span class="reminder-title-sch-type-appt">APPT</span><br>
+                                    <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
+                                  </div>
+                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                    <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
+                                    <span class="reminder-body-customer-telp">'.$sched_cal[$i]["street"].', '.$sched_cal[$i]["kelurahan"].', '. $sched_cal[$i]["district"].'</span>
+                                  </div>
+                                </div>
+                                <div>
+                                  <hr style="margin: 0px;">
+                                  <span>Note : '.$sched_cal[$i]["notes"].'</span>
+                                </div>';
+            }
+
+        }
+        $week .= '
+                      </div>
+                  </div>
+                </div>
+              </div>';
 
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
@@ -148,14 +204,21 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $prev; ?>" class="buttons" />
+                          <button type="submit">&lt;</button>
+                        </form>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $next; ?>" class="buttons" />
+                          <button type="submit">&gt;</button>
+                        </form>
                       </div>
+                      
                     </div>
                     <center>
                     <table class="table table-bordered calendar-style-table">
