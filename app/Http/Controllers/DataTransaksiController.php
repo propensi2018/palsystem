@@ -55,7 +55,17 @@ class DataTransaksiController extends Controller
         //return $id;
         // dd($req);
 
-        if (!empty($req->month) && !empty($req->year)) {
+        $allYear = DB::table('transactions')->select('updated_at')->distinct()->get();//->updated_at;
+        $yearArray =array();
+
+        foreach($allYear as $year) {
+            $a = substr($year->updated_at,0,4);
+            if(!in_array($a, $yearArray)){
+                array_push($yearArray, $a);
+            }
+        }
+
+        if (!empty($req->month) && !empty($req->year) && $req->month!="All") {
             // $from = $req->month . "-01-" . $req->year;
             $from = date("Y-m-01", mktime(0,0,0,$req->month, 1, $req->year));
             $until = date("Y-m-t", mktime(0,0,0,$req->month, 1, $req->year));
@@ -67,7 +77,7 @@ class DataTransaksiController extends Controller
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->join('prospects', 'customers.id','=','prospects.customer_id')
-            ->join('addresses', 'prospects.address_id','=','addresses.id')
+            ->join('addresses', 'prospects.customer_id','=','addresses.prospect_customer_id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
             ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
@@ -84,14 +94,14 @@ class DataTransaksiController extends Controller
             //return $TransData;
             
         } else  {
-            $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
+             $id_branch = Branch::where('mgr_user_id', $user->id)->get()->first()->level_id;
 
             $TransData=DB::table('transactions')
             ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->join('prospects', 'customers.id','=','prospects.customer_id')
-            ->join('addresses', 'prospects.address_id','=','addresses.id')
+            ->join('addresses', 'prospects.customer_id','=','addresses.prospect_customer_id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
             ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
@@ -111,7 +121,7 @@ class DataTransaksiController extends Controller
             $singleData -> telephones = $telephones;
         }
 
-        $pdf = PDF::loadView('print_PDF', ['TransData' => $TransData]);
+        $pdf = PDF::loadView('print_PDF', ['TransData' => $TransData, 'month' => $req->month, 'year' => $req->year]);
 
         return $pdf->stream('Transaction-data.pdf');
     }
@@ -152,7 +162,7 @@ class DataTransaksiController extends Controller
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->join('prospects', 'customers.id','=','prospects.customer_id')
-            ->join('addresses', 'prospects.address_id','=','addresses.id')
+            ->join('addresses', 'prospects.customer_id','=','addresses.prospect_customer_id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
             ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')
@@ -177,7 +187,7 @@ class DataTransaksiController extends Controller
             ->join('schedules', 'product_lists.schedule_id', '=', 'schedules.id')
             ->join('customers', 'schedules.id_customer', '=', 'customers.id')
             ->join('prospects', 'customers.id','=','prospects.customer_id')
-            ->join('addresses', 'prospects.address_id','=','addresses.id')
+            ->join('addresses', 'prospects.customer_id','=','addresses.prospect_customer_id')
             ->join('product_list_assocs', 'product_lists.id','=','product_list_assocs.product_list_id')
             ->join('product_types', 'product_list_assocs.id_ptype','=','product_types.id')
             ->join('salespeople','schedules.id_user_sp','=','salespeople.user_id')

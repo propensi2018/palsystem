@@ -154,35 +154,47 @@ select {
     var total_number = 0;
 </script>
 
-@if ($errors->any())
-  <div class="alert alert-danger">
-    Your action has not been successful. Please check your input again.
-  </div>
-  
-@else
-  <div class="alert alert-danger">
-    Your action is successful.
+@if (session('alertCSV')) 
+  <div class="alert alert-success">
+    {{session('alertCSV')}}
   </div>
 @endif
 
+@if ($errors->any())
+  @if($errors ->has('file_csv'))
+  <div class="alert alert-danger">
+    Your action has not been successful. Please check your input again. (CSV ERROR)
+  </div>
+  
+  @else
+  <div class="alert alert-danger">
+    Your action has not been successful. Please check your input again. (PHONE NUMBER ERROR)
+  </div>
+  @endif
+@endif
 <div class="list-customer">
   <div class="container">
 
     <h2 style="text-align: center"><b>LIST OF CUSTOMERS</b></h2>
 
-    <div data-role="main" class="ui-content">
-      <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#myModal">
-        <span> New Customer</span>
-      </button>
-
-      <!-- upload csv -->
-      <form method="POST" action="customer/storeCsv" enctype="multipart/form-data">
-        {{csrf_field()}}
-        <input type="file" name="file_csv"></input>
-        
-      <input type="submit" name="submit" class="btn btn-primary float-right"></input>
-      </form>
-
+    <br>
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-md-offset-12">
+        <button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#myModal">
+          <span> New Customer</span>
+        </button>
+      </div>
+      <div class="col-sm-4 col-md-3 col-md-offset-12" style="text-align: right; padding-right: 0px;">
+        <p>Upload Customer's List (.csv) : </p>
+      </div>
+      <div class="col-sm-4 col-md-5 col-md-offset-12">
+        <form method="POST" action="customer/storeCsv" enctype="multipart/form-data">
+          {{csrf_field()}}
+          <input type="file" name="file_csv"></input>
+          
+        <input type="submit" name="submit" class="btn btn-primary float-right"></input>
+        </form>
+      </div>
     </div>
 
     <div class="modal fade" id="myModal">

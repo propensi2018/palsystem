@@ -223,7 +223,7 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
         }
 
         $validate = $request -> validate($validator);
-
+        
         $newCust = new Customer;
         $newCust->pic_sp_id = Auth::user()->id;
         $newCust->is_act = 0;
@@ -413,6 +413,6 @@ return view('list_customers',compact('customery','temp','today','joinProspectCus
             $newTelp-> Customer() -> associate($newCust);
             $newTelp->save();
         }
-        return redirect()->route('list_customers');
+        return redirect()->route('list_customers')->with('alertCSV','Your CSV file has been successfully parsed!');
     }
 }
