@@ -115,11 +115,16 @@ ul li {
 }
 
 /* Style Calendar */
+.calendar-style {
+	padding-bottom: 30px;
+}
 
 .calendar-style-title {
-	margin-top: 20px;
+	margin-top: 30px;
+	margin-bottom: 30px;
 	text-align: center;
 	font-weight: 700;
+	font-size: 28px;
 }
 
 .calendar-style-table {
@@ -150,4 +155,22 @@ ul li {
 	color: #000;
 }
 
-	
+
+/*rating*/
+.rating-body {
+	padding-left: 20px;
+}
+.rating-body-title {
+	font-size: 28px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.rating-icon {
+	height: 40px;
+	float: right;
+}
+
+.rating-body-list {
+	font-size: 20px;
+}
