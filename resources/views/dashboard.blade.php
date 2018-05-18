@@ -52,6 +52,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
     $date = $ym.'-'.$day;
 
+    $act = '';
     if ($today == $date) {
         $week .= '<td class="today">'.$day;
     } elseif (sizeof($sched_cal) > 0 && $role == 'salesperson') {
