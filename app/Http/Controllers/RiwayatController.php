@@ -159,46 +159,8 @@ class RiwayatController extends Controller
             ->select('salespeople.id_sp', 'users.name')
             ->first();
 
-        date_default_timezone_set("Asia/Bangkok");
-        $date = date('d-m');
-        $inputSls = '7'; //best performance Salesperson user id
-        $inputProdAgr  = '1';//best performance ProductType id for Aggresif
-        $inputProdMod  = '2';//best performance ProductType id  for Moderate
-        $inputProdCons = '3';//best performance ProductType id for Conservative
-        //add reward
-        if($date == '17-05'){
-            $currentYear = date("y");
-            if(sizeof(Rating::All()) !== 0){
-            $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
-          }else{
-            $latestYear = 0;
-          }
 
-          if($currentYear !== $latestYear ){
 
-               //ADD SLS REWARD
-               $newReward = new Rating;
-               $newReward->sales_user_id = $inputSls;
-               $newReward->date = new DateTime();
-               $newReward->save();
-
-               //ADD PROD REWARD
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdAgr;
-               $newReward->date = New DateTime();
-               $newReward->save();
-
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdMod;
-               $newReward->date = New DateTime();
-               $newReward->save();
-
-               $newReward = new Rating;
-               $newReward->product_types_id = $inputProdCons;
-               $newReward->date = New DateTime();
-               $newReward->save();
-          }
-        }
         //set reward to UI======================================================================================
 
         $user = User::find($id);

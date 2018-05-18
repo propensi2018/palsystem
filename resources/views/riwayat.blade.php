@@ -28,7 +28,7 @@ session_start();
               <tr>
                 <th>Time</th>
                 <th>Activity</th>
-                <th>Name</th>
+                <th>Cutomer Name</th>
                 <th>Detail</th>
               </tr>
             </thead>
@@ -70,5 +70,12 @@ session_start();
   </div>
 </div>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#example').DataTable( {
+          "order": [[ 0, "desc" ]]
+      } );
+  } );
+</script>
 
 @endsection

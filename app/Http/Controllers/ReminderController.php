@@ -12,6 +12,7 @@ use App\Prospect;
 use App\Address;
 use App\Statistic;
 use App\Appointment;
+use App\Telephone;
 
 use App\User;
 use App\Rating;
@@ -53,29 +54,36 @@ class ReminderController extends Controller
         $customer = array();
         $sched_cal = array();
 
+        $telephone = '';
         for ($i=0; $i < sizeof($allSchedule) ; $i++) {
             if ($allSchedule[$i] -> is_done == 0) {
                 $getCustomer = Customer::where('id', $allSchedule[$i] -> id_customer) -> get();
                 $getActivity = ScheduleType::where('id', $allSchedule[$i] -> schedule_type_id) -> get();
+                $getTelephone = Telephone::find($allSchedule[$i] -> id_customer);
 
                 $clock = explode(' ', $allSchedule[$i] ->time);
                 $date = $clock[0];
-                $sched_cal[] = array('act' => $date);
                 $hour = explode(':', $clock[1]);
                 $minute = explode(':', $clock[1]);
                 $times = $hour[0] . ':' . $minute[1];
                 $now = date("Y-m-d");
 
                 if ($getActivity[0] -> telp_flag == 0 && $date == $now) {
-                    $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getCustomer[0] -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp);
+                    $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getTelephone -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp);
                 } elseif ($getActivity[0] -> telp_flag == 1 && $date == $now) {
-                    $getProspect = Prospect::where('customer_id', $getCustomer[0]['id']) -> get();
                     $getAddress = Address::where('prospect_customer_id', $allSchedule[$i] -> id_customer) -> get();
-                    $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getCustomer[0] -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp, 'street' => $getAddress[0] -> street, 'kelurahan' => $getAddress[0] -> kelurahan, 'district' => $getAddress[0] -> district);
+                    $schedules[] = array('id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getTelephone -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp, 'street' => $getAddress[0] -> street, 'kelurahan' => $getAddress[0] -> kelurahan, 'district' => $getAddress[0] -> district);
+                }
+
+                //calendar
+                if ($getActivity[0] -> telp_flag == 0) {
+                    $sched_cal[] = array('act' => $date, 'id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getTelephone -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp);
+                } elseif ($getActivity[0] -> telp_flag == 1) {
+                    $getAddress = Address::where('prospect_customer_id', $allSchedule[$i] -> id_customer) -> get();
+                    $sched_cal[] = array('act' => $date, 'id' => $allSchedule[$i] -> id, 'is_done' => $allSchedule[$i] -> is_done, 'time' => $times, 'notes' => $allSchedule[$i] -> notes, 'schedule_type_id' => $allSchedule[$i] -> schedule_type_id, 'telp_flag' => $getActivity[0] -> telp_flag, 'id_customer' => $allSchedule[$i] -> id_customer, 'name' => $getCustomer[0] -> name, 'telp_no' => $getTelephone -> telp_no, 'id_user_sp' => $allSchedule[$i] -> id_user_sp, 'street' => $getAddress[0] -> street, 'kelurahan' => $getAddress[0] -> kelurahan, 'district' => $getAddress[0] -> district);
                 }
             }
         }
-        // return 'something i dont know';
 
         date_default_timezone_set("Asia/Bangkok");
         $today1 = date('Y-m-d');
@@ -86,94 +94,106 @@ class ReminderController extends Controller
         $statistics = new Statistic;
         $data = $statistics->product_data();
         $labels = $statistics->returnLabels();
-        
+
         //handling statistik salesperson
         $dataSales = $statistics-> sales_data($id);
+        //add reward
 
 
-        if($role == 'branch_manager'){
-
-        $agresiveProduct = array();
-        $moderateProduct = array();
-        $conservativeProduct = array();
-        $salesPersonPerformance = array();
-        $candidate = new Statistic;
 
 
-        //calculate product agresive
-        $agr = ProductType::where('id_class', 1)->get();
-        foreach($agr as $productType){
-          array_push($agresiveProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-
-        //calculate product moderate
-        $mod = ProductType::where('id_class', 2)->get();
-        foreach($mod as $productType){
-          array_push($moderateProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-
-        //calculate product consecative
-        $con = ProductType::where('id_class', 3)->get();
-        foreach($con as $productType){
-          array_push($conservativeProduct,$candidate -> calculateProductYear(2018, $productType->id));
-        }
-        //calculate salesperson
-        $sls = User::where('is_sp',1)->get();
-        foreach($sls as $slss ){
-            $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear(2018,$slss->id));
-        }
 
 
-        //REWARD LIST SLS & Produk
+
 
         date_default_timezone_set("Asia/Bangkok");
         $date = date('d-m');
-        $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
-        $inputProdAgr  = ProductListAssoc::select('id_ptype')->where('amount',max($agresiveProduct))->get()->first()->id_ptype;//best performance ProductType id for Aggresif
-        $inputProdMod  = ProductListAssoc::select('id_ptype')->where('amount',max($moderateProduct))->get()->first()->id_ptype;//best performance ProductType id  for Moderate
-        $inputProdCons = ProductListAssoc::select('id_ptype')->where('amount',max($conservativeProduct))->get()->first()->id_ptype;//best performance ProductType id for Conservative
 
-        //add reward
-        if($date == '16-05'){
-            $currentYear = date("y");
-            if(sizeof(Rating::All()) !== 0){
-           $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
+
+          $currentYear = date("y");
+
+
+          if(sizeof(Rating::All()) !== 0){
+          $latestYear = substr((Rating::select('date')->orderBy('date','desc')->first()->date),2,2);
           }else{
             $latestYear = 0;
           }
 
-          if($currentYear !== $latestYear ){
+
+                  $agresiveProduct = array();
+                  $moderateProduct = array();
+                  $conservativeProduct = array();
+                  $salesPersonPerformance = array();
+                  $candidate = new Statistic;
+
+
+                  //calculate product agresive
+                  $agr = ProductType::where('id_class', 1)->get();
+                  foreach($agr as $productType){
+                    array_push($agresiveProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
+                  }
+
+                  //calculate product moderate
+                  $mod = ProductType::where('id_class', 2)->get();
+                  foreach($mod as $productType){
+                    array_push($moderateProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
+                  }
+                  //calculate product consecative
+                  $con = ProductType::where('id_class', 3)->get();
+                  foreach($con as $productType){
+                    array_push($conservativeProduct,$candidate -> calculateProductYear($currentYear-1, $productType->id));
+                  }
+
+                  //calculate salesperson
+                  $sls = User::where('is_sp',1)->get();
+                  foreach($sls as $slss ){
+                      $salesPersonPerformance[] = array(  $slss->id => $candidate -> calculateSalespersonYear($currentYear-1,$slss->id));
+                  }
+
+
+                  //REWARD LIST SLS & Produk
+
+                  $inputSls = key(max($salesPersonPerformance)); //input best salesperson performance
+                  $inputProdAgr  = max($agresiveProduct)[1];//best performance ProductType id for Aggresif
+                  $inputProdMod  = max($moderateProduct)[1];//best performance ProductType id  for Moderate
+                  $inputProdCons =max($conservativeProduct)[1];//best performance ProductType id for Conservative
+
+
+          if($currentYear != ($latestYear+1) ){
+
                //ADD SLS REWARD
                $newReward = new Rating;
                $newReward->sales_user_id = $inputSls;
-               $newReward->date = new DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
 
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdAgr;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
                //ADD PROD REWARD
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdMod;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
 
                $newReward = new Rating;
                $newReward->product_types_id = $inputProdCons;
-               $newReward->date = New DateTime();
+               $newReward->date = '20'. $currentYear-1;
                $newReward->save();
           }
-        }
+
 
 
         //set reward to UI======================================================================================
+        if($role == 'branch_manager'){
         $id = Auth::id();
         $user = User::find($id);
         $is_sp = User::select('is_sp')->where('id',$id)->get()->first()->is_sp;
         // return $role;
         //for salesperson view
-        
+
+
 
           $idBranch = Branch::select('level_id')->where('mgr_user_id',$id)->get()->first()->level_id;
           $jml = sizeof(Rating::all());
@@ -207,7 +227,7 @@ class ReminderController extends Controller
           // $ratings = array_merge($rat1, $rat2);
           // ->whereNotNull('product_type_id');
           // return [$ratings[0] -> sales_user_id];
-          ;
+
           // return [$ratings];
           foreach($ratings as $rating) {
             if (isset($rating -> sales_user_id))

@@ -89,7 +89,7 @@ class User extends Authenticatable
         $tester3 = DB::table('regions')
         ->where('regions.mgr_user_id', $this->id)
         ->get();
-        if (!$tester->isEmpty()) {
+        if (!$tester3->isEmpty()) {
           return 'regional_manager';
         }
         return 'branch_manager';

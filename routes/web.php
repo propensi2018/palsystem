@@ -67,11 +67,6 @@ Route::get('show/messageSent','MessageController@showSent')->middleware('auth');
 Route::get('show/message/{id}','MessageController@showMessage')->middleware('auth');
 Route::get('show/message2/{id}','MessageController@showMessage2')->middleware('auth');
 
-
-
-
-
-
 // --PENGELOLAAN DATA PEMESANAAN (PIC : AHMAD FARHAN HASANUDDIN ACHSANI)--
 Route::get('/pemesanan/{id}','PemesananController@show')->middleware('auth');
 Route::get('/pemesanan','PemesananController@show_all')->middleware('auth');

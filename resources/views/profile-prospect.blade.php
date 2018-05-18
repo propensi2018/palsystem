@@ -3,6 +3,11 @@
 @section('title','Profile Customer')
 @section('contents')
 
+@if (session('alert'))
+    <div class="alert alert-success">
+        {{ session('alert') }}
+    </div>
+@endif
 
 
 <div class="profile-customer">
@@ -19,8 +24,13 @@
     </ul>
     <div class="card-customer">
         <div class="card-customer-title">
-            <h1 class="card-customer-title-name">{{$customerData->name}}</h1> 
-              @if(sizeof($allSchedule)!=0)              
+
+            <h1 class="card-customer-title-name">{{$customerData->name}}</h1>
+
+
+              @if(sizeof($allSchedule)!=0)
+
+
                 @else
                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$customerData->id}}">Re-Approach</button>
 
@@ -74,13 +84,18 @@
                 </div>
               </div>
                 @endif
-                @if($customerType->name === 'Hot')
-                    <span class='badge badge-danger'>{{$customerType->name}}</span>
+
+             @if($customerType->name === 'Hot')
+                    <h2 class='badge badge-danger'>{{$customerType->name}}</h2>
+
                 @else
-                    <span class='badge badge-success'>{{$customerType->name}}</span>
+                    <h2 class='badge badge-success'>{{$customerType->name}}</h2>
                 @endif
-            <span class="badge badge-secondary">{{$pw->name}}</span>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalWillingness">Change</button>
+
+            <h2 class="badge badge-secondary">{{$pw->name}}</h2>
+
+             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalWillingness">Change</button>
+
             <br>
              <p>{{$prospect[0]->email}}</p>
              <div class="modal fade" id="modalWillingness">
@@ -131,6 +146,7 @@
                 <p class="card-text">Notes {{$loop->iteration}} : {{$customerScheduleLoop ->notes}}</p>
             @endforeach
             @foreach ($addressProspect as $addressProspectLoop)
+            
                 <h4 class="card-title">Address {{$loop->iteration}} :</h4> 
                 <p class="card-text">Province : {{$addressProspectLoop->province}}</p>
                 <p class="card-text">Village : {{$addressProspectLoop->kelurahan}}</p>

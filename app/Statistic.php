@@ -95,7 +95,7 @@ class Statistic extends Model
     ->where('product_list_assocs.created_at', '<', $year + 1 . "-" . "1" . "-1 00:00:00")
     ->select('amount')->get();
     // return $amounts;
-    return $amounts -> sum('amount');
+    return [$amounts -> sum('amount'),$product_type_id];
   }
 
   /*

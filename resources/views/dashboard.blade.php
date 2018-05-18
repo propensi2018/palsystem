@@ -26,7 +26,9 @@ if ($timestamp === false) {
 $today = date('Y-m-j', time());
 
 // For H3 title
-$html_title = date('M j, Y', time());
+$bulan = substr($ym, 5, 2);
+$tahun = substr($ym, 0, 4);
+$html_title = $bulan. '-' .date('j', time()) .'-'. $tahun;
 
 // Create prev & next month link     mktime(hour,minute,second,month,day,year)
 $prev = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
@@ -59,16 +61,73 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
         for ($i=0; $i<sizeof($sched_cal); $i++) {
           $act = $sched_cal[$i]['act'];
           if ($act == $date) {
-            $week .= '<a data-toggle="modal" data-target="#myModal'.$act.'"><td class="activity_cal">'.$day;
+            $week .= '<td class="activity_cal" data-toggle="modal" data-target="#myModal'.$act.'">'.$day;
             break;
           } else if ($i+1 == sizeof($sched_cal)) {
-            $week .= '<a><td>'.$day;
+            $week .= '<td>'.$day;
           }
         }
     } else {
         $week .= '<td>'.$day;
     }
-    $week .= '</td></a>';
+    $week .= '</td>';
+
+    if ($role == 'salesperson') {
+    $date_d = substr($act, 8);
+    $date_click = date('M Y', time());
+    $week .= '<div class="modal fade" id="myModal'.$act.'">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">'.$date_d.' '.$date_click.'</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                      </div>
+
+                      <div class="modal-body" ng-app="dateInputExample">';
+
+
+        for ($i=0; $i<sizeof($sched_cal); $i++) {
+
+            if ($sched_cal[$i]["telp_flag"] == 0 && $sched_cal[$i]["act"] == $date) {
+                $week .=    '<div class="row">
+                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                    <span class="reminder-title-sch-type-call">CALL</span><br>
+                                    <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
+                                  </div>
+                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                    <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
+                                    <span class="reminder-body-customer-telp">'.$sched_cal[$i]["telp_no"].'</span>
+                                  </div>
+                                </div>
+                                <div>
+                                  <hr style="margin: 0px;">
+                                  <span>Note : '.$sched_cal[$i]["notes"].'</span>
+                                </div>';
+            } elseif ($sched_cal[$i]["telp_flag"] == 1 && $sched_cal[$i]["act"] == $date) {
+                $week .=  '<div class="row">
+                                  <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
+                                    <span class="reminder-title-sch-type-appt">APPT</span><br>
+                                    <span class="reminder-title-sch-time">'.$sched_cal[$i]["time"].'</span>
+                                  </div>
+                                  <div class="col-8 col-md-8 col-md-offset-12 reminder-body-customer">
+                                    <span class="reminder-body-customer-name">'.$sched_cal[$i]["name"].'</span><br>
+                                    <span class="reminder-body-customer-telp">'.$sched_cal[$i]["street"].', '.$sched_cal[$i]["kelurahan"].', '. $sched_cal[$i]["district"].'</span>
+                                  </div>
+                                </div>
+                                <div>
+                                  <hr style="margin: 0px;">
+                                  <span>Note : '.$sched_cal[$i]["notes"].'</span>
+                                </div>';
+            }
+
+        }
+        $week .= '
+                      </div>
+                  </div>
+                </div>
+              </div>';
+      }
 
     // End of the week OR End of the month
     if ($str % 7 == 6 || $day == $day_count) {
@@ -97,6 +156,10 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 .calendar-style-table th:nth-of-type(7),td:nth-of-type(7){
   color: #134D72;
 }
+
+.modal-title {
+  padding-left: 160px;
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
@@ -107,7 +170,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistik Salesperson
+                    Salesperson Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
@@ -148,13 +211,19 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
+                          <button type="submit" class="btn">&lt;</button>
+                        </form>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $next; ?>" />
+                          <button type="submit" class="btn">&gt;</button>
+                        </form>
                       </div>
                     </div>
                     <center>
@@ -191,28 +260,29 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistik Produk
+                    Product Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-                  <script>
-                    var ctx = document.getElementById("myChart").getContext('2d');
-                    var myChart = new Chart(document.getElementById("myChart"), {
-                        type: 'line',
-                        data: {
-                          labels: @json($labels),
-                          datasets: @json($data)
-
-                        },
-                        options: {
-                          title: {
-                            display: true,
-                            text: 'Product'
+                  <div class="container">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("myChart").getContext('2d');
+                      var myChart = new Chart(document.getElementById("myChart"), {
+                          type: 'line',
+                          data: {
+                            labels: @json($labels),
+                            datasets: @json($data)
+                          },
+                          options: {
+                            title: {
+                              display: true,
+                              text: 'Product'
+                            }
                           }
-                        }
-                      });
-                  </script>
+                        });
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>
@@ -343,33 +413,36 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
         @if($role == 'branch_manager')
         <div class="row batas">
-            <div class="col-sm-6 col-md-8 col-md-offset-12">
+          <div class="col-sm-6 col-md-8 col-md-offset-12">
             <div class="container reminder-layout">
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistik Salesperson
+                    Salesperson Statistics
                   </div>
                 </div>
-                  <div class="row reminder-body">
-                <canvas id="chartSalesperson" height="100" width="200"></canvas>
-                  </div>
-                <script>
-var ctx = document.getElementById("chartSalesperson").getContext('2d');
-var myChart = new Chart(document.getElementById("chartSalesperson"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($dataSales)
-  },
+                <div class="row reminder-body">
+                  <div class="container">
+                    <canvas id="chartSalesperson" height="100" width="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("chartSalesperson").getContext('2d');
+                      var myChart = new Chart(document.getElementById("chartSalesperson"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($dataSales)
+                        },
 
-  options: {
-    title: {
-      display: true,
-      text: 'Salesperson'
-    }
-  }
-});</script>
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Salesperson'
+                          }
+                        }
+                      });
+                    </script>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -385,13 +458,19 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
+                          <button type="submit" class="btn">&lt;</button>
+                        </form>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $next; ?>" />
+                          <button type="submit" class="btn">&gt;</button>
+                        </form>
                       </div>
                     </div>
                     <center>
@@ -428,28 +507,29 @@ var myChart = new Chart(document.getElementById("chartSalesperson"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic Produk
+                    Product Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
-
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-
-});</script>
-
+                  <div class="container">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("myChart").getContext('2d');
+                      var myChart = new Chart(document.getElementById("myChart"), {
+                          type: 'line',
+                          data: {
+                            labels: @json($labels),
+                            datasets: @json($data)
+                          },
+                          options: {
+                            title: {
+                              display: true,
+                              text: 'Product'
+                            }
+                          }
+                        });
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>
@@ -464,22 +544,25 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-
+                  SalesPersons<br>
                   @foreach ($listRatingSls as  $listRatingSls)
                   {{$listRatingSls['name']}}
                   {{$listRatingSls['year']}}
                   @endforeach
                   <br>
+                  <hr style="padding: 0px; margin-left: 0px; border-width: 2px; background-color: #D5D5D5;" width="100%">
+                  Products<br>
                   @foreach ($listRatingProd as  $listRatingProd)
                   {{$listRatingProd['name']}}
                   {{$listRatingProd['year']}}
+                  <br>
                   @endforeach
                 </div>
               </div>
             </div>
           </div>
         </div>
-          @endif
+      @endif
 
 
           @if($role == 'regional_manager')
@@ -489,37 +572,30 @@ var myChart = new Chart(document.getElementById("myChart"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Product Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
+                  <div class="container">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("myChart").getContext('2d');
+                      var myChart = new Chart(document.getElementById("myChart"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($data)
 
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-  }
-});</script>
-
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                        },
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Product'
+                          }
+                        }
+                      });
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>
@@ -536,13 +612,19 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
+                          <button type="submit" class="btn">&lt;</button>
+                        </form>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $next; ?>" />
+                          <button type="submit" class="btn">&gt;</button>
+                        </form>
                       </div>
                     </div>
                     <center>
@@ -579,19 +661,21 @@ var myChart = new Chart(document.getElementById("myChart"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Salesperson Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                  <div class="container">  
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                  </div>
                 </div>
               </div>
             </div>
@@ -610,33 +694,26 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  <canvas id="myChart" width="400" height="200"></canvas>
-<script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(document.getElementById("myChart"), {
-  type: 'line',
-  data: {
-    labels: @json($labels),
-    datasets: @json($data)
+                  <div class="container">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <script>
+                      var ctx = document.getElementById("myChart").getContext('2d');
+                      var myChart = new Chart(document.getElementById("myChart"), {
+                        type: 'line',
+                        data: {
+                          labels: @json($labels),
+                          datasets: @json($data)
 
-  },
-  options: {
-    title: {
-      display: true,
-      text: 'Product'
-    }
-  }
-});</script>
-
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
-                  <br>
+                        },
+                        options: {
+                          title: {
+                            display: true,
+                            text: 'Product'
+                          }
+                        }
+                      });
+                    </script>
+                  </div>
                 </div>
               </div>
             </div>
@@ -653,13 +730,19 @@ var myChart = new Chart(document.getElementById("myChart"), {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="dashboard<?php echo $prev; ?>">&lt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
+                          <button type="submit" class="btn">&lt;</button>
+                        </form>
                       </div>
                       <div class="col-8 col-md-8 col-md-offset-12">
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <a href="?ym=<?php echo $next; ?>">&gt;</a>
+                        <form method="GET" action="/palsystem/public/dashboard">
+                          <input type="hidden" name="ym" value="<?php echo $next; ?>" />
+                          <button type="submit" class="btn">&gt;</button>
+                        </form>
                       </div>
                     </div>
                     <center>
@@ -696,7 +779,7 @@ var myChart = new Chart(document.getElementById("myChart"), {
               <div class="reminder-form">
                 <div class="row reminder-title">
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
-                    Statistic
+                    Salesperson Statistics
                   </div>
                 </div>
                 <div class="row reminder-body">
