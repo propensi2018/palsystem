@@ -72,7 +72,7 @@ class CustomerController extends Controller
             ->join('product_types','id_ptype','=','product_types.id')
             ->where([['id_customer',$id]] )
             ->orderBy('schedules.created_at','desc')->get();
-        
+   
         if(sizeof($scheduleDeal)!=0){
         $tanggalSchedule = Schedule::where('id',$scheduleDeal[0]->schedule_id)->get();
         }
@@ -84,9 +84,10 @@ class CustomerController extends Controller
             ->join('product_lists','schedule_id','=','schedules.id')
             ->join('product_list_assocs','product_list_id','=','product_lists.id')
             ->join('product_types','id_ptype','=','product_types.id')
-            ->where([['id_customer',$id]] )
+            ->leftJoin('transactions' , 'id_pl','=','product_lists.id')
+            ->where([['id_customer',$id],['is_valid',null]] )
             ->orderBy('schedules.created_at','desc')->get();
-        
+     
         if(sizeof($scheduleDealSaja)!=0){
         $tanggalScheduleSaja = Schedule::where('id',$scheduleDealSaja[0]->schedule_id)->get();
         

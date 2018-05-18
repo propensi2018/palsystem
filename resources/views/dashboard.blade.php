@@ -545,19 +545,27 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   </div>
                 </div>
                 <div class="row reminder-body">
-                  SalesPersons<br>
-                  @foreach ($listRatingSls as  $listRatingSls)
-                  {{$listRatingSls['name']}}
-                  {{$listRatingSls['year']}}
-                  @endforeach
-                  <br>
-                  <hr style="padding: 0px; margin-left: 0px; border-width: 2px; background-color: #D5D5D5;" width="100%">
-                  Products<br>
-                  @foreach ($listRatingProd as  $listRatingProd)
-                  {{$listRatingProd['name']}}
-                  {{$listRatingProd['year']}}
-                  <br>
-                  @endforeach
+                <div class="container">
+                  <ul class="demo">
+                    <li>
+                      <h4>SalesPersons</h4>
+                    </li>
+                    @foreach ($listRatingSls as  $listRatingSls)
+                    <li>
+                      {{$listRatingSls['name']}} {{$listRatingSls['year']}} <img class="riwayat-icon" src="{{ url('image/rating.png') }}" alt="icon name">
+                    </li>
+                    @endforeach
+                    <hr style="padding: 0px; margin-left: 0px; border-width: 2px; background-color: #D5D5D5;" width="100%">
+                    <li>
+                      <h4>Products</h4>
+                    </li>
+                    @foreach ($listRatingProd as  $listRatingProd)
+                    <li>
+                      {{$listRatingProd['name']}} {{$listRatingProd['year']}} <img class="riwayat-icon" src="{{ url('image/rating.png') }}" alt="icon name">
+                    </li>
+                    @endforeach
+                  </ul>
+                </div>
                 </div>
               </div>
             </div>

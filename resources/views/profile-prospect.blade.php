@@ -161,15 +161,21 @@
                             <p style="color: red">Deal terjadi terhadap produk ini tertanggal {{$tanggalSchedule[0]->updated_at}} </p> 
                         @endforeach  
                         @if(sizeof($scheduleDealSaja)!=0 && $scheduleDealSaja[0]->id != $scheduleDeal[0]->id)
-                            <p class="card-text">{{$scheduleDealSaja[0]->desc}} : Rp.{{$scheduleDealSaja[0]->amount}} </p>
+                            @foreach($scheduleDealSaja as $loopingSchedule)
+                            <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
                             <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                            @endforeach
                         @else
                         @endif
                     @else
+                
                         @if(sizeof($scheduleDealSaja)!=0)
-                            <p class="card-text">{{$scheduleDealSaja[0]->desc}} : Rp.{{$scheduleDealSaja[0]->amount}} </p>
+                             @foreach($scheduleDealSaja as $loopingSchedule)
+                            <p class="card-text">{{$loopingSchedule->desc}} : Rp.{{$loopingSchedule->amount}} </p>
                             <p style="color: blue">Customer tertarik dengan produk ini tertanggal {{$tanggalScheduleSaja[0]->updated_at}} </p> 
+                            @endforeach
                         @else
+                            
                         @endif
                     @endif 
         </div>
