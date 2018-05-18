@@ -89,7 +89,7 @@
               {{$data -> name}}
             </td>
             <td>
-              {{$data -> city}}
+              {{$data -> street}} {{$data -> city}} {{$data -> postal_code}}
             </td>
             <td>
               {{$data -> desc}}

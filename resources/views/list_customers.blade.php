@@ -197,7 +197,7 @@ select {
           {{csrf_field()}}
           <input type="file" name="file_csv"></input>
           
-        <input type="submit" name="submit" class="btn btn-primary float-right"></input>
+        <input type="submit" name="submit" class="btn btn-primary float-right" value="Upload"></input>
         </form>
       </div>
     </div>
@@ -219,11 +219,11 @@ select {
               </input><br>
 
               <div class="form-group row">
+                <div class="col-md-4 col-md-offset-12">
+                </div>
                 <div class="col-sm-6 col-md-6 col-md-offset-12">
                   <button id ='adders' type='button' class="btn btn-secondary">Add More Phone Number</button>
-                </div>
-                <div class="col-sm-6 col-md-4 col-md-offset-12">
-                  <button id ='deleters' type='button' style = 'display: none' class="btn btn-danger">Delete Phone Number</button>
+                  <button id ='deleters' type='button' style = 'display: none' class="btn btn-danger">Delete More Product</button>
                 </div>
               </div>
 
