@@ -270,6 +270,7 @@ class ReminderController extends Controller
             $strSch->cycle = 1;
             $strSch->time = request('time');
             $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
             $strSch -> scheduleType() -> associate($strScTp);
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
@@ -294,6 +295,7 @@ class ReminderController extends Controller
             $strSch->time = request('time');
             $strSch->notes = request('notes');
             $strSch->cycle = 1;
+            $strSch->response = request('customer_type');
             $strSch -> scheduleType() -> associate($strScTp);
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;
@@ -317,6 +319,7 @@ class ReminderController extends Controller
             $strSch->is_done = 1;
             $strSch->cycle = 1;
             $strSch->notes = request('notes');
+            $strSch->response = request('customer_type');
             $strSch -> scheduleType() -> associate($strScTp);
             $strSch->id_customer = request('id_customer');
             $strSch->id_user_sp = $id;

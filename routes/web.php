@@ -55,7 +55,7 @@ Route::post('/prospect/StoreProspect','AktivitasPanggilanController@storeProspec
 Route::get('/prospect/form','AktivitasPanggilanController@show')->middleware('auth');
 Route::get('/customer','AktivitasPanggilanController@show_all')->name('list_customers')->middleware('auth');
 Route::post('/customer/storeCsv','AktivitasPanggilanController@storeCsv');
-
+Route::post('/customer/willingnessResponse','CustomerController@updateWillingness');
 
 Route::post('/customer/storeExistingCust','CustomerController@store_response_ex_cust')->middleware('auth');
 

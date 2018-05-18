@@ -19,11 +19,11 @@
     <!-- Custom styles for this template -->
     <link href="{{ url('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ url('css/navbars.css') }}" rel="stylesheet">
-    <link href="{{ url('css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ url('css/dashboards.css') }}" rel="stylesheet">
     <link href="{{ url('css/messages.css') }}" rel="stylesheet">
     <link href="{{ url('css/achsani.css') }}" rel="stylesheet">
     <link href="{{ url('css/customers_prospects.css') }}" rel="stylesheet">
-    <link href="{{ url('css/profile-appointment.css') }}" rel="stylesheet">
+    <link href="{{ url('css/profile-appointments.css') }}" rel="stylesheet">
     <link href="{{ url('css/riwayat.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ url('./slick/slicks.css') }}">

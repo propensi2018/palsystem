@@ -104,23 +104,9 @@
 	    border-bottom-left-radius: 15px;
 	}
 }
-/*.jumbotron{
-    background-color: #287CC0;
-    color: #FFF;
-}
-#nav-link active{
 
-    
+.prospect-title {
+	font-size: 28px;
+	font-weight: 700;
+	margin-bottom: 10px;
 }
-#navbar-profile{
-    width: 300px;
-    background-color: #223448;
-}
-#nav-tulisan{
-    text-align: center;
-    color: #FFF;
-}
-#tab-1{
-background-color: #287CC0;
-
-}*/
