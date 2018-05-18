@@ -156,6 +156,10 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 .calendar-style-table th:nth-of-type(7),td:nth-of-type(7){
   color: #134D72;
 }
+
+.modal-title {
+  padding-left: 160px;
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
