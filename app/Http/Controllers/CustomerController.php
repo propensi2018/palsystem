@@ -72,7 +72,7 @@ class CustomerController extends Controller
             ->join('product_types','id_ptype','=','product_types.id')
             ->where([['id_customer',$id]] )
             ->orderBy('schedules.created_at','desc')->get();
-        return $scheduleDeal;
+   
         if(sizeof($scheduleDeal)!=0){
         $tanggalSchedule = Schedule::where('id',$scheduleDeal[0]->schedule_id)->get();
         }
