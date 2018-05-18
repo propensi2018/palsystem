@@ -2,6 +2,11 @@
 session_start();
 
 ?>
+@if (session('alertFailed'))
+    <div class="alert alert-success">
+        {{ session('alertFailed') }}
+    </div>
+@endif
 
 @extends('layouts.master')
 @section('title', 'Customer')
@@ -50,9 +55,9 @@ session_start();
   </style>
 
     <div id="div-judul">
-        
+
         <h2 style="text-align: center"><b>PROSPECT LIST</b></h2>
-        
+
     </div>
       <div class="">
         <div class="list-card">
@@ -76,14 +81,14 @@ session_start();
                         <br>
                       @endif
                       <div>
-                          
+
                         <span class="card-body-title-name">{{$allProspectLoop['dataCustomer'][0]-> name}}</span><br>
                         <span class="card-body-title-telp">{{$allProspectLoop['dataCustomer'][0]-> telp_no}}</span>
 
                       </div>
                       <div class="row">
                         <div class="col-sm-12 col-md-12 col-md-offset-12 card-body-status">
-                            
+
                             @if($allProspectLoop['dataTipeCustomer']!= null && $allProspectLoop['dataTipeWillingness']!=null)
                             @if($allProspectLoop['dataTipeCustomer'][0]-> name == 'Hot')
                             <span class='badge badge-danger'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
@@ -91,20 +96,20 @@ session_start();
                             <span class='badge badge-success'>{{ $allProspectLoop['dataTipeCustomer'][0]-> name }}</span>
                             @endif
                              <span class='badge badge-secondary'>{{ $allProspectLoop['dataTipeWillingness'][0]-> name}}</span>
-                              
+
                             @else
-                              <span class='badge badge-success'>Warm</span> 
+                              <span class='badge badge-success'>Warm</span>
                                <span class='badge badge-secondary'>Conservative</span>
-                              
+
                             @endif
-                            
+
                         </div>
                       </div>
-                    </div> 
+                    </div>
                     <div class="card-ct-footer">
-                    
+
                           {{$allProspectLoop['dataProspectLengkap']['notes'] }}
-                          
+
                     </div>
                   </a>
                 </div>
@@ -387,7 +392,7 @@ select {
     if (total_number <= 0) {
       $('#deleters').hide();
     }
-  }); 
+  });
 
   // $("#example").bsFormAlerts({"id": "example"});
 
@@ -409,7 +414,7 @@ select {
 
   // Adding more phone number
 
- 
+
 </script>
 <script>
   jQuery(document).ready(function($) {
