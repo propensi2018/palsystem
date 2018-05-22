@@ -212,7 +212,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -221,7 +221,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -324,7 +324,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                               </li>
                             </a>
                           @elseif ($schedules[$i]['telp_flag'] == 1)
-                            <a href="{{ URL::to('../public/appointment/' . $schedules[$i]['id_customer']) }}">
+                            <a href="{{ URL::to('../appointment/' . $schedules[$i]['id_customer']) }}">
                               <li>
                                 <div class="row">
                                   <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
@@ -459,7 +459,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -468,7 +468,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -642,7 +642,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -651,7 +651,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -760,7 +760,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -769,7 +769,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
