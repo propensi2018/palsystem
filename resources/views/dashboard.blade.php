@@ -269,6 +269,8 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                     <canvas id="myChart" width="400" height="200"></canvas>
                     <script>
                       var ctx = document.getElementById("myChart").getContext('2d');
+                      var uniLabels = @json($labels);
+                      var uniData = @json($data);
                       var myChart = new Chart(document.getElementById("myChart"), {
                           type: 'line',
                           data: {
@@ -276,12 +278,108 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                             datasets: @json($data)
                           },
                           options: {
+                            // animation : false
                             title: {
                               display: true,
                               text: 'Product'
                             }
                           }
                         });
+                    </script>
+                    Select period :
+                    <select id="from">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> first)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
+                    to
+                    <select id="to">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> last)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
+                    <script>
+                    let max = uniLabels.length;
+                    let min = 0;
+                    function newLabela(min, max){
+                      var newLabel = new Array();
+                      // var newData = uniData.slice(0);
+                      var newData = JSON.stringify(uniData);
+                      var newData = JSON.parse(newData);
+
+                      // console.log(newData);
+
+                      for (var i = min; i <= max; i++) {
+                        newLabel.push(uniLabels[i]);
+                        // newData.push(uniData[i]);
+                      }
+
+                      newData.forEach(function(datum) {
+                        newDatum = new Array();
+                        for (var i = min; i <= max; i++) {
+                          // newLabel.push(uniLabels[i]);
+                          newDatum.push(datum.data[i]);
+                        }
+                        datum.data = newDatum;
+
+                      });
+                      // console.log(newLabel);
+                      return [newLabel, newData];
+                    }
+                    // console.log(newLabel(2,4));
+                    // console.log(newLabela(5,5));
+                    function setMinMax(){
+                      // console.log($('#from').val());
+                      // console.log($('#to').val());
+                      max = Math.max($('#from').val(), $('#to').val());
+                      min = Math.min($('#from').val(), $('#to').val());
+                    }
+                    function draw() {
+                      var a = newLabela(min, max);
+                      // console.log(a[0]);
+                      // console.log(a[1]);
+                      // console.log('uni data :');
+                      // console.log(uniData);
+                      myChart.data.labels = a[0];
+                      myChart.data.datasets = a[1];
+
+                      myChart.update();
+                      // var myChart = new Chart(document.getElementById("myChart"), {
+                      //     type: 'line',
+                      //     data: {
+                      //       labels: a[0],
+                      //       datasets: a[1]
+                      //     },
+                      //     options: {
+                      //       title: {
+                      //         display: true,
+                      //         text: 'Product'
+                      //       }
+                      //     }
+                      //   });
+
+                      //implement code here`
+                      // console.log(min)
+
+                    }
+                    $('#from').change(function(){
+                      setMinMax();
+                      draw();
+                    });
+                    $('#to').change(function(){
+                      setMinMax();
+                      draw();
+                    });
                     </script>
                   </div>
                 </div>
