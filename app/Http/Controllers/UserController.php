@@ -24,16 +24,9 @@ class UserController extends Controller
 
     public function test($id){
 
-    $user = User::find($id);
-
-
-      $s = new Statistic;
-      return [$s -> product_data()];
-      // $schedule = Schedule::find($id);
-      // // return [$schedule];
-      // return [$schedule -> last_appointment_type()];
-      // $customer = Customer::find($id);
-      // return [$customer-> retrieve_list_of_product ()];
+      // $a = new Statistic();
+      //
+      // $a.cp();
 
     }
     /**
