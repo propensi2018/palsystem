@@ -112,68 +112,16 @@ class CustomerController extends Controller
         $customerTypeId = $prospect[0] -> customer_type_id;
         $customerType = CustomerType::find($customerTypeId);
         $customerSchedule = Schedule::where('id_customer',$id)->get();
-        $joinSchedule =DB::table('product_lists')->join('schedules','schedule_id','=','schedules.id')->where('schedules.id_customer' , $id)->get();
+       
         $allSchedule = Schedule::where([['schedules.id_customer' , $id],['is_done',0]])->get();
-        if(sizeof($allSchedule)!=0){
-        $jumlahSchedule = sizeof($allSchedule);
-            if($jumlahSchedule!=0){
-                $scheduleTypeId  = ScheduleType::where('id',$allSchedule[$jumlahSchedule-1]->schedule_type_id)->get();
-                $scheduleAppointmentId = Appointment::where('id',$scheduleTypeId[0]->appointment_id)->get();
-            }
-            else{
-                $scheduleTypeId  = ScheduleType::where('id',$allSchedule[0]->schedule_type_id)->get();
-                $scheduleAppointmentId = Appointment::where('id',$scheduleTypeId[0]->appointment_id)->get();   
-            }
-        }
-        else{
-//            $allSchedule = Schedule::where('schedules.id_customer' , $id)->get();
-//            $scheduleTypeId  = ScheduleType::where('id',$allSchedule[0]->schedule_type_id)->get();
-//            $scheduleAppointmentId = Appointment::where('id',$scheduleTypeId[0]->appointment_id)->get();  
-            
-        }
-        $productListId = $customerSchedule[0]-> id;
-        $temp = array();
-        $tempProductType=array();
-        $jumlahProduct = sizeof($joinSchedule);
-        $kumpulanTemp = array();       
-        $scheduleType = array();
-        $scheduleAppointment = array();
-        for($i=0;$i<$jumlahProduct;$i++)
-        {   
-            $productListSemua = array();
-            $productListAssoc = array();
-            $productListType = array();
-            $productListCustomer = array();    
-            array_push($productListSemua, $joinSchedule[$i]->id);  
-            array_push($scheduleType , ScheduleType::where('id',$joinSchedule[$i]->schedule_type_id)->get()->first());
-            array_push($scheduleAppointment ,Appointment::where('id',$scheduleType[$i]->appointment_id)->get());
-            array_push($productListCustomer , ProductList::where('schedule_id' , $productListSemua[0])->get()->first());
-            if($productListCustomer[0] !=null){
-                array_push($productListAssoc , ProductListAssoc::where('product_list_id',$productListCustomer[0]->id)->get()); 
-                $plt = array();
-                foreach($productListAssoc[0] as $pla) {
-                array_push($plt , ProductType::where('id',$pla->id_ptype)->get()->first());
-                }
-                 $temp = array(     'dataJumlahProduct' => $productListSemua[0],
-                                    'dataAmountProduct' => $productListAssoc[0],
-                                    'dataProductList' => $productListCustomer[0],
-                                    'dataAppointment' => $scheduleAppointment[$i],
-                                    'dataScheduleType' => $scheduleType[$i],
-                                    'dataTypeProduct' => $plt);
-                
-                array_push($kumpulanTemp, $temp);
-               
-            }
-            else{
-                
-            }                        
-        }
+    
+
     }
         else{
             abort(404);
         }
 
-        return view('profile-prospect',  compact('prospect','customerData','pw','telepon','customerType','customerSchedule','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','kumpulanTemp','addressProspect','scheduleAppointmentId','scheduleDeal','joinSchedule','today','scheduleSkrg','allSchedule','scheduleDealSaja','tanggalSchedule','tanggalScheduleSaja','scheduleBelumDeal'));
+        return view('profile-prospect',  compact('prospect','customerData','pw','telepon','customerType','customerSchedule','productListAssoc','productType','prospectTypeProdukDesc','productListAmount','addressProspect','scheduleAppointmentId','scheduleDeal','today','scheduleSkrg','allSchedule','scheduleDealSaja','tanggalSchedule','tanggalScheduleSaja','scheduleBelumDeal'));
  // return compact('scheduleDeal','scheduleDealSaja');
  }
     /**

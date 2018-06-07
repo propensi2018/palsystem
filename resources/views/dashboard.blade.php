@@ -173,11 +173,22 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12">
                     Salesperson Statistics
                   </div>
+                    
                 </div>
                 <div class="row reminder-body">
+                <div style="padding:10px;">
+            <form action="" method="POST">
+		 	<label>Choose Option</label>
+		 	<select id="category_faq">
+	             <option value="1" selected=''>Present Month</option>
+	             <option value="2">6 Month</option>
+	        </select>
+            </form> 
+        </div>
                   <div class="container">
                     <canvas id="chartSalesperson" height="100" width="200"></canvas>
                     <script>
+                  
                       var ctx = document.getElementById("chartSalesperson").getContext('2d');
                       var myChart = new Chart(document.getElementById("chartSalesperson"), {
                         type: 'line',
@@ -727,6 +738,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="container">
                     <canvas id="myChart" width="400" height="200"></canvas>
                     <script>
+                    
                       var ctx = document.getElementById("myChart").getContext('2d');
                       var myChart = new Chart(document.getElementById("myChart"), {
                         type: 'line',
@@ -859,4 +871,9 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
         renderTime();
         </script>
+<script>
+$('#category_faq').change(function(){
+    var val = $(this).val();
+}
+</script>
 @endsection

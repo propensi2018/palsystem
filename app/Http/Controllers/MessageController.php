@@ -262,7 +262,7 @@ class MessageController extends Controller
                   $messageInbox[] =  array('senderName' => $tempSndrId[$i],'textMessage'=> $tempMsg[$i] );
               }
 
-              return view('MessageInbox',compact('messageInbox','id','nameSp'));
+              return view('messageInbox',compact('messageInbox','id','nameSp'));
           }
 
 

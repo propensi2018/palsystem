@@ -124,6 +124,7 @@ class Statistic extends Model
   public function returnLabels() {
     date_default_timezone_set("Asia/Bangkok");
     $m = date('m');
+      
     $array = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     $returner = [];
     for ($i = 0; $i < $m; $i++) {
@@ -219,6 +220,7 @@ public function sales_data($id) {
         {
         $returner = array();
         array_push($returner, $this -> sales_set_data($id, "rgb(". rand(0,255).", ".rand(0,255).", ".rand(0,255).")"));
+      
         }
         else
         {

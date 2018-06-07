@@ -68,8 +68,6 @@ class AktivitasPanggilanController extends Controller
         $customery=Customer::where([['is_act', false], ['pic_sp_id', $id]])->get();
 
         $exCust=DB::table('prospects')->join('customers', 'prospects.customer_id', '=', 'customers.id')->where([['pic_sp_id', $id],['cycle', '>', '1']])->get();
-        //return $exCust;
-
         foreach($customery as $individuals) {
             $individuals -> telephones = array();
             $individuals -> telephones = Telephone::select('telp_no')->where('customer_id', $individuals->id)->get();
@@ -78,8 +76,6 @@ class AktivitasPanggilanController extends Controller
             ->join('schedules','id_customer','=','customer_id')
             ->where('id_user_sp' , $id)
            ->orderBy('schedules.updated_at','desc')->get();
-
-//          $joinProspectId = DB::table('prospects')->select('customer_id')->leftJoin('schedules','id_customer','=','customer_id')->where([['id_user_sp' , $id],['is_done',0]])->groupBy('customer_id')->get();
             $joinProspectId = DB::table('prospects')
                 ->join('schedules','id_customer','=','customer_id')
                 ->join('schedule_types','schedule_type_id','=','schedule_types.id')
