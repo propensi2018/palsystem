@@ -177,20 +177,37 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                 </div>
                 <div class="row reminder-body">
                 <div style="padding:10px;">
-            <form action="" method="POST">
-		 	<label>Choose Option</label>
-		 	<select id="category_faq">
-	             <option value="1" selected=''>Present Month</option>
-	             <option value="2">6 Month</option>
-	        </select>
-            </form> 
+            Select period :
+                      <select id="fromSales">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> first)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
+                    to
+                    <select id="toSales">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> last)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
         </div>
                   <div class="container">
                     <canvas id="chartSalesperson" height="100" width="200"></canvas>
                     <script>
                   
                       var ctx = document.getElementById("chartSalesperson").getContext('2d');
-                      var myChart = new Chart(document.getElementById("chartSalesperson"), {
+                        var uniLabelsSales = @json($labels);
+                      var uniDataSales = @json($dataSales);
+                      var myChartSales = new Chart(document.getElementById("chartSalesperson"), {
                         type: 'line',
                         data: {
                           labels: @json($labels),
@@ -204,6 +221,79 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                           }
                         }
                       });
+                    </script>
+                    <script>
+                    let maxSales = uniLabelsSales.length;
+                    let minSales = 0;
+                    function newLabelSales(minSales, maxSales){
+                      var newLabelSales = new Array();
+                      // var newData = uniData.slice(0);
+                      var newDataSales = JSON.stringify(uniDataSales);
+                      var newDataSales = JSON.parse(newDataSales);
+
+                      // console.log(newData);
+
+                      for (var i = minSales; i <= maxSales; i++) {
+                        newLabelSales.push(uniLabelsSales[i]);
+                        // newData.push(uniData[i]);
+                      }
+
+                      newDataSales.forEach(function(datum) {
+                        newDatumSales = new Array();
+                        for (var i = minSales; i <= maxSales; i++) {
+                          // newLabel.push(uniLabels[i]);
+                          newDatumSales.push(datum.data[i]);
+                        }
+                        datum.data = newDatumSales;
+
+                      });
+                      // console.log(newLabel);
+                      return [newLabelSales, newDataSales];
+                    }
+                    // console.log(newLabel(2,4));
+                    // console.log(newLabela(5,5));
+                    function setMinMaxSales(){
+                      // console.log($('#from').val());
+                      // console.log($('#to').val());
+                      maxSales = Math.max($('#fromSales').val(), $('#toSales').val());
+                      minSales = Math.min($('#fromSales').val(), $('#toSales').val());
+                    }
+                    function drawSales() {
+                      var sales = newLabelSales(minSales, maxSales);
+                      // console.log(a[0]);
+                      // console.log(a[1]);
+                      // console.log('uni data :');
+                      // console.log(uniData);
+                      myChartSales.data.labels = sales[0];
+                      myChartSales.data.datasets = sales[1];
+
+                      myChartSales.update();
+                      // var myChart = new Chart(document.getElementById("myChart"), {
+                      //     type: 'line',
+                      //     data: {
+                      //       labels: a[0],
+                      //       datasets: a[1]
+                      //     },
+                      //     options: {
+                      //       title: {
+                      //         display: true,
+                      //         text: 'Product'
+                      //       }
+                      //     }
+                      //   });
+
+                      //implement code here`
+                      // console.log(min)
+
+                    }
+                    $('#fromSales').change(function(){
+                      setMinMaxSales();
+                      drawSales();
+                    });
+                    $('#toSales').change(function(){
+                      setMinMaxSales();
+                      drawSales();
+                    });
                     </script>
                   </div>
                 </div>
@@ -223,7 +313,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -232,7 +322,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -280,6 +370,8 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                     <canvas id="myChart" width="400" height="200"></canvas>
                     <script>
                       var ctx = document.getElementById("myChart").getContext('2d');
+                      var uniLabels = @json($labels);
+                      var uniData = @json($data);
                       var myChart = new Chart(document.getElementById("myChart"), {
                           type: 'line',
                           data: {
@@ -287,12 +379,108 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                             datasets: @json($data)
                           },
                           options: {
+                            // animation : false
                             title: {
                               display: true,
                               text: 'Product'
                             }
                           }
                         });
+                    </script>
+                    Select period :
+                    <select id="from">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> first)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
+                    to
+                    <select id="to">
+                      @foreach ($labels as $label)
+                        <option value="{{$loop->index}}"
+                          @if ($loop -> last)
+                            selected
+                          @endif
+                          >
+                          {{$label}}</option>
+                      @endforeach
+                    </select>
+                    <script>
+                    let max = uniLabels.length;
+                    let min = 0;
+                    function newLabela(min, max){
+                      var newLabel = new Array();
+                      // var newData = uniData.slice(0);
+                      var newData = JSON.stringify(uniData);
+                      var newData = JSON.parse(newData);
+
+                      // console.log(newData);
+
+                      for (var i = min; i <= max; i++) {
+                        newLabel.push(uniLabels[i]);
+                        // newData.push(uniData[i]);
+                      }
+
+                      newData.forEach(function(datum) {
+                        newDatum = new Array();
+                        for (var i = min; i <= max; i++) {
+                          // newLabel.push(uniLabels[i]);
+                          newDatum.push(datum.data[i]);
+                        }
+                        datum.data = newDatum;
+
+                      });
+                      // console.log(newLabel);
+                      return [newLabel, newData];
+                    }
+                    // console.log(newLabel(2,4));
+                    // console.log(newLabela(5,5));
+                    function setMinMax(){
+                      // console.log($('#from').val());
+                      // console.log($('#to').val());
+                      max = Math.max($('#from').val(), $('#to').val());
+                      min = Math.min($('#from').val(), $('#to').val());
+                    }
+                    function draw() {
+                      var a = newLabela(min, max);
+                      // console.log(a[0]);
+                      // console.log(a[1]);
+                      // console.log('uni data :');
+                      // console.log(uniData);
+                      myChart.data.labels = a[0];
+                      myChart.data.datasets = a[1];
+
+                      myChart.update();
+                      // var myChart = new Chart(document.getElementById("myChart"), {
+                      //     type: 'line',
+                      //     data: {
+                      //       labels: a[0],
+                      //       datasets: a[1]
+                      //     },
+                      //     options: {
+                      //       title: {
+                      //         display: true,
+                      //         text: 'Product'
+                      //       }
+                      //     }
+                      //   });
+
+                      //implement code here`
+                      // console.log(min)
+
+                    }
+                    $('#from').change(function(){
+                      setMinMax();
+                      draw();
+                    });
+                    $('#to').change(function(){
+                      setMinMax();
+                      draw();
+                    });
                     </script>
                   </div>
                 </div>
@@ -335,7 +523,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                               </li>
                             </a>
                           @elseif ($schedules[$i]['telp_flag'] == 1)
-                            <a href="{{ URL::to('../public/appointment/' . $schedules[$i]['id_customer']) }}">
+                            <a href="{{ URL::to('../appointment/' . $schedules[$i]['id_customer']) }}">
                               <li>
                                 <div class="row">
                                   <div class="col-4 col-md-4 col-md-offset-12 reminder-title-sch">
@@ -470,7 +658,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -479,7 +667,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -653,7 +841,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -662,7 +850,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -738,7 +926,6 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="container">
                     <canvas id="myChart" width="400" height="200"></canvas>
                     <script>
-                    
                       var ctx = document.getElementById("myChart").getContext('2d');
                       var myChart = new Chart(document.getElementById("myChart"), {
                         type: 'line',
@@ -772,7 +959,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                   <div class="col-sm-6 col-md-12 col-md-offset-12 calendar-style">
                     <div class="row calendar-style-title">
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $prev; ?>" />
                           <button type="submit" class="btn">&lt;</button>
                         </form>
@@ -781,7 +968,7 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
                         <?php echo $html_title; ?>
                       </div>
                       <div class="col-2 col-md-2 col-md-offset-12">
-                        <form method="GET" action="/palsystem/public/dashboard">
+                        <form method="GET" action="/dashboard">
                           <input type="hidden" name="ym" value="<?php echo $next; ?>" />
                           <button type="submit" class="btn">&gt;</button>
                         </form>
@@ -871,9 +1058,4 @@ for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
         renderTime();
         </script>
-<script>
-$('#category_faq').change(function(){
-    var val = $(this).val();
-}
-</script>
 @endsection

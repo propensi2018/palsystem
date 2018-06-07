@@ -21,17 +21,6 @@ class Statistic extends Model
     return $returner;
   }
 
-//  protected function get_target($product_id){
-//    $target = StatisticType::where('id_product', $product_id) -> target;
-//    $dataset = new Dataset;
-//    $dataset -> label = 'target';
-//    $dataset -> data = array();
-//    foreach ($this->returnLabels() as $label) {
-//      array_push($dataset -> data, $target);
-//    }
-//    return $dataset;
-//  }
-
   /*
   author : farhannp
   return the amount of product sold in the month and date
@@ -80,6 +69,18 @@ class Statistic extends Model
     ->select('amount')->get();
 
     return $amounts -> sum('amount');
+  }
+
+  public function cp($month, $year, $product_type_id) {
+    $amounts = DB::table('transactions')
+    ->join('product_lists', 'transactions.id_pl', '=', 'product_lists.id')
+    ->join('product_list_assocs', 'product_lists.id', '=', 'product_list_assocs.product_list_id')
+    ->where('product_list_assocs.id_ptype', '=', $product_type_id)
+    ->where('product_list_assocs.created_at', '>=', $year . "-" . $month . "-1 00:00:00")
+    ->where('product_list_assocs.created_at', '<', $year . "-" . ($month + 1) . "-1 00:00:00")
+    ->select('amount')->get();
+
+    return $amounts;
   }
 
   /*
